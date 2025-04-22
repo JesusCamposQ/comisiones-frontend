@@ -2,17 +2,19 @@ export interface Venta {
   _id: string;
   metaProductosVip: MetaProductosVip | null;
   sucursal:         string;
+  empresa:          string
   asesor:           string;
   gafaVip:          number;
   monturaVip:       number;
   lenteDeContacto:  number;
+  montoTotal:        number;
+  totalDescuento:     number;
   ventas:           VentaElement[];
 }
 
 export interface MetaProductosVip {
   _id:             string;
-  montura:         number;
-  gafa:            number;
+  monturaMasGafa:         number;
   lenteDeContacto: number;
   sucursal:        string;
   __v:             number;
@@ -60,6 +62,5 @@ export interface Producto {
   marca:     string;
   categoria: string | null;
 }
-
 
 

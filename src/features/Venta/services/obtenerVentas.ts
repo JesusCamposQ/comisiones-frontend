@@ -2,10 +2,8 @@ import api from "@/app/service/api";
 import { Venta } from "../interfaces/venta.interface";
 
 const obtenerVentas = async ():Promise<Venta[]> => {
-  const response = await api.get("/api/venta").then(res=>{
-    return res.data;
-  })
-  return response;
+  const response = await api.get("/api/venta")
+  return response.data;
 };
 
 export default obtenerVentas;
