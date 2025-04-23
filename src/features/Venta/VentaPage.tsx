@@ -17,12 +17,17 @@ import {
   VentaElement,
 } from "./interfaces/venta.interface";
 import obtenerVentas from "./services/obtenerVentas";
+import { DetalleVenta } from "./components/DetalleVenta";
+import { isArray } from "util";
+
 
 const VentaPage = () => {
-  const [page, setPage] = useState(1);
+  const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(null);
   const { data: ventas, isLoading } = useQuery({
     queryKey: ["ventas"],
     queryFn: obtenerVentas,
+    refetchOnWindowFocus: false,
+
   });
 
   if (isLoading) {
@@ -34,6 +39,10 @@ const VentaPage = () => {
     );
   }
 
+  const toggleDetalle = (index: number) => {
+    setExpandedRowIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
+
   return (
     <Table className="w-[95%] m-2 p-2 rounded-md bg-white shadow-md">
       <TableCaption>Lista de ventas</TableCaption>
@@ -44,32 +53,53 @@ const VentaPage = () => {
           <TableHead>Importe Total</TableHead>
           <TableHead>Monto Total</TableHead>
           <TableHead>Descuento</TableHead>
-          <TableHead>Total comision</TableHead>
+          <TableHead>Total comisión</TableHead>
           <TableHead className="text-right">VENTAS</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {ventas?.map((venta: Venta, index: number) => (
-          <TableRow key={index}>
-            <TableCell className="font-medium">{venta.sucursal}</TableCell>
-            <TableCell>{venta.asesor}</TableCell>
-            <TableCell>{importeImporte(venta.ventas)}</TableCell>
-            <TableCell>{venta.montoTotal}</TableCell>
-            <TableCell>{venta.totalDescuento}</TableCell>
-            <TableCell>
-              {comisiones(
-                venta.ventas,
-                venta.gafaVip,
-                venta.monturaVip,
-                venta.lenteDeContacto,
-                venta.metaProductosVip,
-                venta.empresa
-              )}
-            </TableCell>
-            <TableCell className="text-right">
-              <button>Ver</button>
-            </TableCell>
-          </TableRow>
+          <>
+            <TableRow key={index}>
+              <TableCell className="font-medium">{venta.sucursal}</TableCell>
+              <TableCell>{venta.asesor}</TableCell>
+              <TableCell>{importeImporte(venta.ventas)}</TableCell>
+              <TableCell>{venta.montoTotal}</TableCell>
+              <TableCell>{venta.totalDescuento}</TableCell>
+              <TableCell>
+                {comisiones(
+                  venta.ventas,
+                  venta.gafaVip,
+                  venta.monturaVip,
+                  venta.lenteDeContacto,
+                  venta.metaProductosVip,
+                  venta.empresa
+                )}
+              </TableCell>
+              <TableCell className="text-right">
+                <button
+                  className="text-blue-600 underline"
+                  onClick={() => toggleDetalle(index)}
+                >
+                  {expandedRowIndex === index ? "Ocultar" : "Ver"}
+                </button>
+              </TableCell>
+            </TableRow>
+            {expandedRowIndex === index && (
+              <TableRow>
+                <TableCell colSpan={7}>
+                  <DetalleVenta ventas={venta.ventas} 
+                  metaProductosVip={venta.metaProductosVip} 
+                    empresa={venta.empresa}
+                    gafaVip={venta.gafaVip}
+                    lenteDeContacto={venta.lenteDeContacto}
+                    monturaVip={venta.monturaVip}
+                  
+                  />
+                </TableCell>
+              </TableRow>
+            )}
+          </>
         ))}
       </TableBody>
       <TableFooter>
@@ -77,20 +107,7 @@ const VentaPage = () => {
           <TableCell colSpan={3}>Total</TableCell>
           <TableCell className="text-right">$2,500.00</TableCell>
         </TableRow>
-        <div className="flex items-center justify-center">
-          <button
-            className="px-4 py-2 bg-gray-200 rounded-md ml-2"
-            onClick={() => setPage(page - 1)}
-          >
-            Previous
-          </button>
-          <button
-            className="px-4 py-2 bg-gray-200 rounded-md ml-2"
-            onClick={() => setPage(page + 1)}
-          >
-            Next
-          </button>
-        </div>
+
       </TableFooter>
     </Table>
   );
@@ -98,10 +115,6 @@ const VentaPage = () => {
 
 export default VentaPage;
 
-const detalletventa = (
-  venta: VentaElement[],
- 
-) => {};
 
 const comisiones = (
   ventas: VentaElement[],
@@ -115,26 +128,28 @@ const comisiones = (
   const productovip = gafaVip + monturaVip;
   for (const venta of ventas) {
     for (const detalle of venta.detalle) {
-      for (const comision of detalle.comisiones) {
-        if (metaProductosVip && empresa =='OPTICENTRO') {
-          if (
-            productovip >= metaProductosVip.monturaMasGafa &&
-            lenteDeContacto >= metaProductosVip.lenteDeContacto
-          ) {
-            if (comision.base) {
-              comisionProducto += comision.monto;
+        if(Array.isArray(detalle.comisiones)){
+          for (const comision of detalle.comisiones) {
+            if (metaProductosVip && empresa == 'OPTICENTRO') {
+              if (
+                productovip >= metaProductosVip.monturaMasGafa &&
+                lenteDeContacto >= metaProductosVip.lenteDeContacto
+              ) {
+                if (comision.base) {
+                  comisionProducto += comision.monto;
+                }
+              } else {
+                if (comision.base == false) {
+                  comisionProducto += comision.monto;
+                }
+              }
+            } else {
+              if (comision.base) {
+                comisionProducto += comision.monto
+              }
             }
-          } else {
-            if (comision.base == false) {
-              comisionProducto += comision.monto;
-            }
-          }
-        }else {
-          if(comision.base){
-            comisionProducto += comision.monto
           }
         }
-      }
     }
   }
 
