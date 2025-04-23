@@ -27,12 +27,10 @@ const VentaPage = () => {
     queryKey: ["ventas"],
     queryFn: obtenerVentas,
     refetchOnWindowFocus: false,
-
+    staleTime: 60 * 1000 * 10,
   });
 
-  if (isLoading) {
-    staleTime: 60 * 1000 * 10,
-  })
+
   
   const obtenerVentasAsesores = (asesor: string): Venta[] => {
     return ventas?.filter((venta) => venta.asesor === asesor) || [];
