@@ -31,6 +31,17 @@ const VentaPage = () => {
   });
 
   if (isLoading) {
+    staleTime: 60 * 1000 * 10,
+  })
+  
+  const obtenerVentasAsesores = (asesor: string): Venta[] => {
+    return ventas?.filter((venta) => venta.asesor === asesor) || [];
+  };
+  const {data:ventasAsesores} = useQuery<Venta[]>({
+    queryKey: ['ventasAsesores'],
+    queryFn: () => obtenerVentasAsesores(''),
+  })
+  if(isLoading){
     return (
       <div className="h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-blue-500 mr-2"></div>
