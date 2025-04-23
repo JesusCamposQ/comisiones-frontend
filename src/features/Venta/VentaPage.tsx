@@ -21,6 +21,7 @@ const VentaPage = () => {
   const {data:ventas, isLoading} = useQuery({
     queryKey: ['ventas',],
     queryFn: obtenerVentas,
+    staleTime: 60 * 1000 * 10,
   })
   
   const obtenerVentasAsesores = (asesor: string): Venta[] => {
