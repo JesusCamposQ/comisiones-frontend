@@ -24,6 +24,7 @@ import VentaPage from '../features/Venta/VentaPage';
 import { BrowserRouter, Routes } from 'react-router';
 import { Route } from 'react-router';
 import Layout from './Layout/Layout';
+import { MetasPage } from '@/features/Metas';
 
 function AppRouter() {
   return (
@@ -34,6 +35,9 @@ function AppRouter() {
           <Route path='/productos' element={<ProductoPage />}>
             <Route index element={<CombinacionRecetaPage />} />
             <Route path="/productos/combinacion-receta" element={<CombinacionRecetaPage />} />
+          </Route>
+          <Route path="/metas" element={<MetasPage />} />
+          <Route path="/comision/receta" element={<ComisionRecetaPage />} >
           </Route>
         </Route>
       </Routes>

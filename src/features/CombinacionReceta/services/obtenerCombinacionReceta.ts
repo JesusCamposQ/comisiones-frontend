@@ -1,12 +1,14 @@
 import api from "@/app/service/api";
-import { Comision } from "../interfaces/comisiones.interface";
+import { Combinacion } from "../interfaces/comisiones.interface";
 
-const obtenerCombinacionReceta = async (): Promise<Comision[]> => {
-  const response = await api.get("/api/combinacion/receta").then(res=>{
-    console.log(res.data);
-    return res.data;
-  })
-  return response;
+const obtenerCombinacionReceta = async (limite: number, pagina: number): Promise<Combinacion> => {
+  const response = await api.get("/api/combinacion/receta", {
+    params: {
+      limite,
+      pagina
+    }
+  });
+  return response.data;
 };
 
-export default obtenerCombinacionReceta;	
+export default obtenerCombinacionReceta;

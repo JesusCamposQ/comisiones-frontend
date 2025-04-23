@@ -14,6 +14,7 @@ import {
   ShoppingBag,
   NotebookTabs,
   Building,
+  CircleDollarSign,
 } from "lucide-react"
 
 import { NavMain } from "@/app/Layout/components/nav-main"
@@ -66,6 +67,26 @@ const data = {
       ],
     },
     {
+      title: "Combinaciones",
+      url: "#",
+      icon: CircleDollarSign,
+      isActive: true,
+      items: [
+        {
+          title: "Combinaciones de Productos",
+          url: "/combinacion-producto",
+        },
+        {
+          title: "Combinaciones de Recetas",
+          url: "/combinacion-receta",
+        },
+        {
+          title: "Calculo de Comision",
+          url: "/calculo-comision",
+        },
+      ],
+    },
+    {
       title: "Productos",
       url: "#",
       icon: ShoppingBag,
@@ -109,6 +130,14 @@ const data = {
         {
           title: "Comision Producto",
           url: "#",
+        },
+        {
+          title: "Comision Receta",
+          url: "/comision/receta",
+        },
+        {
+          title: "Registro de Metas",
+          url: "/metas",
         },
       ],
     },
