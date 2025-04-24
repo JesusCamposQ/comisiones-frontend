@@ -95,27 +95,31 @@ const calcularComosion = (
 ) => {
   const productovip = gafaVip + monturaVip;
   let  comisionProducto = 0;  
-  if(Array.isArray(comisiones)){
-    for (const comision of comisiones) {
+  if(Array.isArray(comisiones) && comisiones.length > 0){
+    console.log('co',comisiones.reduce((acc, item) => acc + item.monto,0));
       if (metaProductosVip && empresa == "OPTICENTRO") {
         if (
           productovip >= metaProductosVip.monturaMasGafa &&
           lenteDeContacto >= metaProductosVip.lenteDeContacto
         ) {
-          if (comision.base) {
-            comisionProducto += comision.monto;
-          }
+      
+          
+          const mayorMonto = comisiones.reduce((max, actual) => actual.monto > max.monto ? actual : max);
+            comisionProducto += mayorMonto.monto;
+          
         } else {
-          if (comision.base == false) {
-            comisionProducto += comision.monto;
-          }
+          const menorMonto = comisiones.reduce((min, actual) => 
+            actual.monto < min.monto ? actual : min
+          );
+            comisionProducto += menorMonto.monto;
+          
         }
       } else {
-        if (comision.base) {
-          comisionProducto += comision.monto;
-        }
+        const mayorMonto = comisiones.reduce((max, actual) => actual.monto > max.monto ? actual : max);
+                comisionProducto += mayorMonto.monto
+              
       }
-    }
+    
   }
   return comisionProducto;
 };

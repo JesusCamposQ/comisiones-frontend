@@ -72,7 +72,7 @@ const VentaPage = () => {
             <TableRow key={index}>
               <TableCell className="font-medium">{venta.sucursal}</TableCell>
               <TableCell>{venta.asesor}</TableCell>
-              <TableCell>{importeImporte(venta.ventas)}</TableCell>
+              <TableCell>{totalImporte(venta.ventas)}</TableCell>
               <TableCell>{venta.montoTotal}</TableCell>
               <TableCell>{venta.totalDescuento}</TableCell>
               <TableCell>
@@ -135,29 +135,35 @@ const comisiones = (
 ) => {
   let comisionProducto = 0;
   const productovip = gafaVip + monturaVip;
+
+
   for (const venta of ventas) {
     for (const detalle of venta.detalle) {
-        if(Array.isArray(detalle.comisiones)){
-          for (const comision of detalle.comisiones) {
+        if(Array.isArray(detalle.comisiones) && detalle.comisiones.length > 0){
+         
+        
             if (metaProductosVip && empresa == 'OPTICENTRO') {
               if (
                 productovip >= metaProductosVip.monturaMasGafa &&
                 lenteDeContacto >= metaProductosVip.lenteDeContacto
               ) {
-                if (comision.base) {
-                  comisionProducto += comision.monto;
-                }
+
+                  const mayorMonto = detalle.comisiones.reduce((max, actual) => actual.monto > max.monto ? actual : max);
+                  comisionProducto += mayorMonto.monto;
+                
               } else {
-                if (comision.base == false) {
-                  comisionProducto += comision.monto;
-                }
+                const menorMonto = detalle.comisiones.reduce((min, actual) => 
+                  actual.monto < min.monto ? actual : min
+                );
+                  comisionProducto += menorMonto.monto;
+                
               }
             } else {
-              if (comision.base) {
-                comisionProducto += comision.monto
-              }
+               const mayorMonto = detalle.comisiones.reduce((max, actual) => actual.monto > max.monto ? actual : max);
+                comisionProducto += mayorMonto.monto
+              
             }
-          }
+          
         }
     }
   }
@@ -165,7 +171,7 @@ const comisiones = (
   return comisionProducto;
 };
 
-const importeImporte = (ventas: VentaElement[]) => {
+const totalImporte = (ventas: VentaElement[]) => {
   let importe: number = 0;
   for (const venta of ventas) {
     for (const detalle of venta.detalle) {
