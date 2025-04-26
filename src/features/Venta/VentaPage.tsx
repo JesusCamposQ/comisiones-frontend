@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -18,21 +18,37 @@ import {
 } from "./interfaces/venta.interface";
 import obtenerVentas from "./services/obtenerVentas";
 import { DetalleVenta } from "./components/DetalleVenta";
-import { isArray } from "util";
 import Filtro from "@/shared/components/Filtro/Filtro";
-
-
+import { FiltroI } from "./interfaces/filtro.interface";
+import { formatDate } from "@/shared/utils/formatDate";
 
 const VentaPage = () => {
-  const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(null);
-  const { data: ventas, isLoading } = useQuery({
-    queryKey: ["ventas"],
-    queryFn: obtenerVentas,
-    refetchOnWindowFocus: false,
-    staleTime: 60 * 1000 * 10,
+  const [ventas, setVentas]=useState<Venta[]>([])
+  const [filtro, setFiltro] = useState<FiltroI>({  
+    sucursal: [],
+    fechaInicio: formatDate(new Date().toLocaleDateString()),
+    fechaFin: formatDate(new Date().toLocaleDateString()),
   });
+  const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(null);
+  /*const { data: ventas, isLoading } = useQuery({
+    queryKey: ["ventas"],
+    queryFn: ()=>obtenerVentas(filtro),
+    refetchOnWindowFocus: true,
+    staleTime: 60 * 1000 * 10,
+  });*/
+  useEffect(()=>{
+     fetch()
+  },[filtro])
 
-
+  const fetch =  async()=>{
+    try {
+      const response = await obtenerVentas(filtro)
+      setVentas(response)
+    } catch (error) {
+      console.log(error);
+    
+    }
+   }
   
   const obtenerVentasAsesores = (asesor: string): Venta[] => {
     return ventas?.filter((venta) => venta.asesor === asesor) || [];
@@ -41,22 +57,24 @@ const VentaPage = () => {
     queryKey: ['ventasAsesores'],
     queryFn: () => obtenerVentasAsesores(''),
   })
-  if(isLoading){
+  /*if(isLoading){
     return (
       <div className="h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-blue-500 mr-2"></div>
         <span className="text-blue-500 text-2xl">Cargando...</span>
       </div>
     );
-  }
+  }*/
 
   const toggleDetalle = (index: number) => {
     setExpandedRowIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
+
+
   return (
     <>
-      <Filtro />
+      <Filtro setFiltros={setFiltro} />
       <Table className="w-[95%] m-auto p-2 rounded-md bg-white shadow-md">
         <TableCaption>Lista de ventas</TableCaption>
         <TableHeader>

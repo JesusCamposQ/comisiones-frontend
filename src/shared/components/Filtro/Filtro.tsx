@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ChevronDown, Filter, Search, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,9 +13,23 @@ import { DatePickerWithRange } from "./components/date-picker-with-range"
 import { useQuery } from "@tanstack/react-query"
 import { obtenerEmpresas } from "@/features/Empresa/services/obternerEmpresas"
 import { Empresa } from "@/features/Empresa/interfaces/empresa.interface"
+import { Sucursal } from "@/features/Sucursal/interfaces/sucursal.interface"
+import { obtenerSucursalByEmpresa } from "@/features/Sucursal/services/obtenerSurcusal"
+import { FiltroI } from "@/features/Venta/interfaces/filtro.interface"
+import { formatDate } from "@/shared/utils/formatDate"
 
-export default function Filtro() {
+export default function Filtro({setFiltros}:{setFiltros:(data:FiltroI)=>void}) {
   const [activeFilters, setActiveFilters] = useState<string[]>([])
+  const [sucursalesSelected, setSucursalesSelected] = useState<string[]>([])
+  const [rangeFecha, setRangeFecha] = useState<{ fechaInicio: string; fechaFin: string } >({
+    fechaInicio: formatDate(new Date().toLocaleDateString()),
+    fechaFin: formatDate(new Date().toLocaleDateString())
+  })
+  const [sucursales, setSucursales] = useState<Sucursal[]>([])
+  const {data:empresas}=useQuery({
+    queryKey:["empresas"],
+    queryFn:()=>obtenerEmpresas()
+  })
   const [dateRange, setDateRange] = useState({
     from: new Date(),
     to: new Date(),
@@ -27,18 +41,33 @@ export default function Filtro() {
       setActiveFilters([...activeFilters, filter])
     }
   }
-
+  const handleSucursalChange = async (empresaId: string) => {
+    if(empresaId){
+      const response = await obtenerSucursalByEmpresa(empresaId)
+      setSucursales(response)
+    }
+  }
   const removeFilter = (filter: string) => {
     setActiveFilters(activeFilters.filter((f) => f !== filter))
   }
-
-  const handleSaleTypeChange = (type: string) => {
-    if (saleTypes.includes(type)) {
-      setSaleTypes(saleTypes.filter((t) => t !== type))
-    } else {
-      setSaleTypes([...saleTypes, type])
+  useEffect(() => {
+    console.log("Sucursales actualizadas:", sucursalesSelected)
+    console.log("Fechas actualizadas:", rangeFecha)
+  }, [sucursalesSelected, rangeFecha])  
+  const agregarSucursal = (sucursal: string) => {
+    if (!sucursalesSelected.includes(sucursal)) {
+      setSucursalesSelected([...sucursalesSelected, sucursal])
     }
   }
+  const agregarFecha = (fecha: { fechaInicio: string; fechaFin: string } ) => {
+    const fechaInicio = formatDate(fecha.fechaInicio)
+    const fechaFin = formatDate(fecha.fechaFin)
+
+    if(fechaInicio && fechaFin){
+      setRangeFecha({ fechaInicio, fechaFin })
+    }
+  }
+  
   const clearAllFilters = () => {
     setActiveFilters([])
     setSaleTypes([])
@@ -47,11 +76,14 @@ export default function Filtro() {
       to: new Date(),
     })
   }
-  const {data:empresas}=useQuery({
-    queryKey:["empresas"],
-    queryFn:()=>obtenerEmpresas()
-  })
-
+  const onClickBuscar = () => {
+    const datos:FiltroI = {
+      sucursal: sucursalesSelected,
+      fechaInicio: rangeFecha.fechaInicio ? rangeFecha.fechaInicio : formatDate(new Date().toISOString()),
+      fechaFin: rangeFecha.fechaFin ? rangeFecha.fechaFin : formatDate(new Date().toISOString()),
+    }
+    setFiltros(datos)
+  }
   return (
     <div className=" p-4 md:p-8">
       <Card className="w-full max-w-6xl mx-auto shadow-sm">
@@ -73,7 +105,12 @@ export default function Filtro() {
               <Label htmlFor="chain" className="text-sm font-medium">
                 Cadena
               </Label>
-              <Select onValueChange={(value) => addFilter(`Cadena: ${value}`)}>
+              <Select
+                onValueChange={(value) => {
+                  addFilter(`Empresa: ${value}`)
+                  handleSucursalChange(value)
+                }}
+              >
                 <SelectTrigger id="chain" className="w-full">
                   <SelectValue placeholder="Seleccione una cadena" />
                 </SelectTrigger>
@@ -91,85 +128,24 @@ export default function Filtro() {
               <Label htmlFor="branch" className="text-sm font-medium">
                 Sucursal
               </Label>
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Select
-                  id="branch"
-                  isMulti
-                  closeMenuOnSelect={false}
-                  components={{
-                    MultiValueContainer: ({ children, ...props }) => (
-                      <div className="flex flex-wrap gap-1" {...props}>
-                        {children}
-                      </div>
-                    ),
-                  }}
-                  styles={{
-                    multiValue: (base) => ({
-                      ...base,
-                      backgroundColor: "rgba(156, 163, 175, 0.16)",
-                      borderRadius: "0.375rem",
-                      padding: "0.25rem 0.5rem",
-                    }),
-                  }}
-                  placeholder="Buscar sucursal..."
-                  className="pl-8"
-                  onChange={(values) => {
-                    if (values.length > 0) {
-                      return addFilter(`Sucursal: ${values.join(", ")}`);
-                    }
-                  }}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Buscar sucursal..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {sucursales?.map((sucursal: Sucursal) => (
-                      <SelectItem key={sucursal._id} value={sucursal._id}>
-                        {sucursal.nombre}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              <Select
+                onValueChange={(value) => {
+                  addFilter(`Sucursal: ${value}`)
+                  agregarSucursal(value)
+                }}
+              >
+                <SelectTrigger id="branch" className="w-full">
+                  <SelectValue placeholder="Seleccione una sucursal" />
+                </SelectTrigger>
+                <SelectContent>
+                  {sucursales?.map((sucursal: Sucursal) => (
+                    <SelectItem key={sucursal._id} value={sucursal._id}>
+                      {sucursal.nombre}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">Tipo de venta</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-full justify-between">
-                    {saleTypes.length > 0 ? `${saleTypes.length} seleccionados` : "Seleccionar tipo"}
-                    <ChevronDown className="h-4 w-4 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-full p-0" align="start">
-                  <div className="p-4 space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="comisiona"
-                        checked={saleTypes.includes("Comisiona")}
-                        onCheckedChange={() => handleSaleTypeChange("Comisiona")}
-                      />
-                      <Label htmlFor="comisiona" className="font-normal">
-                        Comisiona
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="no-comisiona"
-                        checked={saleTypes.includes("No comisiona")}
-                        onCheckedChange={() => handleSaleTypeChange("No comisiona")}
-                      />
-                      <Label htmlFor="no-comisiona" className="font-normal">
-                        No comisiona
-                      </Label>
-                    </div>
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </div>
-
             <div className="space-y-2">
               <Label className="text-sm font-medium">Rango de Fechas</Label>
               <DatePickerWithRange
@@ -177,6 +153,7 @@ export default function Filtro() {
                 setDate={(range) => {
                   setDateRange(range as { from: Date; to: Date })
                   addFilter(`Fechas: ${range.from?.toLocaleDateString()} - ${range.to?.toLocaleDateString()}`)
+                  agregarFecha({ fechaInicio: range.from?.toLocaleDateString(), fechaFin: range.to?.toLocaleDateString() })
                 }}
               />
             </div>
@@ -204,7 +181,7 @@ export default function Filtro() {
           )}
 
           <div className="mt-6 flex justify-end">
-            <Button className="px-8">Procesar</Button>
+            <Button className="px-8" onClick={onClickBuscar}>Buscar</Button>
           </div>
         </CardContent>
       </Card>
