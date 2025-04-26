@@ -29,50 +29,51 @@ export const DetalleVenta = ({
   empresa: string;
 }) => {
   return (
-    <div className="w-[95%] m-2 p-4 bg-gray-100 rounded-md shadow-md">
+    <div className="w-[95%] m-auto p-4 my-4 bg-gray-50 rounded-lg shadow-md">
       <Table>
         <TableCaption>Detalle de ventas del asesor</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>ID Venta</TableHead>
-            <TableHead>Monto Total</TableHead>
-            <TableHead>Descuento</TableHead>
-
-            <TableHead>Detalles</TableHead>
+            <TableHead className="text-right">Monto Total</TableHead>
+            <TableHead className="text-right">Descuento</TableHead>
+            <TableHead className="text-center">Detalles</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {ventas.map((venta, index) => (
             <TableRow key={index}>
               <TableCell>{venta.idVenta}</TableCell>
-              <TableCell>{venta.montoTotal}</TableCell>
-              <TableCell>{venta.descuento}</TableCell>
+              <TableCell className="text-right">{venta.montoTotal}</TableCell>
+              <TableCell className="text-right">{venta.descuento}</TableCell>
               <TableCell>
                 {venta.detalle && venta.detalle.length > 0 ? (
-                  <table className="w-full text-sm border border-gray-300 rounded-md">
-                    <thead className="bg-gray-200">
-                      <tr>
-                        <th className="px-2 py-1 text-left">Descripción</th>
-                        <th className="px-2 py-1 text-left">Importe</th>
-                        <th className="px-2 py-1 text-left">Comision</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                  <Table className="w-[95%] m-auto text-sm border border-gray-300 rounded-md bg-gray-100">
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="px-2 py-1 text-left">Descripción</TableHead>
+                        <TableHead className="px-2 py-1 text-right">Importe</TableHead>
+                        <TableHead className="px-2 py-1 text-right">Comision</TableHead>
+                        <TableHead className="px-2 py-1 text-right">Porcentaje</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
                       {venta.detalle.map((item, i) => (
-                        <tr key={i} className="border-t">
-                          <td className="px-2 py-1">
+                        <TableRow key={i} className="border-t border-zinc-300">
+                          <TableCell className="px-2 py-1">
                             {item.producto
                               ? `${item.producto.tipo} ${item.producto.marca}`
                               : item.combinacion
                               ? `${item.combinacion.material}/${item.combinacion.tipoLente}/${item.combinacion.tipoColorLente}/${item.combinacion.tratamiento}/${item.combinacion.rango}/${item.combinacion.marcaLente}/${item.combinacion.colorLente} `
                               : item.servicios?.tipo }
-                          </td>
-                          <td className="px-2 py-1">{item.importe}</td>
-                          <td>{calcularComosion(item.comisiones,gafaVip, monturaVip,lenteDeContacto, metaProductosVip, empresa)}</td>
-                        </tr>
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-right">{item.importe}</TableCell>
+                          <TableCell className="px-4 py-1 text-right">{calcularComosion(item.comisiones,gafaVip, monturaVip,lenteDeContacto, metaProductosVip, empresa)}</TableCell>
+                          <TableCell className="px-4 py-1 text-right">{(calcularComosion(item.comisiones,gafaVip, monturaVip,lenteDeContacto, metaProductosVip, empresa)*100/item.importe).toFixed(2)}%</TableCell>
+                        </TableRow>
                       ))}
-                    </tbody>
-                  </table>
+                    </TableBody>
+                  </Table>
                 ) : (
                   <span className="text-gray-500">Sin detalle</span>
                 )}

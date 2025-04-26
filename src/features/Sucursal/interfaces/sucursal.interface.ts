@@ -1,5 +1,5 @@
 export interface Sucursal {
-    id: string;
+    _id: string;
     nombre: string;
     empresa: string;
     fecha: Date;

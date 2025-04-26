@@ -37,8 +37,9 @@ function AppRouter() {
             <Route path="/productos/combinacion-receta" element={<CombinacionRecetaPage />} />
           </Route>
           <Route path="/metas" element={<MetasPage />} />
-          <Route path="/comision/receta" element={<ComisionRecetaPage />} >
-          </Route>
+          <Route path="/comision/calculo" element={<ComisionRecetaPage />} />
+          <Route path="/comision/gestion/receta" element={<CombinacionRecetaPage />} />
+          <Route path='/comision/gestion/producto' element={<ComisionRecetaPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

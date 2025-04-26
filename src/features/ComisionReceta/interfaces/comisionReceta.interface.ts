@@ -4,3 +4,7 @@ export interface IComisionReceta {
   base: boolean;
   combinacionReceta: string
 }
+
+export interface IComisionRecetaData {
+  data: IComisionReceta[];
+}

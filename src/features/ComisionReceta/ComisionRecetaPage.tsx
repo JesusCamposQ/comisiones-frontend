@@ -2,6 +2,7 @@ import { ModalRegistro } from "./components/ModalRegistro";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { IComisionReceta } from "./interfaces/comisionReceta.interface";
 import { useQueryClient } from "@tanstack/react-query";
+import registrarComisionReceta from "./services/registrarComisionReceta";
 
 const ComisionRecetaPage = () => {
   const queryClient = useQueryClient();
@@ -15,9 +16,21 @@ const ComisionRecetaPage = () => {
   });
   const onSubmit: SubmitHandler<IComisionReceta> = (data) => {
     const valor = queryClient.getQueryData<string[]>(["id_combinacion"])
-    console.log(data)
-    console.log(valor[0])
+    if (!valor) return
+    const registro = {
+      data:[
+        {
+          nombre: data.nombre,
+          monto: data.monto,
+          base: data.base,
+          combinacionReceta: valor?.[0],
+        }
+      ]
+    }
+    console.log(registro)
+    registrarComisionReceta(registro)
   };
+  const valor = queryClient.getQueryData<string[]>(["id_combinacion"],)
   return (
     <>
     <div className="flex items-center justify-center">
@@ -25,7 +38,7 @@ const ComisionRecetaPage = () => {
     </div>
     <form className="mt-12 w-1/3 mx-auto space-y-6" onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-4">
-        <label className="block text-sm font-medium text-gray-700 text-center" htmlFor="email">
+        <label className="block text-sm font-medium text-gray-700 text-left" htmlFor="email">
           Nombre
         </label>
         <input
@@ -36,7 +49,7 @@ const ComisionRecetaPage = () => {
         />
       </div>
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700 text-center" htmlFor="password">
+        <label className="block text-sm font-medium text-gray-700 text-left" htmlFor="password">
           Monto
         </label>
         <input
@@ -65,6 +78,9 @@ const ComisionRecetaPage = () => {
               type="text"
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm h-12"
               placeholder="Combinacion de receta"
+              value={queryClient.getQueryData<string[]>(["id_combinacion"])?.[0]}
+              disabled
+              {...register("combinacionReceta")}
             />
             <ModalRegistro/>
           </label>

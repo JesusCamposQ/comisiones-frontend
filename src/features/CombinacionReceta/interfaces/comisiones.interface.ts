@@ -6,7 +6,7 @@ export interface Combinacion {
 export interface Datum {
     _id:            string;
     codigo:         string;
-    comisionReceta: any[];
+    comisionReceta: ComisionReceta[];
     material:       string;
     tipoLente:      string;
     rango:          string;
@@ -14,12 +14,19 @@ export interface Datum {
     marcaLente:     string;
     tratamiento:    string;
     tipoColorLente: string;
-    precios:        Precio[];
 }
 
-export interface Precio {
-    _id:    string;
-    nombre: string;
-    monto:  number;
-    __v:    number;
+export interface ComisionReceta {
+    _id:               string;
+    precio:            string;
+    nombre:            string;
+    monto:             number;
+    combinacionReceta: string;
+    diferencia:        number;
+    comision:          number;
+    __v:               number;
 }
+
+
+
+
