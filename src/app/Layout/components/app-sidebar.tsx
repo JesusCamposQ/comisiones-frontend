@@ -38,25 +38,15 @@ const data = {
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "Sistema Comisiones",
       logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
+      plan: "Comisiones",
     },
   ],
   navMain: [
     {
       title: "Ventas",
-      url: "#",
+      url: "/ventas",
       icon: Store,
       isActive: true,
       items: [
@@ -67,22 +57,26 @@ const data = {
       ],
     },
     {
-      title: "Combinaciones",
+      title: "Comisiones",
       url: "#",
       icon: CircleDollarSign,
       isActive: true,
       items: [
         {
-          title: "Combinaciones de Productos",
-          url: "/combinacion-producto",
-        },
-        {
-          title: "Combinaciones de Recetas",
-          url: "/combinacion-receta",
-        },
-        {
           title: "Calculo de Comision",
-          url: "/calculo-comision",
+          url: "/comision/calculo",
+        },
+        {
+          title: "Gestion de Comision",
+          url: "/comision/gestion",
+        },
+        {
+          title: "Gestion de Comision Receta",
+          url: "/comision/gestion/receta",
+        },
+        {
+          title: "Gestion de Comision Producto",
+          url: "/comision/gestion/producto",
         },
       ],
     },
@@ -192,23 +186,6 @@ const data = {
       ],
     },
   ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -219,7 +196,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        {/*<NavProjects projects={data.projects} />*/}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
