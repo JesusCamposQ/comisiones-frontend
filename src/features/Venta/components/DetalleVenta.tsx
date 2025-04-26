@@ -97,7 +97,6 @@ const calcularComosion = (
   const productovip = gafaVip + monturaVip;
   let  comisionProducto = 0;  
   if(Array.isArray(comisiones) && comisiones.length > 0){
-    console.log('co',comisiones.reduce((acc, item) => acc + item.monto,0));
       if (metaProductosVip && empresa == "OPTICENTRO") {
         if (
           productovip >= metaProductosVip.monturaMasGafa &&
