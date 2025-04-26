@@ -16,6 +16,11 @@ import { Empresa } from "@/features/Empresa/interfaces/empresa.interface"
 
 export default function Filtro() {
   const [activeFilters, setActiveFilters] = useState<string[]>([])
+  const [sucursales, setSucursales] = useState<Sucursal[]>([])
+  const {data:empresas}=useQuery({
+    queryKey:["empresas"],
+    queryFn:()=>obtenerEmpresas()
+  })
   const [dateRange, setDateRange] = useState({
     from: new Date(),
     to: new Date(),
@@ -47,10 +52,6 @@ export default function Filtro() {
       to: new Date(),
     })
   }
-  const {data:empresas}=useQuery({
-    queryKey:["empresas"],
-    queryFn:()=>obtenerEmpresas()
-  })
 
   return (
     <div className=" p-4 md:p-8">
@@ -73,7 +74,7 @@ export default function Filtro() {
               <Label htmlFor="chain" className="text-sm font-medium">
                 Cadena
               </Label>
-              <Select onValueChange={(value) => addFilter(`Cadena: ${value}`)}>
+              <Select onValueChange={(value) => addFilter(`Empresa: ${value}`)}>
                 <SelectTrigger id="chain" className="w-full">
                   <SelectValue placeholder="Seleccione una cadena" />
                 </SelectTrigger>
@@ -93,44 +94,20 @@ export default function Filtro() {
               </Label>
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Select
+                <select name="branch" id="branch" className="pl-8" onChange={(e) => e.target.value && addFilter(`Sucursal: ${e.target.value}`)}>
+                  {sucursales?.map((sucursal: Sucursal) => (
+                    <option key={sucursal._id} value={sucursal._id}>
+                      {sucursal.nombre}
+                    </option>
+                  ))}
+                </select>
+                <Input
                   id="branch"
-                  isMulti
-                  closeMenuOnSelect={false}
-                  components={{
-                    MultiValueContainer: ({ children, ...props }) => (
-                      <div className="flex flex-wrap gap-1" {...props}>
-                        {children}
-                      </div>
-                    ),
-                  }}
-                  styles={{
-                    multiValue: (base) => ({
-                      ...base,
-                      backgroundColor: "rgba(156, 163, 175, 0.16)",
-                      borderRadius: "0.375rem",
-                      padding: "0.25rem 0.5rem",
-                    }),
-                  }}
+                  type="text"
                   placeholder="Buscar sucursal..."
                   className="pl-8"
-                  onChange={(values) => {
-                    if (values.length > 0) {
-                      return addFilter(`Sucursal: ${values.join(", ")}`);
-                    }
-                  }}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Buscar sucursal..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {sucursales?.map((sucursal: Sucursal) => (
-                      <SelectItem key={sucursal._id} value={sucursal._id}>
-                        {sucursal.nombre}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  onChange={(e) => e.target.value && addFilter(`Sucursal: ${e.target.value}`)}
+                />
               </div>
             </div>
 
