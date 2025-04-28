@@ -1,4 +1,4 @@
-Create files according to the Vertical Slice Architecture. Each feature should be encapsulated in its own folder under a features directory, containing:
+noCreate files according to the Vertical Slice Architecture. Each feature should be encapsulated in its own folder under a features directory, containing:
 
 All related components
 

@@ -22,10 +22,12 @@ import TipoLentePage from '../features/TipoLente/TipoLentePage';
 import TipoMonturaPage from '../features/TipoMontura/TipoMonturaPage';
 import TratamientoPage from '../features/Tratamiento/TratamientoPage';
 import VentaPage from '../features/Venta/VentaPage';
+import {AutenticacionPage} from '../features/autenticacion/page/AutenticacionPage'
 
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="/" element={<AutenticacionPage />} />
       <Route path="/asesor" element={<AsesorPage />} />
       <Route path="/color" element={<ColorPage />} />
       <Route path="/colorlente" element={<ColorLentePage />} />
