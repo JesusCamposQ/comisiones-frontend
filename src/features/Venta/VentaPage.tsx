@@ -24,47 +24,40 @@ import { formatDate } from "@/shared/utils/formatDate";
 
 const VentaPage = () => {
   const [ventas, setVentas]=useState<Venta[]>([])
+  const [isLoading, setIsloading]=useState<boolean>(false)
   const [filtro, setFiltro] = useState<FiltroI>({  
     sucursal: [],
     fechaInicio: formatDate(new Date().toLocaleDateString()),
     fechaFin: formatDate(new Date().toLocaleDateString()),
   });
   const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(null);
-  /*const { data: ventas, isLoading } = useQuery({
-    queryKey: ["ventas"],
-    queryFn: ()=>obtenerVentas(filtro),
-    refetchOnWindowFocus: true,
-    staleTime: 60 * 1000 * 10,
-  });*/
+
   useEffect(()=>{
      fetch()
   },[filtro])
 
   const fetch =  async()=>{
     try {
+      setIsloading(true)
       const response = await obtenerVentas(filtro)
       setVentas(response)
+      setIsloading(false)
     } catch (error) {
+      setIsloading(false)
       console.log(error);
     
     }
    }
   
-  const obtenerVentasAsesores = (asesor: string): Venta[] => {
-    return ventas?.filter((venta) => venta.asesor === asesor) || [];
-  };
-  const {data:ventasAsesores} = useQuery<Venta[]>({
-    queryKey: ['ventasAsesores'],
-    queryFn: () => obtenerVentasAsesores(''),
-  })
-  /*if(isLoading){
+
+  if(isLoading){
     return (
       <div className="h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-blue-500 mr-2"></div>
         <span className="text-blue-500 text-2xl">Cargando...</span>
       </div>
     );
-  }*/
+  }
 
   const toggleDetalle = (index: number) => {
     setExpandedRowIndex((prevIndex) => (prevIndex === index ? null : index));

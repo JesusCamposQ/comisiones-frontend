@@ -41,13 +41,8 @@ export interface Detalle {
 
 export interface Combinacion {
   id:             string;
-  material:       string;
-  tipoLente:      string;
-  rango:          string;
-  colorLente:     string;
-  marcaLente:     string;
-  tratamiento:    string;
-  tipoColorLente: string;
+  descripcion:       string;
+ 
 }
 
 export interface Comision {

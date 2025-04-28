@@ -64,7 +64,7 @@ export const DetalleVenta = ({
                             {item.producto
                               ? `${item.producto.tipo} ${item.producto.marca}`
                               : item.combinacion
-                              ? `${item.combinacion.material}/${item.combinacion.tipoLente}/${item.combinacion.tipoColorLente}/${item.combinacion.tratamiento}/${item.combinacion.rango}/${item.combinacion.marcaLente}/${item.combinacion.colorLente} `
+                              ? `${item.combinacion.descripcion} `
                               : item.servicios?.tipo }
                           </TableCell>
                           <TableCell className="px-2 py-1 text-right">{item.importe}</TableCell>
