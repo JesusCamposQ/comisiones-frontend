@@ -23,9 +23,11 @@ import { FiltroI } from "./interfaces/filtro.interface";
 import { formatDate } from "@/shared/utils/formatDate";
 
 const VentaPage = () => {
+  const [nombresSucursales, setNombresSucursales] = useState<string[]>([])
   const [ventas, setVentas]=useState<Venta[]>([])
   const [isLoading, setIsloading]=useState<boolean>(false)
-  const [filtro, setFiltro] = useState<FiltroI>({  
+  const [filtro, setFiltro] = useState<FiltroI>({
+    empresa: '',
     sucursal: [],
     fechaInicio: formatDate(new Date().toLocaleDateString()),
     fechaFin: formatDate(new Date().toLocaleDateString()),
@@ -39,7 +41,10 @@ const VentaPage = () => {
   const fetch =  async()=>{
     try {
       setIsloading(true)
-      const response = await obtenerVentas(filtro)
+      const { empresa, nombresSucursales, ...rest } = filtro;
+      console.log("Filtro: ", rest) 
+      const response = await obtenerVentas(rest)
+      console.log("Ventas89: ",response)
       setVentas(response)
       setIsloading(false)
     } catch (error) {
@@ -67,7 +72,7 @@ const VentaPage = () => {
 
   return (
     <>
-      <Filtro setFiltros={setFiltro} />
+      <Filtro setFiltros={setFiltro} initialFilters={filtro} />
       <Table className="w-[95%] m-auto p-2 rounded-md bg-white shadow-md">
         <TableCaption>Lista de ventas</TableCaption>
         <TableHeader>
