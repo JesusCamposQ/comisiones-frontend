@@ -1,4 +1,4 @@
-export interface AutenticacioI {
+export interface AutenticacionI {
      username:string
      password:string
 }

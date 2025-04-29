@@ -21,6 +21,7 @@ import { DetalleVenta } from "./components/DetalleVenta";
 import Filtro from "@/shared/components/Filtro/Filtro";
 import { FiltroI } from "./interfaces/filtro.interface";
 import { formatDate } from "@/shared/utils/formatDate";
+import FiltroOP from "@/shared/components/Filtro/FiltroOP";
 
 const VentaPage = () => {
   const [nombresSucursales, setNombresSucursales] = useState<string[]>([])
@@ -72,7 +73,7 @@ const VentaPage = () => {
 
   return (
     <>
-      <Filtro setFiltros={setFiltro} initialFilters={filtro} />
+      <FiltroOP setFiltros={setFiltro} initialFilters={filtro} />
       <Table className="w-[95%] m-auto p-2 rounded-md bg-white shadow-md">
         <TableCaption>Lista de ventas</TableCaption>
         <TableHeader>

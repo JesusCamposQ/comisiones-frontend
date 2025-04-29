@@ -13,7 +13,7 @@ import { Empresa } from "@/features/Empresa/interfaces/empresa.interface"
 import { Sucursal } from "@/features/Sucursal/interfaces/sucursal.interface"
 import { obtenerSucursalByEmpresa } from "@/features/Sucursal/services/obtenerSurcusal"
 import { FiltroI } from "@/features/Venta/interfaces/filtro.interface"
-import { formatDate } from "@/shared/utils/formatDate"
+import { formatDate, parseDate } from "@/shared/utils/formatDate"
 
 interface FiltroProps {
   setFiltros: Dispatch<SetStateAction<FiltroI>>; 
@@ -51,8 +51,8 @@ export default function Filtro({ setFiltros, initialFilters }: FiltroProps) {
     fechaFin: formatDate(new Date().toLocaleDateString())
   })
   const [dateRange, setDateRange] = useState({
-    from: new Date(),
-    to: new Date(),
+    from: initialFilters?.fechaInicio ? parseDate(initialFilters.fechaInicio) : new Date(),
+    to: initialFilters?.fechaFin ? parseDate(initialFilters.fechaInicio) : new Date()
   })
   const [saleTypes, setSaleTypes] = useState<string[]>([])
 

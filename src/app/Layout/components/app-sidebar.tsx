@@ -172,6 +172,10 @@ const data = {
       icon: Building,
       items: [
         {
+          title: "Usuarios",
+          url: "/usuarios",
+        },
+        {
           title: "Asesores",
           url: "#",
         },
