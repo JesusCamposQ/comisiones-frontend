@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 
-import {AutenticacionI} from  '../interface/autenticacionI'
-import { autenticacion } from "../service/autenticaiconService";
+import {AutenticacionI} from  '@/features/Autenticacion/interface/autenticacionI'
+import { autenticacion } from "@/features/Autenticacion/service/autenticaiconService";
 import { da } from "date-fns/locale";
 export const Autenticacion = () => {
     const {register, handleSubmit, formState:{errors} } =useForm<AutenticacionI>()
@@ -10,7 +10,6 @@ export const Autenticacion = () => {
                 const response = await autenticacion(data)
                 if(response.status = 200){
                     console.log(response);
-                    
                 }
             } catch (error) {
                 console.log(error);
