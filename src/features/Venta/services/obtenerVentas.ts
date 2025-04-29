@@ -9,7 +9,7 @@ const obtenerVentas = async (filtro: FiltroI):Promise<Venta[]> => {
   const response = await api.post("/api/venta",filtro)
   return response.data;
   } catch (error) {
-    console.log(error);
+    throw error
     
   }
 };
