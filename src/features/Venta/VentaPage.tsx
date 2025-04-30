@@ -18,13 +18,11 @@ import {
 } from "./interfaces/venta.interface";
 import obtenerVentas from "./services/obtenerVentas";
 import { DetalleVenta } from "./components/DetalleVenta";
-import Filtro from "@/shared/components/Filtro/Filtro";
 import { FiltroI } from "./interfaces/filtro.interface";
 import { formatDate } from "@/shared/utils/formatDate";
 import FiltroOP from "@/shared/components/Filtro/FiltroOP";
 
 const VentaPage = () => {
-  const [nombresSucursales, setNombresSucursales] = useState<string[]>([])
   const [ventas, setVentas]=useState<Venta[]>([])
   const [isLoading, setIsloading]=useState<boolean>(false)
   const [filtro, setFiltro] = useState<FiltroI>({
@@ -32,6 +30,8 @@ const VentaPage = () => {
     sucursal: [],
     fechaInicio: formatDate(new Date().toLocaleDateString()),
     fechaFin: formatDate(new Date().toLocaleDateString()),
+    sucursales: [],
+    tipoVenta: [],
   });
   const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(null);
 
@@ -40,10 +40,10 @@ const VentaPage = () => {
   },[filtro])
 
   const fetch =  async()=>{
+    console.log("Filtro: ", filtro)
     try {
       setIsloading(true)
-      const { empresa, nombresSucursales, ...rest } = filtro;
-      console.log("Filtro: ", rest) 
+      const { empresa, sucursales, ...rest } = filtro;
       const response = await obtenerVentas(rest)
       console.log("Ventas89: ",response)
       setVentas(response)
