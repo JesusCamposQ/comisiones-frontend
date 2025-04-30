@@ -35,8 +35,10 @@ export const DetalleVenta = ({
         <TableHeader>
           <TableRow>
             <TableHead>ID Venta</TableHead>
-            <TableHead className="text-right">Monto Total</TableHead>
+            <TableHead>Tipo precio</TableHead>
+            <TableHead className="text-right">Importe Total</TableHead>
             <TableHead className="text-right">Descuento</TableHead>
+            <TableHead className="text-right">Gran total</TableHead>
             <TableHead className="text-center">Detalles</TableHead>
           </TableRow>
         </TableHeader>
@@ -44,8 +46,10 @@ export const DetalleVenta = ({
           {ventas.map((venta, index) => (
             <TableRow key={index}>
               <TableCell>{venta.idVenta}</TableCell>
-              <TableCell className="text-right">{venta.montoTotal}</TableCell>
+              <TableCell>{venta.precio}</TableCell>
+              <TableCell className="text-right">{venta.detalle.reduce((acc ,item)=> acc + item.importe,0 )}</TableCell>
               <TableCell className="text-right">{venta.descuento}</TableCell>
+              <TableCell className="text-right">{venta.montoTotal }</TableCell>
               <TableCell>
                 {venta.detalle && venta.detalle.length > 0 ? (
                   <Table className="w-[95%] m-auto text-sm border border-gray-300 rounded-md bg-gray-100">

@@ -80,9 +80,11 @@ const VentaPage = () => {
           <TableRow>
             <TableHead className="w-[100px]">SUCURSAL</TableHead>
             <TableHead>ASESOR</TableHead>
+            <TableHead>Tickets</TableHead>
             <TableHead>Importe Total</TableHead>
-            <TableHead>Monto Total</TableHead>
+
             <TableHead>Descuento</TableHead>
+            <TableHead>Gran Total</TableHead>
             <TableHead>Total comisión</TableHead>
             <TableHead className="text-right">VENTAS</TableHead>
           </TableRow>
@@ -93,9 +95,11 @@ const VentaPage = () => {
               <TableRow key={index}>
                 <TableCell className="font-medium">{venta.sucursal}</TableCell>
                 <TableCell>{venta.asesor}</TableCell>
+                <TableCell>{venta.ventas.length}</TableCell>
                 <TableCell>{totalImporte(venta.ventas)}</TableCell>
-                <TableCell>{venta.montoTotal}</TableCell>
                 <TableCell>{venta.totalDescuento}</TableCell>
+                <TableCell>{venta.montoTotal}</TableCell>
+        
                 <TableCell>
                   {comisiones(
                     venta.ventas,
