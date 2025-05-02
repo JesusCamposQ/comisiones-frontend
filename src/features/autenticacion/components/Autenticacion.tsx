@@ -2,14 +2,18 @@ import { useForm } from "react-hook-form";
 
 import {AutenticacionI} from  '@/features/Autenticacion/interface/autenticacionI'
 import { autenticacion } from "@/features/Autenticacion/service/autenticaiconService";
-import { da } from "date-fns/locale";
+import { TokenContext } from "../context/TokenProvider";
+import { useContext } from "react";
+
 export const Autenticacion = () => {
+  const {asignarToken} = useContext(TokenContext)
     const {register, handleSubmit, formState:{errors} } =useForm<AutenticacionI>()
     const onSubmit =async(data:AutenticacionI)=>{
             try {
                 const response = await autenticacion(data)
                 if(response.status = 200){
-                    console.log(response);
+                    asignarToken(response.token)
+                    window.location.href = 'ventas'
                 }
             } catch (error) {
                 console.log(error);
