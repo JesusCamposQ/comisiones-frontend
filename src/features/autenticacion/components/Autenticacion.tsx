@@ -15,8 +15,8 @@ export const Autenticacion = () => {
         window.location.href = 'ventas';
       }
     } catch (error) {
-      console.error(error);
-      alert('Error de autenticación. Intenta nuevamente.');
+      console.log(error);
+      //alert('Error de autenticación. Intenta nuevamente.');
     }
   };
 
