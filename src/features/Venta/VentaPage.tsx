@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useQuery } from "@tanstack/react-query";
 
 import {
   MetaProductosVip,
@@ -20,7 +19,7 @@ import obtenerVentas from "./services/obtenerVentas";
 import { DetalleVenta } from "./components/DetalleVenta";
 import { FiltroI } from "./interfaces/filtro.interface";
 import { formatDate } from "@/shared/utils/formatDate";
-import FiltroOP from "@/shared/components/Filtro/FiltroOP";
+import FiltroOC from "@/shared/components/Filtro/FiltroOC";
 
 const VentaPage = () => {
   const [ventas, setVentas]=useState<Venta[]>([])
@@ -37,15 +36,14 @@ const VentaPage = () => {
 
   useEffect(()=>{
      fetch()
+     console.log('filtro: ',filtro);
   },[filtro])
 
   const fetch =  async()=>{
-    console.log("Filtro: ", filtro)
     try {
       setIsloading(true)
       const { empresa, sucursales, ...rest } = filtro;
       const response = await obtenerVentas(rest)
-      console.log("Ventas89: ",response)
       setVentas(response)
       setIsloading(false)
     } catch (error) {
@@ -73,7 +71,7 @@ const VentaPage = () => {
 
   return (
     <>
-      <FiltroOP setFiltros={setFiltro} initialFilters={filtro} />
+      <FiltroOC setFiltros={setFiltro} initialFilters={filtro} />
       <Table className="w-[95%] m-auto p-2 rounded-md bg-white shadow-md">
         <TableCaption>Lista de ventas</TableCaption>
         <TableHeader>
