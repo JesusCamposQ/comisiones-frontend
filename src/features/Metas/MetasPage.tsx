@@ -74,74 +74,102 @@ const handleExport = async () => {
   }
 };
 return (
-  <div className="flex flex-col m-auto justify-center items-center gap-5">
-    <label className="flex flex-col mb-4 mx-auto justify-center items-center gap-3">
-      EMPRESA
-      <Select onValueChange={(value) => buscarSucursal(value as string)}>
-        <SelectTrigger className="w-[280px]">
-          <SelectValue placeholder="Seleccione una empresa" />
-        </SelectTrigger>
-        <SelectContent>
-          {empresas?.map((empresa) => (
-            <SelectItem key={empresa._id} value={empresa._id}  >
-              {empresa.nombre}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </label>
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto p-4 space-y-4 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-center">Registro de Metas</h2>
-      <div className="grid grid-cols-1 gap-4">
-        <label className="flex flex-col">
-          Montura + Gafa
-          <input type="number" {...register("monturaMasGafa", { required: true, valueAsNumber: true })} className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200" />
-        </label>
-        <label className="flex flex-col">
-          Lente de Contacto
-          <input type="number" {...register("lenteDeContacto", { required: true, valueAsNumber: true })} className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200" />
-        </label>
-        <label className="flex flex-col">
-          Sucursales
-          <select {...register("sucursal", { required: true })} className="p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200">
+  <div className="container mx-auto p-4 md:p-6 lg:p-12 space-y-6">
+    <div className="bg-white rounded-lg shadow-lg p-6">
+      <h2 className="text-3xl font-bold leading-tight mb-4">Registro de Metas</h2>
+      <p className="text-xl leading-relaxed">
+        Registra las metas de cada sucursal.
+      </p>
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
+        <div className="flex flex-col space-y-2">
+          <label className="text-lg font-bold">Empresa</label>
+          <Select
+            onValueChange={(value) => buscarSucursal(value as string)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Seleccione una empresa" />
+            </SelectTrigger>
+            <SelectContent className="shadow-lg">
+              {empresas?.map((empresa) => (
+                <SelectItem key={empresa._id} value={empresa._id}>
+                  {empresa.nombre}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex flex-col space-y-2">
+          <label className="text-lg font-bold">Sucursal</label>
+          <select
+            {...register("sucursal", { required: true })}
+            className="mt-1 block w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+          >
             {sucursales?.map((sucursal: Sucursal) => (
               <option key={sucursal._id} value={sucursal._id}>
                 {sucursal.nombre}
               </option>
             ))}
           </select>
-        </label>
-      </div>
-      <button type="submit" className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Guardar</button>
-    </form>
-    <Table>
-      <TableCaption className="p-2">
-        <div className="flex justify-between">
-          <p className="text-lg font-bold text-center uppercase">Lista de metas por sucursal</p>
-          <Button className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg" onClick={() => handleExport()}>Exportar</Button>
         </div>
-      </TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Sucursal</TableHead>
-          <TableHead>Montura + Gafa</TableHead>
-          <TableHead>Lente de Contacto</TableHead>
-          <TableHead className="w-[100px]">Acciones</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {datos?.map((data: Datum) => (
-          <TableRow key={data.sucursal}>
-            <TableCell className="font-medium">{data.nombre_sucursal}</TableCell>
-            <TableCell className="text-right">{data.monturaMasGafa}</TableCell>
-            <TableCell className="text-right">{data.lenteDeContacto}</TableCell>
-            <TableCell className="text-right">
-              <Button onClick={() => handleDelete(data.sucursal)} className="bg-red-600 text-white font-bold py-2 px-2 rounded-full"><X className="w-4 h-4" /></Button>
-            </TableCell>
+        <div className="flex flex-col space-y-2">
+          <label className="text-lg font-bold">Montura + Gafa</label>
+          <input
+            type="number"
+            {...register("monturaMasGafa", { required: true, valueAsNumber: true })}
+            className="mt-1 block w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+          />
+        </div>
+        <div className="flex flex-col space-y-2">
+          <label className="text-lg font-bold">Lente de Contacto</label>
+          <input
+            type="number"
+            {...register("lenteDeContacto", { required: true, valueAsNumber: true })}
+            className="mt-1 block w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+          />
+        </div>
+        <button type="submit" className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600">
+          Guardar
+        </button>
+      </form>
+    </div>
+    <div className="bg-white rounded-lg shadow-lg p-6">
+      <h2 className="text-3xl font-bold leading-tight mb-4">Lista de Metas</h2>
+      <p className="text-xl leading-relaxed">
+        Aqui puedes ver la lista de metas registradas para cada sucursal.
+      </p>
+      <Table>
+        <TableCaption className="p-2">
+          <div className="flex justify-between">
+            <p className="text-lg font-bold text-center uppercase">Lista de metas por sucursal</p>
+            <Button className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg" onClick={() => handleExport()}>
+              Exportar
+            </Button>
+          </div>
+        </TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Sucursal</TableHead>
+            <TableHead>Montura + Gafa</TableHead>
+            <TableHead>Lente de Contacto</TableHead>
+            <TableHead className="w-[100px]">Acciones</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {datos?.map((data: Datum) => (
+            <TableRow key={data.sucursal}>
+              <TableCell className="font-medium">{data.nombre_sucursal}</TableCell>
+              <TableCell className="text-right">{data.monturaMasGafa}</TableCell>
+              <TableCell className="text-right">{data.lenteDeContacto}</TableCell>
+              <TableCell className="text-right">
+                <Button onClick={() => handleDelete(data.sucursal)} className="bg-red-600 text-white font-bold py-2 px-2 rounded-full">
+                  <X className="w-4 h-4" />
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
     <Toaster position="top-right" />
   </div>
 );
