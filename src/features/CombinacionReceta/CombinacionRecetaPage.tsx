@@ -16,6 +16,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from "react";
 import { ComisionReceta, Datum } from "./interfaces/comisiones.interface";
 import { DetalleComision } from "./components/DetalleComision";
+import { Button } from "@/components/ui/button";
+import descargarCombinacionReceta from "./services/descargaCombinacionReceta";
 
 const CombinacionRecetaPage = () => {
   const [page, setPage] = useState(1);
@@ -35,6 +37,8 @@ const CombinacionRecetaPage = () => {
     );
   }
   return (
+    <>
+    <Button onClick={descargarCombinacionReceta}>Descargar</Button>
     <Table className="w-[95%] m-auto p-2 rounded-md bg-white shadow-md">
       <TableCaption>Combinación de recetas</TableCaption>
       <TableHeader className="bg-blue-100">
@@ -81,7 +85,7 @@ const CombinacionRecetaPage = () => {
             )}
           </>
 
-        ))}
+))}
       </TableBody>
       <TableFooter className="border-t-blue-400">
         <TableRow className="bg-blue-50 hover:bg-indigo-50">
@@ -97,6 +101,7 @@ const CombinacionRecetaPage = () => {
         </TableRow>
       </TableFooter>
     </Table>
+</>
   );
 };
 
