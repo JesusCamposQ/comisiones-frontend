@@ -62,14 +62,14 @@ const data = {
       icon: CircleDollarSign,
       isActive: true,
       items: [
-        {
-          title: "Calculo de Comision",
-          url: "/comision/calculo",
-        },
-        {
-          title: "Gestion de Comision",
-          url: "/comision/gestion",
-        },
+        // {
+        //   title: "Calculo de Comision",
+        //   url: "/comision/calculo",
+        // },
+        // {
+        //   title: "Gestion de Comision",
+        //   url: "/comision/gestion",
+        // },
         {
           title: "Gestion de Comision Receta",
           url: "/comision/gestion/receta",
@@ -85,87 +85,87 @@ const data = {
       url: "#",
       icon: ShoppingBag,
       items: [
-        {
-          title: "Listado de Productos",
-          url: "#",
-        },
-        {
-          title: "Precios",
-          url: "#",
-        },
-        {
-          title: "Detalle de Precio",
-          url: "#",
-        },
-        {
-          title: "Marcas",
-          url: "#",
-        },
-        {
-          title: "Marca de Lente",
-          url: "#",
-        },
-        {
-          title: "Materiales",
-          url: "#",
-        },
-        {
-          title: "Tratamientos",
-          url: "#",
-        },
-        {
-          title: "Rangos",
-          url: "#",
-        },
-        {
-          title: "Combinaciones",
-          url: "/productos/combinacion-receta",
-        },
-        {
-          title: "Comision Producto",
-          url: "#",
-        },
-        {
-          title: "Comision Receta",
-          url: "/comision/receta",
-        },
+        // {
+        //   title: "Listado de Productos",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Precios",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Detalle de Precio",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Marcas",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Marca de Lente",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Materiales",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Tratamientos",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Rangos",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Combinaciones",
+        //   url: "/productos/combinacion-receta",
+        // },
+        // {
+        //   title: "Comision Producto",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Comision Receta",
+        //   url: "/comision/receta",
+        // },
         {
           title: "Registro de Metas",
           url: "/metas",
         },
       ],
     },
-    {
-      title: "Catalogos",
-      url: "#",
-      icon: NotebookTabs,
-      items: [
-        {
-          title: "Color",
-          url: "#",
-        },
-        {
-          title: "Color de Lente",
-          url: "#",
-        },
-        {
-          title: "Tipo de Color de Lente",
-          url: "#",
-        },
-        {
-          title: "Tipo de Lente",
-          url: "#",
-        },
-        {
-          title: "Tipo de Montura",
-          url: "#",
-        },
-        {
-          title: "Comision Receta",
-          url: "#",
-        },
-      ],
-    },
+    // {
+    //   title: "Catalogos",
+    //   url: "#",
+    //   icon: NotebookTabs,
+    //   items: [
+    //     {
+    //       title: "Color",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Color de Lente",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Tipo de Color de Lente",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Tipo de Lente",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Tipo de Montura",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Comision Receta",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
     {
       title: "Organizacion",
       url: "#",
@@ -175,18 +175,18 @@ const data = {
           title: "Usuarios",
           url: "/usuarios",
         },
-        {
-          title: "Asesores",
-          url: "#",
-        },
-        {
-          title: "Sucursales",
-          url: "#",
-        },
-        {
-          title: "Empresas",
-          url: "#",
-        },
+        // {
+        //   title: "Asesores",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Sucursales",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Empresas",
+        //   url: "#",
+        // },
       ],
     },
   ],

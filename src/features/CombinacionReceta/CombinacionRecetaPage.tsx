@@ -37,8 +37,15 @@ const CombinacionRecetaPage = () => {
     );
   }
   return (
-    <>
-    <Button onClick={descargarCombinacionReceta}>Descargar</Button>
+    <div className="flex flex-col m-auto">
+    <div className="flex justify-end m-2">
+      <Button
+        onClick={descargarCombinacionReceta}
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Descargar Excel
+      </Button>
+    </div>
     <Table className="w-[95%] m-auto p-2 rounded-md bg-white shadow-md">
       <TableCaption>Combinación de recetas</TableCaption>
       <TableHeader className="bg-blue-100">
@@ -101,7 +108,7 @@ const CombinacionRecetaPage = () => {
         </TableRow>
       </TableFooter>
     </Table>
-</>
+</div>
   );
 };
 

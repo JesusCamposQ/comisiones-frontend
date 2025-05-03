@@ -11,6 +11,7 @@ import { UsuarioPage } from '@/features/Usuario/UsuarioPage';
 import { UsuarioRegistroPage } from '@/features/Usuario/pages/UsuarioRegistroPage';
 import { useContext } from 'react';
 import { TokenContext } from '@/features/Autenticacion/context/TokenProvider';
+import { ComisionProductoPage } from '@/features/ComisionProducto';
 
  function AppRouter() {
   
@@ -36,7 +37,7 @@ import { TokenContext } from '@/features/Autenticacion/context/TokenProvider';
             </Route>
             <Route path="/comision/calculo" element={<ComisionRecetaPage />} />
             <Route path="/comision/gestion/receta" element={<CombinacionRecetaPage />} />
-            <Route path="/comision/gestion/producto" element={<ComisionRecetaPage />} />
+            <Route path="/comision/gestion/producto" element={<ComisionProductoPage />} />
           </Route> : 
                 <Route path="/" element={<Autenticacion />} />
           }

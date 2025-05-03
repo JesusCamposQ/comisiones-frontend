@@ -3,17 +3,20 @@ import obtenerCombinacionRecetaParaDescargar from "./obternerCombinacionesReceta
 const descargarCombinacionReceta = async () => {
 
     try {
-        const response = await obtenerCombinacionRecetaParaDescargar();
-        console.log("response: ",response);
-        const blob = response;
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `${ v4() }.xlsx`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        const blob = await obtenerCombinacionRecetaParaDescargar();
+        if(blob instanceof Blob){
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `${ v4() }.xlsx`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        else{
+            console.log("No se pudo descargar la combinación de receta, la respuesta no es un blob");
+        }
     } catch (error) {
-        console.log(error);
+        console.log("Error al descargar la combinación de receta: ",error);
     }
 
 }
