@@ -9,23 +9,20 @@ import {
   TableFooter,
 } from "@/components/ui/table"
 
-
-
 import obtenerComisionProducto from './services/obtenerComisionProducto';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from "react";
 import { Datum } from "./interfaces/producto.interface";
 
-import { Button } from "@/components/ui/button";
 
-const CombinacionRecetaPage = () => {
+const CombinacionProductoPage = () => {
   const [page, setPage] = useState(1);
-  const [showDetalle, setShowDetalle] = useState<string | null>(null);
   const { data: combinacionProducto, isLoading } = useQuery({
-    queryKey: ['combinacion-receta', page],
+    queryKey: ['combinacion-producto', page],
     queryFn: () => obtenerComisionProducto(20, page),
     staleTime: 60 * 1000 * 10,
   })
+  console.log(combinacionProducto);
   const combinacion: Datum[] = combinacionProducto?.data || [];
   if (isLoading) {
     return (
@@ -83,4 +80,4 @@ const CombinacionRecetaPage = () => {
   );
 };
 
-export default CombinacionRecetaPage;
+export default CombinacionProductoPage;
