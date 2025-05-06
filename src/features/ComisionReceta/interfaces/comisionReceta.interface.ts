@@ -1,10 +1,11 @@
 export interface IComisionReceta {
   nombre: string;
+  precio: string;
   monto: number;
-  base: boolean;
-  combinacionReceta: string
+  combinacionReceta?: string;
 }
 
 export interface IComisionRecetaData {
+  combinacionReceta: string
   data: IComisionReceta[];
 }

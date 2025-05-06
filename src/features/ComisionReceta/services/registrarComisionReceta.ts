@@ -2,8 +2,12 @@ import api from "@/app/service/api";
 import { IComisionRecetaData } from "@/features/ComisionReceta/interfaces/comisionReceta.interface";
 
 const registrarComisionReceta = async (comisionReceta: IComisionRecetaData) => {
-  const response = await api.post("/api/comision/receta", comisionReceta);
-  console.log(response.status);
-  return response.data;
+  try {
+    const response = await api.post("/api/comision/receta", comisionReceta);
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 export default registrarComisionReceta;
