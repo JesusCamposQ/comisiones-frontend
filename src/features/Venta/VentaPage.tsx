@@ -20,6 +20,7 @@ import { DetalleVenta } from "./components/DetalleVenta";
 import { FiltroI } from "./interfaces/filtro.interface";
 import { formatDate } from "@/shared/utils/formatDate";
 import FiltroOC from "@/shared/components/Filtro/FiltroOC";
+import { calcularComisionTotal,  totalImporte } from "./utils/ventaUtils";
 
 const VentaPage = () => {
   const [ventas, setVentas]=useState<Venta[]>([])
@@ -36,7 +37,7 @@ const VentaPage = () => {
 
   useEffect(()=>{
      fetch()
-     console.log('filtro: ',filtro);
+    
   },[filtro])
 
   const fetch =  async()=>{
@@ -45,6 +46,8 @@ const VentaPage = () => {
       const { empresa, sucursales, ...rest } = filtro;
       const response = await obtenerVentas(rest)
       setVentas(response)
+      
+     
       setIsloading(false)
     } catch (error) {
       setIsloading(false)
@@ -82,6 +85,7 @@ const VentaPage = () => {
             <TableHead>Importe Total</TableHead>
 
             <TableHead>Descuento</TableHead>
+           
             <TableHead>Gran Total</TableHead>
             <TableHead>Total comisión</TableHead>
             <TableHead className="text-right">VENTAS</TableHead>
@@ -99,14 +103,7 @@ const VentaPage = () => {
                 <TableCell>{venta.montoTotal}</TableCell>
         
                 <TableCell>
-                  {comisiones(
-                    venta.ventas,
-                    venta.gafaVip,
-                    venta.monturaVip,
-                    venta.lenteDeContacto,
-                    venta.metaProductosVip,
-                    venta.empresa
-                  )}
+                 {calcularComisionTotal(venta.ventas, venta.metaProductosVip, venta.gafaVip,venta.monturaVip, venta.lenteDeContacto, venta.empresa).toFixed(2)}
                 </TableCell>
                 <TableCell className="text-right">
                   <button
@@ -135,7 +132,8 @@ const VentaPage = () => {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
+            <TableCell colSpan={2}>Total</TableCell>
+
             <TableCell className="text-right">$2,500.00</TableCell>
           </TableRow>
         </TableFooter>
@@ -147,58 +145,6 @@ const VentaPage = () => {
 export default VentaPage;
 
 
-const comisiones = (
-  ventas: VentaElement[],
-  gafaVip: number,
-  monturaVip: number,
-  lenteDeContacto: number,
-  metaProductosVip: MetaProductosVip | null,
-  empresa: string
-) => {
-  let comisionProducto = 0;
-  const productovip = gafaVip + monturaVip;
 
 
-  for (const venta of ventas) {
-    for (const detalle of venta.detalle) {
-        if(Array.isArray(detalle.comisiones) && detalle.comisiones.length > 0){
-         
-        
-            if (metaProductosVip && empresa == 'OPTICENTRO') {
-              if (
-                productovip >= metaProductosVip.monturaMasGafa &&
-                lenteDeContacto >= metaProductosVip.lenteDeContacto
-              ) {
 
-                  const mayorMonto = detalle.comisiones.reduce((max, actual) => actual.monto > max.monto ? actual : max);
-                  comisionProducto += mayorMonto.monto;
-                
-              } else {
-                const menorMonto = detalle.comisiones.reduce((min, actual) => 
-                  actual.monto < min.monto ? actual : min
-                );
-                  comisionProducto += menorMonto.monto;
-                
-              }
-            } else {
-               const mayorMonto = detalle.comisiones.reduce((max, actual) => actual.monto > max.monto ? actual : max);
-                comisionProducto += mayorMonto.monto
-              
-            }
-          
-        }
-    }
-  }
-
-  return comisionProducto;
-};
-
-const totalImporte = (ventas: VentaElement[]) => {
-  let importe: number = 0;
-  for (const venta of ventas) {
-    for (const detalle of venta.detalle) {
-      importe += detalle.importe;
-    }
-  }
-  return importe;
-};
