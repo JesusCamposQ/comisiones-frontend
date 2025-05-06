@@ -1,5 +1,4 @@
 import {
-  Comision,
   MetaProductosVip,
   VentaElement,
 } from "../interfaces/venta.interface";
@@ -12,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { calcularComision, porcentaje } from "../utils/ventaUtils";
 
 export const DetalleVenta = ({
   ventas,
@@ -20,6 +20,7 @@ export const DetalleVenta = ({
   gafaVip,
   lenteDeContacto,
   monturaVip,
+
 }: {
   ventas: VentaElement[];
   metaProductosVip: MetaProductosVip | null;
@@ -27,7 +28,11 @@ export const DetalleVenta = ({
   monturaVip: number;
   lenteDeContacto: number;
   empresa: string;
+  
 }) => {
+
+  
+  let totalComision = 0;
   return (
     <div className="w-[95%] m-auto p-4 my-4 bg-gray-50 rounded-lg shadow-md">
       <Table>
@@ -38,6 +43,7 @@ export const DetalleVenta = ({
             <TableHead>Tipo precio</TableHead>
             <TableHead className="text-right">Importe Total</TableHead>
             <TableHead className="text-right">Descuento</TableHead>
+            <TableHead className="text-right">porcentaje</TableHead>
             <TableHead className="text-right">Gran total</TableHead>
             <TableHead className="text-center">Detalles</TableHead>
           </TableRow>
@@ -49,9 +55,11 @@ export const DetalleVenta = ({
               <TableCell>{venta.precio}</TableCell>
               <TableCell className="text-right">{venta.detalle.reduce((acc ,item)=> acc + item.importe,0 )}</TableCell>
               <TableCell className="text-right">{venta.descuento}</TableCell>
+              <TableCell className="text-right">{porcentaje(venta.detalle.reduce((acc ,item)=> acc + item.importe,0 ), venta.descuento)} %</TableCell>
               <TableCell className="text-right">{venta.montoTotal }</TableCell>
               <TableCell>
                 {venta.detalle && venta.detalle.length > 0 ? (
+                  
                   <Table className="w-[95%] m-auto text-sm border border-gray-300 rounded-md bg-gray-100">
                     <TableHeader>
                       <TableRow>
@@ -62,8 +70,12 @@ export const DetalleVenta = ({
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {venta.detalle.map((item, i) => (
-                        <TableRow key={i} className="border-t border-zinc-300">
+                      {
+                        
+                      venta.detalle.map((item, i) => {
+                        const comision = calcularComision(item.comisiones,gafaVip, monturaVip,lenteDeContacto, metaProductosVip, empresa, porcentaje(venta.detalle.reduce((acc ,item)=> acc + item.importe,0 ), venta.descuento))  
+                        totalComision += comision;
+                    return <TableRow key={i} className="border-t border-zinc-300">
                           <TableCell className="px-2 py-1">
                             {item.producto
                               ? `${item.producto.tipo} ${item.producto.marca}`
@@ -72,10 +84,12 @@ export const DetalleVenta = ({
                               : item.servicios?.tipo }
                           </TableCell>
                           <TableCell className="px-2 py-1 text-right">{item.importe}</TableCell>
-                          <TableCell className="px-4 py-1 text-right">{calcularComosion(item.comisiones,gafaVip, monturaVip,lenteDeContacto, metaProductosVip, empresa)}</TableCell>
-                          <TableCell className="px-4 py-1 text-right">{(calcularComosion(item.comisiones,gafaVip, monturaVip,lenteDeContacto, metaProductosVip, empresa)*100/item.importe).toFixed(2)}%</TableCell>
+                          <TableCell className="px-4 py-1 text-right">{comision}</TableCell>
+                          <TableCell className="px-4 py-1 text-right">{porcentaje(item.importe ,calcularComision(item.comisiones,gafaVip, monturaVip,lenteDeContacto, metaProductosVip, empresa , porcentaje(venta.detalle.reduce((acc ,item)=> acc + item.importe,0 ), venta.descuento)))}%</TableCell>
                         </TableRow>
-                      ))}
+                      })
+                      
+                      }
                     </TableBody>
                   </Table>
                 ) : (
@@ -90,40 +104,7 @@ export const DetalleVenta = ({
   );
 };
 
-const calcularComosion = (
-  comisiones: Comision[],
-  gafaVip: number,
-  monturaVip: number,
-  lenteDeContacto: number,
-  metaProductosVip: MetaProductosVip | null,
-  empresa: string
-) => {
-  const productovip = gafaVip + monturaVip;
-  let  comisionProducto = 0;  
-  if(Array.isArray(comisiones) && comisiones.length > 0){
-      if (metaProductosVip && empresa == "OPTICENTRO") {
-        if (
-          productovip >= metaProductosVip.monturaMasGafa &&
-          lenteDeContacto >= metaProductosVip.lenteDeContacto
-        ) {
-      
-          
-          const mayorMonto = comisiones.reduce((max, actual) => actual.monto > max.monto ? actual : max);
-            comisionProducto += mayorMonto.monto;
-          
-        } else {
-          const menorMonto = comisiones.reduce((min, actual) => 
-            actual.monto < min.monto ? actual : min
-          );
-            comisionProducto += menorMonto.monto;
-          
-        }
-      } else {
-        const mayorMonto = comisiones.reduce((max, actual) => actual.monto > max.monto ? actual : max);
-                comisionProducto += mayorMonto.monto
-              
-      }
-    
-  }
-  return comisionProducto;
-};
+
+
+
+
