@@ -9,8 +9,10 @@ import {
 } from "@/components/ui/dialog"
 import { Combinacion, Datum } from "@/features/CombinacionReceta/interfaces/comisiones.interface";
 import { useQuery } from "@tanstack/react-query";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import obtenerSinComsion from "../services/obtenerSinComsion";
+import { FiltroComision } from "./FiltroComision";
+import { ComsionRecetaFiltro } from "../interfaces/comsionRecetaFiltro";
 
 interface FormValues {
   idcombinacion: string;
@@ -22,18 +24,25 @@ interface ModalProps {
 }
 
 export function ModalRegistro({ setValor}: ModalProps) {
+  const [filtro, setFiltro] = useState<ComsionRecetaFiltro>({})
   const [close, setClose] = useState(false);
   const [page, setPage] = useState(1);
-  const { data: combinacionReceta, isLoading } = useQuery<Combinacion>({
+  const { data: combinacionReceta, isLoading, refetch } = useQuery<Combinacion>({
     queryKey: ['combinacion-receta', page],
-    queryFn: () => obtenerSinComsion(10, page),
+    queryFn: () => obtenerSinComsion(10, page, filtro),
     staleTime: 60 * 1000 * 10, // 10 minutos
   })
   const combinaciones: Datum[] = combinacionReceta?.data || [];
-
+  console.log(filtro)
   const onSubmit = () => {
     setClose(false)
+    setFiltro({})
   };
+  useEffect(() => {
+    setTimeout(() => {
+      refetch()
+    }, 100)
+  }, [filtro])
 
   return (
     <Dialog open={close} onOpenChange={setClose}>
@@ -58,11 +67,12 @@ export function ModalRegistro({ setValor}: ModalProps) {
                   <button className="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-md shadow-md" type="button" onClick={onSubmit}>Seleccionar</button> 
                 </div>
               </div>
+              <FiltroComision setFiltro={setFiltro} />
           </DialogDescription>
         </DialogHeader>
         {
           isLoading ? (
-            <div className="flex items-center justify-center h-full">
+            <div className="flex items-center justify-center h-[600px] m-auto">
               <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-blue-500 mr-2"></div>
               <span className="text-blue-500 text-2xl">Cargando...</span>
             </div>
@@ -75,20 +85,22 @@ export function ModalRegistro({ setValor}: ModalProps) {
                     <th className="px-6 py-3">Material</th>
                     <th className="px-6 py-3">Tratamiento</th>
                     <th className="px-6 py-3">Marca</th>
-                    <th className="px-6 py-3">Color</th>
+                    <th className="px-6 py-3">Tipo Color Lente</th>
                     <th className="px-6 py-3">Rango</th>
+                    <th className="px-6 py-3">Color</th>
                     <th className="px-6 py-3">Seleccionar</th>
                   </tr>
                 </thead>
                 <tbody>
                   {combinaciones.map((combinacion: Datum) => (
                     <tr key={combinacion._id} className="border-b border-gray-200">
-                      <td className="px-6 py-4">{combinacion.tipoLente}</td>
-                      <td className="px-6 py-4">{combinacion.material}</td>
-                      <td className="px-6 py-4">{combinacion.tratamiento}</td>
-                      <td className="px-6 py-4">{combinacion.marcaLente}</td>
-                      <td className="px-6 py-4">{combinacion.tipoColorLente}</td>
-                      <td className="px-6 py-4">{combinacion.rango}</td>
+                      <td className="px-6 py-4 text-xs">{combinacion.tipoLente}</td>
+                      <td className="px-6 py-4 text-xs">{combinacion.material}</td>
+                      <td className="px-6 py-4 text-xs">{combinacion.tratamiento}</td>
+                      <td className="px-6 py-4 text-xs">{combinacion.marcaLente}</td>
+                      <td className="px-6 py-4 text-xs">{combinacion.tipoColorLente}</td>
+                      <td className="px-6 py-4 text-xs">{combinacion.rango}</td>
+                      <td className="px-6 py-4 text-xs">{combinacion.colorLente}</td>
                       <td className="px-6 py-4">
                         <input
                           type="radio"
