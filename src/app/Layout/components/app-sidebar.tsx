@@ -62,10 +62,10 @@ const data = {
       icon: CircleDollarSign,
       isActive: true,
       items: [
-        // {
-        //   title: "Calculo de Comision",
-        //   url: "/comision/calculo",
-        // },
+        {
+          title: "Registro de Comisiones",
+          url: "/comision/registro",
+        },
         // {
         //   title: "Gestion de Comision",
         //   url: "/comision/gestion",

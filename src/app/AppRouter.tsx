@@ -35,7 +35,7 @@ import { ComisionProductoPage } from '@/features/ComisionProducto';
               <Route index element={<UsuarioPage />} />
               <Route path="registro" element={<UsuarioRegistroPage />} />
             </Route>
-            <Route path="/comision/calculo" element={<ComisionRecetaPage />} />
+            <Route path="/comision/registro" element={<ComisionRecetaPage />} />
             <Route path="/comision/gestion/receta" element={<CombinacionRecetaPage />} />
             <Route path="/comision/gestion/producto" element={<ComisionProductoPage />} />
           </Route> : 
