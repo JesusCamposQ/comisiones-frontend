@@ -1,11 +1,12 @@
 import api from "@/app/service/api";
-import { Combinacion } from "../interfaces/comisiones.interface";
+import { CombinacionResponse, filtroCombinacionRecetaI } from "../interfaces/comisiones.interface";
 
-const obtenerCombinacionReceta = async (limite: number, pagina: number): Promise<Combinacion> => {
+const obtenerCombinacionReceta = async (limite: number, pagina: number, filter:filtroCombinacionRecetaI): Promise<CombinacionResponse> => {
   const response = await api.get("/api/combinacion/receta", {
     params: {
       limite,
-      pagina
+      pagina,
+      ...filter
     }
   });
   return response.data;

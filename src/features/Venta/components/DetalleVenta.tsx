@@ -30,9 +30,6 @@ export const DetalleVenta = ({
   empresa: string;
   
 }) => {
-
-  
-  let totalComision = 0;
   return (
     <div className="w-[95%] m-auto p-4 my-4 bg-gray-50 rounded-lg shadow-md">
       <Table>
@@ -74,7 +71,7 @@ export const DetalleVenta = ({
                         
                       venta.detalle.map((item, i) => {
                         const comision = calcularComision(item.comisiones,gafaVip, monturaVip,lenteDeContacto, metaProductosVip, empresa, porcentaje(venta.detalle.reduce((acc ,item)=> acc + item.importe,0 ), venta.descuento))  
-                        totalComision += comision;
+                        
                     return <TableRow key={i} className="border-t border-zinc-300">
                           <TableCell className="px-2 py-1">
                             {item.producto

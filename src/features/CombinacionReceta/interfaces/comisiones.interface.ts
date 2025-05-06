@@ -1,9 +1,9 @@
-export interface Combinacion {
-    data:    Datum[] | null;
+export interface CombinacionResponse {
+    data:    combinacionRecetaI[];
     paginas: number;
 }
 
-export interface Datum {
+export interface combinacionRecetaI {
     _id:            string;
     codigo:         string;
     comisionReceta: ComisionReceta[];
@@ -27,6 +27,16 @@ export interface ComisionReceta {
     __v:               number;
 }
 
+
+export interface filtroCombinacionRecetaI {
+    material?:       string;
+    tipoLente?:      string;
+    rango?:          string;
+    colorLente?:     string;
+    marcaLente?:     string;
+    tratamiento?:    string;
+    tipoColorLente?: string;
+}
 
 
 

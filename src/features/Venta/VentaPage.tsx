@@ -20,11 +20,10 @@ import { DetalleVenta } from "./components/DetalleVenta";
 import { FiltroI } from "./interfaces/filtro.interface";
 import { formatDate } from "@/shared/utils/formatDate";
 import FiltroOC from "@/shared/components/Filtro/FiltroOC";
-import { calcularComisionTotal, descontarPorcentajeAcomision, porcentaje, totalImporte } from "./utils/ventaUtils";
+import { calcularComisionTotal,  totalImporte } from "./utils/ventaUtils";
 
 const VentaPage = () => {
   const [ventas, setVentas]=useState<Venta[]>([])
-  const [comision, setComision]=useState(0)
   const [isLoading, setIsloading]=useState<boolean>(false)
   const [filtro, setFiltro] = useState<FiltroI>({
     empresa: '',
@@ -38,7 +37,7 @@ const VentaPage = () => {
 
   useEffect(()=>{
      fetch()
-     console.log('filtro: ',filtro);
+    
   },[filtro])
 
   const fetch =  async()=>{
@@ -133,7 +132,8 @@ const VentaPage = () => {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
+            <TableCell colSpan={2}>Total</TableCell>
+
             <TableCell className="text-right">$2,500.00</TableCell>
           </TableRow>
         </TableFooter>

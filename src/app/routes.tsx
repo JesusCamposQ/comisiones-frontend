@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import AsesorPage from '../features/Asesor/AsesorPage';
 import ColorPage from '../features/Color/ColorPage';
 import ColorLentePage from '../features/ColorLente/ColorLentePage';
-import CombinacionRecetaPage from '../features/CombinacionReceta/CombinacionRecetaPage';
+import CombinacionRecetaPage from '../features/CombinacionReceta/pages/CombinacionRecetaPage';
 import ComisionProductoPage from '../features/ComisionProducto/ComisionProductoPage';
 import ComisionRecetaPage from '../features/ComisionReceta/ComisionRecetaPage';
 import DetallePrecioPage from '../features/DetallePrecio/DetallePrecioPage';
