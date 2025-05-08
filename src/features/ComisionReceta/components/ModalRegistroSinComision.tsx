@@ -7,16 +7,16 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Combinacion, Datum } from "@/features/CombinacionReceta/interfaces/comisiones.interface";
 import { useQuery } from "@tanstack/react-query";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import obtenerSinComsion from "../services/obtenerSinComsion";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { Dispatch, SetStateAction, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { ComsionRecetaFiltro } from "../interfaces/comsionRecetaFiltro";
-import { Glasses } from "lucide-react";
-import { IComisionReceta } from "../interfaces/comisionReceta.interface";
+import { Glasses, Plus, Trash2 } from "lucide-react";
+import { IComisionReceta, IComisionRecetaData } from "../interfaces/comisionReceta.interface";
 import obtenerTipoPrecio from "../services/obtenerTipoPrecio";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import registrarComisionReceta from "../services/registrarComisionReceta";
+import toast, { Toaster } from "react-hot-toast";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table_detalle_comision";
 
 interface FormValues {
     idcombinacion: string;
@@ -34,11 +34,10 @@ interface TipoPrecio {
 }
 
 export function ModalRegistroSinComision({ valor, open, setOpen }: ModalProps) {
-    const [filtro, setFiltro] = useState<ComsionRecetaFiltro>({})
+    const [comisiones, setComisiones] = useState<IComisionReceta[]>([])
     const [tipoPrecio, setTipoPrecio] = useState<string>("")
-    const [page, setPage] = useState(1);
 
-    const { data: tipoPrecioData, isLoading} = useQuery<TipoPrecio[]>({
+    const { data: tipoPrecioData, isLoading } = useQuery<TipoPrecio[]>({
         queryKey: ['tipo-precio', valor.idcombinacion],
         queryFn: () => obtenerTipoPrecio(valor.idcombinacion),
         staleTime: 60 * 1000 * 10, // 10 minutos
@@ -47,46 +46,80 @@ export function ModalRegistroSinComision({ valor, open, setOpen }: ModalProps) {
     const { register, handleSubmit, reset } = useForm<IComisionReceta>({
         mode: "onChange",
         defaultValues: {
-            nombre: "",
             precio: "",
             monto: 0,
-            combinacionReceta: ""
         }
     });
-    const onSubmit = (data: IComisionReceta) => {
-
-        data.combinacionReceta = valor.idcombinacion
-        data.precio = tipoPrecio
-        console.log(data)
+    const onSubmit: SubmitHandler<IComisionReceta> = (data) => {
+        if (valor.codigo === "") {
+          toast.error("Debe agregar una combinacion");
+          return;
+        }
+        data.monto = Number(data.monto);
+        const existe = comisiones.filter((comision) => comision.precio === data.precio).length >= 2
+        if(existe){
+            return toast.error("Solo se pueden agregar 2 comisiones por tipo de precio")
+        }
+        setComisiones((prev) => [...prev, data]);
+      }
+    
+    /*const onSubmit = async (datos: IComisionReceta) => {
+        const { precio, monto } = datos
+        const dataCombinacion: IComisionRecetaData = {
+            combinacionReceta: valor.idcombinacion,
+            data: [{ precio, monto, }]
+        }
+        console.log(dataCombinacion)
+        const { status } = await registrarComisionReceta(dataCombinacion)
+        if (status === 200) {
+            toast.success("Comision agregada exitosamente")
+        }
         setOpen(false)
         setFiltro({})
         reset()
     };
-
-
-    const handleTipoPrecioChange = (value: string) => {
-        setTipoPrecio((prev) => value)
+    */
+    const eliminarComision = (index: number) => {
+        const filteredComisiones = comisiones.filter((_, i) => i !== index);
+        setComisiones(filteredComisiones);
     }
+    const registrarComision = async () => {
+    const { precio, monto } = comisiones[0]
+    const dataCombinacion: IComisionRecetaData = {
+      combinacionReceta: valor.idcombinacion,
+      data: [{ precio, monto, nombre: tipoPrecio }]
+    }
+    console.log("Data Combinacion: ", dataCombinacion)
+    const { status } = await registrarComisionReceta(dataCombinacion)
+    if (status === 201) {
+      toast.success("Comisiones registradas exitosamente");
+      limpiarComisiones();
+      setOpen(false)
+    }
+    console.log("Data Combinacion: ", dataCombinacion)
+  }
+   const limpiarComisiones = () => {
+    setComisiones([]);
+    reset();
+  }
 
     return (
-        isLoading ? (
-            <div className="flex items-center justify-center h-[600px] m-auto">
-                <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-blue-500 mr-2"></div>
-                <span className="text-blue-500 text-2xl">Cargando...</span>
-            </div>
-        ) : (
-            <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger asChild>
-                    <Button variant="outline">Combinaciones</Button>
-                </DialogTrigger>
-                <DialogContent className="w-[1200px] h-[800px]">
-                    <DialogHeader>
-                        <DialogTitle className="uppercase">Formulario Combinacion</DialogTitle>
-                        <DialogDescription className="border-b p-2">
-                            <h2 className="flex items-center justify-center gap-2 text-sm text-blue-600">< Glasses /> {valor.codigo}</h2>
+        <Dialog open={open} onOpenChange={setOpen} >
+            <DialogContent className="w-[1200px] h-[800px]">
+                <DialogHeader>
+                    <DialogTitle className="uppercase">Formulario Combinacion</DialogTitle>
+                    <DialogDescription className="border-b p-2">
+                        <h2 className="flex items-center justify-center gap-2 text-sm text-blue-600">< Glasses /> {valor.codigo}</h2>
 
-                        </DialogDescription>
-                    </DialogHeader>
+                    </DialogDescription>
+                </DialogHeader>
+                <Toaster />
+                {isLoading ? (
+                    <div className="flex items-center justify-center h-[600px] m-auto">
+                        <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-blue-500 mr-2"></div>
+                        <span className="text-blue-500 text-2xl">Cargando...</span>
+                    </div>
+                ) : (
                     <form className="mt-12 w-1/3 mx-auto space-y-6" onSubmit={handleSubmit(onSubmit)}>
 
                         <div className="space-y-2">
@@ -94,7 +127,7 @@ export function ModalRegistroSinComision({ valor, open, setOpen }: ModalProps) {
                                 Tipo de Precio
                             </label>
                             <select {...register("precio")} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected>Seleccione un tipo de precio</option>
+                                <option selected disabled>Seleccione un tipo de precio</option>
                                 {tipoPrecioData?.map((tipoPrecio: TipoPrecio) => (
                                     <option key={tipoPrecio.id} value={tipoPrecio.nombre}>
                                         {tipoPrecio.nombre}
@@ -119,14 +152,55 @@ export function ModalRegistroSinComision({ valor, open, setOpen }: ModalProps) {
                         <div>
                             <button
                                 type="submit"
-                                className="flex w-full justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                                className="flex w-full justify-center items-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                             >
-                                Agregar comision
+                                <Plus className="mr-2 h-4 w-4" /> Listar comision
                             </button>
                         </div>
-                    </form>
-                </DialogContent>
-            </Dialog>
-        )
+                    </form>  
+                )}
+                  <div className="m-auto w-2/3 flex flex-col">
+        <p className="text-lg font-bold mb-4 text-center uppercase">Comisiones listadas</p>
+        <Table className="rounded-md shadow-md">
+          <TableHeader className="bg-gray-100">
+            <TableRow>
+              <TableHead className="w-1/3 text-center">Tipo Precio</TableHead>
+              <TableHead className="w-1/3 text-center">Comision</TableHead>
+              <TableHead className="w-1/3 text-center">Monto</TableHead>
+              <TableHead className="w-1/3 text-center">Acciones</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {comisiones.map((comision, index) => (
+              <TableRow key={index} className="hover:bg-gray-50">
+                <TableCell className="px-6 py-4 text-center">{comision.precio}</TableCell>
+                <TableCell className="px-6 py-4 text-center">{`comision ${index + 1}`}</TableCell>
+                <TableCell className="px-6 py-4 text-center">{comision.monto}</TableCell>
+                <TableCell className="px-6 py-4 flex items-center justify-center">
+                  <Button
+                    type="button"
+                    className="flex items-center justify-center rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                    onClick={() => eliminarComision(index)}
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Eliminar
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <div className="mt-4 flex justify-end">
+          <Button
+            type="button"
+            className="flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            onClick={registrarComision}
+          >
+            Registrar comisiones
+          </Button>
+        </div>
+      </div>
+            </DialogContent>
+        </Dialog>
     )
 }

@@ -44,6 +44,7 @@ const ComisionRecetaPage = () => {
       combinacionReceta: valor.idcombinacion,
       data: comisiones || []
     }
+    console.log("Data Combinacion: ", dataCombinacion)
     const { status } = await registrarComisionReceta(dataCombinacion)
     if (status === 201) {
       toast.success("Comisiones registradas exitosamente");
