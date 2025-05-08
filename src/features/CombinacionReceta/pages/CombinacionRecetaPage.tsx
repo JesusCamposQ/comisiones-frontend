@@ -112,6 +112,7 @@ const CombinacionRecetaPage = () => {
                     {showDetalle === combinacion._id
                       ? "Ocultar Detalle"
                       : "Mostrar Detalle"}
+       
                   </button>
                 </TableCell>
               </TableRow>
@@ -122,8 +123,9 @@ const CombinacionRecetaPage = () => {
                     <DetalleComision
                       key={combinacion._id}
                       comisiones={
-                        (combinacion.comisionReceta as ComisionReceta[]) || []
+                        (combinacion.comisionReceta as ComisionReceta[]) || [] 
                       }
+                      id={combinacion._id}
                     />
                   </TableCell>
                   <TableCell colSpan={3} />

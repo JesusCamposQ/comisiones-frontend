@@ -40,7 +40,7 @@ export const DetalleVenta = ({
             <TableHead>Tipo precio</TableHead>
             <TableHead className="text-right">Importe Total</TableHead>
             <TableHead className="text-right">Descuento</TableHead>
-            <TableHead className="text-right">porcentaje</TableHead>
+            <TableHead className="text-right">% descuento</TableHead>
             <TableHead className="text-right">Gran total</TableHead>
             <TableHead className="text-center">Detalles</TableHead>
           </TableRow>
@@ -75,10 +75,10 @@ export const DetalleVenta = ({
                     return <TableRow key={i} className="border-t border-zinc-300">
                           <TableCell className="px-2 py-1">
                             {item.producto
-                              ? `${item.producto.tipo} ${item.producto.marca}`
+                              ? `${item.producto.tipo} ${item.producto.descripcion}`
                               : item.combinacion
                               ? `${item.combinacion.descripcion} `
-                              : item.servicios?.tipo }
+                              :   `${item.servicios?.tipo} -${item.servicios?.descripcion} `}
                           </TableCell>
                           <TableCell className="px-2 py-1 text-right">{item.importe}</TableCell>
                           <TableCell className="px-4 py-1 text-right">{comision}</TableCell>

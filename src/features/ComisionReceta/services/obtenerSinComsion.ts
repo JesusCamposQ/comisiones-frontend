@@ -24,3 +24,12 @@ const obtenerSinComsion = async (limite: number, pagina: number, filtro?: Comsio
   }
 };
 export default obtenerSinComsion;
+
+export const listarTipoPrecio = async (combinacion:string) => {
+  try {
+    const response = await api.get(`/api/precios/combinacion/${combinacion}`)
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
