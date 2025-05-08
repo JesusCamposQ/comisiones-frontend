@@ -1,1 +1,1 @@
-export { default as ComisionRecetaPage } from './ComisionRecetaPage';
+export { default as ComisionRecetaPage } from './pages/ComisionRecetaPage';

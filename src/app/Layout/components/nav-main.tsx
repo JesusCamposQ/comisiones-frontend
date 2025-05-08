@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
+import { ChevronDown, ChevronRight, type LucideIcon } from "lucide-react"
 
 import {
   Collapsible,
@@ -18,6 +18,8 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import { Link } from "react-router"
+import { useState } from "react"
+import { Separator } from "@/components/ui/separator"
 
 export function NavMain({
   items,
@@ -30,9 +32,26 @@ export function NavMain({
     items?: {
       title: string
       url: string
+      items?: {
+        title: string
+        url: string
+      }[]
     }[]
   }[]
 }) {
+  const [open, setOpen] = useState(false)
+  const [itemOpen, setItemOpen] = useState<string[]>([])
+
+  const handleItemOpen = (item: string) => {
+    setOpen(()=>!open)
+    if (open) {
+      setItemOpen((prev) => [...prev, item])
+      return
+    }
+    else if(itemOpen.includes(item)){
+      setItemOpen((prev) => prev.filter((item) => item !== item))
+    }
+  }
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Sistema Comisiones</SidebarGroupLabel>
@@ -59,9 +78,30 @@ export function NavMain({
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <Link to={subItem.url}>
-                          <span>{subItem.title}</span>
-                        </Link>
+                        <>
+                          <div className="flex items-center justify-between gap-2">
+                            <Link to={subItem.url}>
+                              <span className="text-sm">
+                                {subItem.title}
+                              </span>
+                            </Link>
+                            {subItem.items && (
+                              itemOpen.includes(subItem.title) ?
+                                <ChevronDown className="p-1 h-6 w-6 cursor-pointer hover:text-blue-900 hover:rounded-full hover:bg-blue-50" onClick={() => { handleItemOpen(subItem.title) }} />
+                                :
+                                <ChevronRight className="p-1 h-6 w-6 cursor-pointer hover:text-blue-900 hover:rounded-full hover:bg-blue-50" onClick={() => { handleItemOpen(subItem.title) }} />
+                            )}
+                          </div>
+                          {itemOpen.includes(subItem.title) && subItem.items?.map((subSubItem) => (
+                            <SidebarMenuSubItem key={subSubItem.title}>
+                              <SidebarMenuSubButton asChild>
+                                <Link to={subSubItem.url}>
+                                  <span className="text-sm">- {subSubItem.title}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

@@ -1,13 +1,14 @@
-import { ModalRegistro } from "./components/ModalRegistro";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { IComisionReceta, IComisionRecetaData } from "./interfaces/comisionReceta.interface";
 import { useQueryClient } from "@tanstack/react-query";
-import registrarComisionReceta from "./services/registrarComisionReceta";
 import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table_detalle_comision";
 import { Button } from "@/components/ui/button";
 import toast, { Toaster } from "react-hot-toast";
 import { Trash2 } from "lucide-react";
+import { IComisionProducto, IComisionProductoData } from "../interfaces/comisionProducto.interface";
+import { ModalRegistro } from "../components/ModalRegistroProducto";
+import registrarComisionProducto from "../services/registrarComisionProducto";
+
 
 
 interface FormValues {
@@ -15,23 +16,24 @@ interface FormValues {
   codigo: string;
 }
 
-const ComisionRecetaPage = () => {
-  const [comisiones, setComisiones] = useState<IComisionReceta[]>([]);
+const RegistroComisionProductoPage = () => {
+  const [refrescar, setRefrescar] = useState(false);
+  const [comisiones, setComisiones] = useState<IComisionProducto[]>([]);
   const [valor, setValor] = useState<FormValues>({
     idcombinacion: "",
     codigo: ""
   })
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset } = useForm<IComisionReceta>({
+  const { register, handleSubmit, reset } = useForm<IComisionProducto>({
     mode: "onChange",
     defaultValues: {
       nombre: "",
       precio: "",
       monto: 0,
-      combinacionReceta: ""
+      combinacionProducto: ""
     }
   });
-  const onSubmit: SubmitHandler<IComisionReceta> = (data) => {
+  const onSubmit: SubmitHandler<IComisionProducto> = (data) => {
     if (valor.codigo === "") {
       toast.error("Debe agregar una combinacion");
       return;
@@ -40,14 +42,15 @@ const ComisionRecetaPage = () => {
     setComisiones((prev) => [...prev, data]);
   }
   const registrarComision = async () => {
-    const dataCombinacion: IComisionRecetaData = {
-      combinacionReceta: valor.idcombinacion,
+    const dataCombinacion: IComisionProductoData = {
+      producto: valor.idcombinacion,
       data: comisiones || []
     }
-    const { status } = await registrarComisionReceta(dataCombinacion)
+    const { status } = await registrarComisionProducto(dataCombinacion)
     if (status === 201) {
       toast.success("Comisiones registradas exitosamente");
       limpiarComisiones();
+      setRefrescar(!refrescar);
     }
     console.log("Data Combinacion: ", dataCombinacion)
     queryClient.invalidateQueries({ queryKey: ["comisiones"] });
@@ -68,7 +71,7 @@ const ComisionRecetaPage = () => {
     <>
       <Toaster position="top-center" reverseOrder={false} />
       <div className="flex items-center justify-center">
-        <h1 className="text-3xl">Registro de Comisiones</h1>
+        <h1 className="text-3xl uppercase text-blue-800">Registro de Comisiones Producto</h1>
       </div>
       <form className="mt-12 w-1/3 mx-auto space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-4">
@@ -113,7 +116,7 @@ const ComisionRecetaPage = () => {
         <div className="space-y-2">
           <div className="flex flex-row gap-2">
             <label className="flex items-center justify-center gap-2">
-              <ModalRegistro setValor={setValor} />
+              <ModalRegistro setValor={setValor} refrescar={refrescar} />
               <div className="mt-1 block w-full">
                 <p className="text-md cursor-pointer font-medium text-gray-700 underline">{valor.codigo}</p>
               </div>
@@ -175,4 +178,5 @@ const ComisionRecetaPage = () => {
   );
 };
 
-export default ComisionRecetaPage;
+export default RegistroComisionProductoPage;
+

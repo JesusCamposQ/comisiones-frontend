@@ -12,6 +12,11 @@ import { UsuarioRegistroPage } from '@/features/Usuario/pages/UsuarioRegistroPag
 import { useContext } from 'react';
 import { TokenContext } from '@/features/Autenticacion/context/TokenProvider';
 import { ComisionProductoPage } from '@/features/ComisionProducto';
+import RegistroComisionProductoPage from '@/features/ComisionProducto/pages/RegistroComisionProductoPage';
+import ComisionGafasPage from '@/features/ComisionProducto/pages/ComisionGafasPage';
+import ComisionMonturaPage from '@/features/ComisionProducto/pages/ComisionMontura';
+import ComisionLenteContactoPage from '@/features/ComisionProducto/pages/ComisionLenteContactoPage';
+import { RegistroSinComisionReceta } from '@/features/ComisionReceta/pages/RegistroSinComisionReceta';
 
  function AppRouter() {
   
@@ -35,9 +40,13 @@ import { ComisionProductoPage } from '@/features/ComisionProducto';
               <Route index element={<UsuarioPage />} />
               <Route path="registro" element={<UsuarioRegistroPage />} />
             </Route>
-            <Route path="/comision/registro" element={<ComisionRecetaPage />} />
+            <Route path="/comision/registro/receta" element={<RegistroSinComisionReceta />} />
+            <Route path="/comision/registro/producto" element={<RegistroComisionProductoPage />} /> 
             <Route path="/comision/gestion/receta" element={<CombinacionRecetaPage />} />
             <Route path="/comision/gestion/producto" element={<ComisionProductoPage />} />
+            <Route path="/comision/gestion/producto/gafas" element={<ComisionGafasPage />} />
+            <Route path="/comision/gestion/producto/montura" element={<ComisionMonturaPage />} />
+            <Route path="/comision/gestion/producto/lente-contacto" element={<ComisionLenteContactoPage />} />
           </Route> : 
                 <Route path="/" element={<Autenticacion />} />
           }

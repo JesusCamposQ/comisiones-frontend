@@ -6,7 +6,7 @@ import ColorPage from '../features/Color/ColorPage';
 import ColorLentePage from '../features/ColorLente/ColorLentePage';
 import CombinacionRecetaPage from '../features/CombinacionReceta/CombinacionRecetaPage';
 import ComisionProductoPage from '../features/ComisionProducto/ComisionProductoPage';
-import ComisionRecetaPage from '../features/ComisionReceta/ComisionRecetaPage';
+import ComisionRecetaPage from '../features/ComisionReceta/pages/ComisionRecetaPage';
 import DetallePrecioPage from '../features/DetallePrecio/DetallePrecioPage';
 import DetalleVentaPage from '../features/DetalleVenta/DetalleVentaPage';
 import EmpresaPage from '../features/Empresa/EmpresaPage';
