@@ -1,7 +1,7 @@
 export interface IComisionReceta {
-  nombre: string;
-  precio: string;
-  monto: number;
+  nombre?: string;
+  precio?: string;
+  monto?: number;
   combinacionReceta?: string;
 }
 
