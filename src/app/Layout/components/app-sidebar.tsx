@@ -63,8 +63,12 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "Registro de Comisiones",
-          url: "/comision/registro",
+          title: "Registro de Comisiones Receta",
+          url: "/comision/registro/receta",
+        },
+        {
+          title: "Registro de Comisiones Producto",
+          url: "/comision/registro/producto",
         },
         // {
         //   title: "Gestion de Comision",
@@ -73,10 +77,30 @@ const data = {
         {
           title: "Gestion de Comision Receta",
           url: "/comision/gestion/receta",
+          items: [
+            {
+              title: "Comision Receta",
+              url: "/comision/gestion/receta",
+            },
+          ],
         },
         {
-          title: "Gestion de Comision Producto",
+          title: "Comision Producto",
           url: "/comision/gestion/producto",
+          items: [
+            {
+              title: "Comision Montura",
+              url: "/comision/gestion/producto/montura",
+            },
+            {
+              title: "Comision Gafas",
+              url: "/comision/gestion/producto/gafas",
+            },
+            {
+              title: "Comision Lente Contacto",
+              url: "/comision/gestion/producto/lente-contacto",
+            },
+          ],
         },
       ],
     },

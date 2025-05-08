@@ -11,17 +11,21 @@ import {
 
 import { useQuery } from '@tanstack/react-query';
 import { useState } from "react";
-import { Datum } from "./interfaces/producto.interface";
-import { obtenerComisionProductoMontura } from "./services/obtenerComisionProducto";
+import { Datum } from "../interfaces/producto.interface";
+import { obtenerComisionProductoGafa } from "../services/obtenerComisionProducto";
 
 
-const CombinacionProductoPage = () => {
+const ComisionGafasPage = () => {
   const [page, setPage] = useState(1);
+  const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(null);
   const { data: combinacionProducto, isLoading } = useQuery({
-    queryKey: ['combinacion-producto', page],
-    queryFn: () => obtenerComisionProductoMontura(20, page),
+    queryKey: ['combinacion-gafas', page],
+    queryFn: () => obtenerComisionProductoGafa(20, page),
     staleTime: 60 * 1000 * 10,
   })
+  const toggleDetalle = (index: number) => {
+    setExpandedRowIndex((prev) => (prev === index ? null : index));
+  };
   console.log(combinacionProducto);
   const combinacion: Datum[] = combinacionProducto?.data || [];
   if (isLoading) {
@@ -49,7 +53,7 @@ const CombinacionProductoPage = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {combinacion.map((combinacion: Datum) => (
+          {combinacion.map((combinacion: Datum,index:number) => (
             <>
               <TableRow key={combinacion._id} className="border-b-indigo-100 hover:bg-indigo-50">
                 <TableCell className="font-medium">{combinacion.tipoProducto}</TableCell>
@@ -58,7 +62,28 @@ const CombinacionProductoPage = () => {
                 <TableCell>{combinacion.codigoQR}</TableCell>
                 <TableCell>{combinacion.marca}</TableCell>
                 <TableCell>{combinacion.color}</TableCell>
+                <TableCell>
+                <button
+                    className="text-blue-600 underline"
+                    onClick={() => toggleDetalle(index)}
+                  >
+                    {expandedRowIndex === index ? "Ocultar" : "Ver"}
+                  </button>
+                </TableCell>
               </TableRow>
+              {expandedRowIndex === index && (
+                              <TableRow>
+                                <TableCell colSpan={7}>
+                                  {/* <DetalleVenta ventas={venta.ventas} 
+                                  metaProductosVip={venta.metaProductosVip} 
+                                    empresa={venta.empresa}
+                                    gafaVip={venta.gafaVip}
+                                    lenteDeContacto={venta.lenteDeContacto}
+                                    monturaVip={venta.monturaVip} 
+                                  /> */}
+                                </TableCell>
+                              </TableRow>
+                            )}
             </>
 
           ))}
@@ -81,6 +106,6 @@ const CombinacionProductoPage = () => {
   );
 };
 
-export default CombinacionProductoPage;
+export default ComisionGafasPage;
 
 
