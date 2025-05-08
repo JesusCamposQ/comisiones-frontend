@@ -58,12 +58,13 @@ export interface Producto {
   tipo:      string;
   marca:     string;
   categoria: string | null;
+  descripcion:       string;
 }
 
 interface ServiciosI {
   id: string;
   tipo: string;
-
+  descripcion:       string;
 }
 
 
