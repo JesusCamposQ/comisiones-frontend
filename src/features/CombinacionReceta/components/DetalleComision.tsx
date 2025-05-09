@@ -55,7 +55,7 @@ export const DetalleComision: FC<DetalleComisionProps> = ({ comisiones, id }) =>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {comisionesCompletas.map((comision) => (
+                    {comisiones.map((comision) => (
                         <TableRow key={comision._id} className="border-t">
                             <TableCell className="font-medium">
                                 <span className="inline-block w-full uppercase text-left">{comision.precio}</span>
