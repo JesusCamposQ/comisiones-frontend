@@ -13,16 +13,22 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from "react";
 import { Datum } from "../interfaces/producto.interface";
 import { obtenerComisionProductoMontura } from "../services/obtenerComisionProducto";
+import { DetalleComisionProducto } from "../components/DetalleComisionProducto";
+import { Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 
 const ComisionMonturaPage = () => {
   const [page, setPage] = useState(1);
+  const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(null);
   const { data: combinacionProducto, isLoading } = useQuery({
     queryKey: ['combinacion-montura', page],
     queryFn: () => obtenerComisionProductoMontura(20, page),
     staleTime: 60 * 1000 * 10,
   })
-  console.log(combinacionProducto);
+  const toggleDetalle = (index: number) => {
+    setExpandedRowIndex((prev) => (prev === index ? null : index));
+  };
   const combinacion: Datum[] = combinacionProducto?.data || [];
   if (isLoading) {
     return (
@@ -46,10 +52,11 @@ const ComisionMonturaPage = () => {
             <TableHead>CODIGO QR</TableHead>
             <TableHead>MARCA</TableHead>
             <TableHead className="text-center">COLOR</TableHead>
+            <TableHead className="text-center">ACCIONES</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {combinacion.map((combinacion: Datum) => (
+          {combinacion.map((combinacion: Datum, index: number) => (
             <>
               <TableRow key={combinacion._id} className="border-b-indigo-100 hover:bg-indigo-50">
                 <TableCell className="font-medium">{combinacion.tipoProducto}</TableCell>
@@ -58,7 +65,50 @@ const ComisionMonturaPage = () => {
                 <TableCell>{combinacion.codigoQR}</TableCell>
                 <TableCell>{combinacion.marca}</TableCell>
                 <TableCell>{combinacion.color}</TableCell>
+                
+                <TableCell>
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => toggleDetalle(index)}
+                    className={
+                      expandedRowIndex === index
+                        ? "bg-[#385780] text-white hover:bg-[#f3f3f4] hover:text-[#385780e1]"
+                        : "bg-white text-[#385780] hover:bg-[#f3f3f4] hover:text-[#385780e1]"
+                    }
+                  >
+                    {expandedRowIndex === index ? (
+                      <span className="flex items-center gap-1 ">
+                        <EyeOff className="w-4 h-4" />
+                        Ocultar
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1">
+                        <Eye className="w-4 h-4" />
+                        Ver
+                      </span>
+                    )}
+                  </Button>
+                </TableCell>
               </TableRow>
+              {expandedRowIndex === index && (
+                <TableRow>
+                  <TableCell colSpan={7}>
+                    {
+                      combinacion.comisionProducto?.length > 0 ? (
+                        <DetalleComisionProducto comisiones={combinacion.comisionProducto} />
+                      ) : (
+                        <div className="bg-gray-50 p-4 rounded-md text-center">
+                          <p className="font-medium flex items-center justify-center gap-2 text-gray-600">
+                            <EyeOff className="w-5 h-5"/>
+                            No hay comisiones para este producto
+                          </p>
+                        </div>
+                      )
+                    }
+                  </TableCell>
+              </TableRow>
+              )}
             </>
 
           ))}

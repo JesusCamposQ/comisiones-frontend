@@ -2,7 +2,7 @@ import api from "@/app/service/api";
 import { Producto } from "../interfaces/producto.interface";
 import { ComsionProductoFiltro } from "../interfaces/comsionProductoFiltro";
 
-const obtenerSinComsion = async (limite: number, pagina: number, filtro?: ComsionProductoFiltro): Promise<Producto> => {
+const obtenerSinComsionProducto = async (limite: number, pagina: number, filtro?: ComsionProductoFiltro): Promise<Producto> => {
   try {
     const response = await api.get("/api/producto/sinComision", {
       params: {
@@ -23,4 +23,4 @@ const obtenerSinComsion = async (limite: number, pagina: number, filtro?: Comsio
     throw error;
   }
 };
-export default obtenerSinComsion;
+export default obtenerSinComsionProducto;

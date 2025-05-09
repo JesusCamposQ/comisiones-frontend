@@ -63,24 +63,38 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "Registro de Comisiones Receta",
-          url: "/comision/registro/receta",
-        },
-        {
-          title: "Registro de Comisiones Producto",
-          url: "/comision/registro/producto",
+          title: "Registro de Comisiones",
+          url: "#",
+          items: [
+            {
+              title: "Comision Receta",
+              url: "/comision/registro/receta",
+            },
+            {
+              title: "Comision Producto",
+              url: "/comision/registro/producto",
+            },
+          ],
         },
         // {
         //   title: "Gestion de Comision",
         //   url: "/comision/gestion",
         // },
         {
-          title: "Gestion de Comision Receta",
-          url: "/comision/gestion/receta",
+          title: "Gestion de Comision",
+          url: "#",
           items: [
             {
               title: "Comision Receta",
               url: "/comision/gestion/receta",
+            },
+            {
+              title: "Comision Servicio",
+              url: "/comision/gestion/servicio",
+            },
+            {
+              title: "Comision Producto",
+              url: "/comision/gestion/producto",
             },
           ],
         },

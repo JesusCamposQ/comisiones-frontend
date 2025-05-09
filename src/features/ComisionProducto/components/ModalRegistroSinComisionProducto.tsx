@@ -5,17 +5,16 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog"
 import { useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Glasses, Plus, Trash2 } from "lucide-react";
-import { IComisionReceta, IComisionRecetaData } from "../interfaces/comisionReceta.interface";
-import obtenerTipoPrecio from "../services/obtenerTipoPrecio";
-import registrarComisionReceta from "../services/registrarComisionReceta";
 import toast, { Toaster } from "react-hot-toast";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table_detalle_comision";
+import { IComisionProducto, IComisionProductoData } from "../interfaces/comisionProducto.interface";
+import registrarComisionProducto from "../services/registrarComisionProducto";
+import obtenerTipoPrecioProducto from "../services/obtenerTipoPrecioProducto";
 
 interface FormValues {
     idcombinacion: string;
@@ -33,24 +32,24 @@ interface TipoPrecio {
     nombre: string
 }
 
-export function ModalRegistroSinComision({ valor, open, setOpen, setActualizar }: ModalProps) {
-    const [comisiones, setComisiones] = useState<IComisionReceta[]>([])
+export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActualizar }: ModalProps) {
+    const [comisiones, setComisiones] = useState<IComisionProducto[]>([])
     const [tipoPrecio, setTipoPrecio] = useState<string>("")
 
     const { data: tipoPrecioData, isLoading } = useQuery<TipoPrecio[]>({
-        queryKey: ['tipo-precio', valor.idcombinacion],
-        queryFn: () => obtenerTipoPrecio(valor.idcombinacion),
+        queryKey: ['tipo-precio-producto', valor.idcombinacion],
+        queryFn: () => obtenerTipoPrecioProducto(valor.idcombinacion),
         staleTime: 60 * 1000 * 10, // 10 minutos
     })
 
-    const { register, handleSubmit, reset } = useForm<IComisionReceta>({
+    const { register, handleSubmit, reset } = useForm<IComisionProducto>({
         mode: "onChange",
         defaultValues: {
             precio: "",
             monto: 0,
         }
     });
-    const onSubmit: SubmitHandler<IComisionReceta> = (data) => {
+    const onSubmit: SubmitHandler<IComisionProducto> = (data) => {
         if (valor.codigo === "") {
           toast.error("Debe agregar una combinacion");
           return;
@@ -85,12 +84,12 @@ export function ModalRegistroSinComision({ valor, open, setOpen, setActualizar }
     }
     const registrarComision = async () => {
     const { precio, monto } = comisiones[0]
-    const dataCombinacion: IComisionRecetaData = {
-      combinacionReceta: valor.idcombinacion,
-      data: [{ precio, monto, nombre: tipoPrecio }]
+    const dataCombinacion: IComisionProductoData = {
+      producto: valor.idcombinacion,
+      data: [{ precio, monto, nombre: precio }]
     }
     console.log("Data Combinacion: ", dataCombinacion)
-    const { status } = await registrarComisionReceta(dataCombinacion)
+    const { status } = await registrarComisionProducto(dataCombinacion)
     if (status === 201) {
       toast.success("Comisiones registradas exitosamente");
       limpiarComisiones();
@@ -114,6 +113,7 @@ export function ModalRegistroSinComision({ valor, open, setOpen, setActualizar }
 
                     </DialogDescription>
                 </DialogHeader>
+                <Toaster />
                 {isLoading ? (
                     <div className="flex items-center justify-center h-[600px] m-auto">
                         <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-blue-500 mr-2"></div>

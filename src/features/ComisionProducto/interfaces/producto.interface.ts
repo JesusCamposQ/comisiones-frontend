@@ -12,4 +12,15 @@ export interface Datum {
     codigoQR:     string;
     marca:        string;
     color:        string;
+    comisionProducto: ComisionProducto[];
+}
+export interface ComisionProducto {
+    _id?: string;
+    precio?: string;
+    nombre?: string;
+    monto?: number;
+    producto?: string;
+    diferencia?: number;
+    comision?: number;
+    __v?: number;
 }
