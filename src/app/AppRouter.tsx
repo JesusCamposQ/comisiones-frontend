@@ -17,7 +17,8 @@ import ComisionGafasPage from '@/features/ComisionProducto/pages/ComisionGafasPa
 import ComisionMonturaPage from '@/features/ComisionProducto/pages/ComisionMontura';
 import ComisionLenteContactoPage from '@/features/ComisionProducto/pages/ComisionLenteContactoPage';
 import { RegistroSinComisionReceta } from '@/features/ComisionReceta/pages/RegistroSinComisionReceta';
-
+import { RegistroSinComisionProducto } from '@/features/ComisionProducto/pages/RegistroSinComisionProducto';
+import { ComisionServicioPage } from '@/features/ComisionServicio/pages/ComisionServicioPage';
  function AppRouter() {
   
   const {isAunteticacion,token}=  useContext(TokenContext)
@@ -41,8 +42,9 @@ import { RegistroSinComisionReceta } from '@/features/ComisionReceta/pages/Regis
               <Route path="registro" element={<UsuarioRegistroPage />} />
             </Route>
             <Route path="/comision/registro/receta" element={<RegistroSinComisionReceta />} />
-            <Route path="/comision/registro/producto" element={<RegistroComisionProductoPage />} /> 
+            <Route path="/comision/registro/producto" element={<RegistroSinComisionProducto />} /> 
             <Route path="/comision/gestion/receta" element={<CombinacionRecetaPage />} />
+            <Route path="/comision/gestion/servicio" element={<ComisionServicioPage />} />
             <Route path="/comision/gestion/producto" element={<ComisionProductoPage />} />
             <Route path="/comision/gestion/producto/gafas" element={<ComisionGafasPage />} />
             <Route path="/comision/gestion/producto/montura" element={<ComisionMonturaPage />} />

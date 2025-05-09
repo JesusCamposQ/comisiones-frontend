@@ -6,6 +6,7 @@ import { ComsionRecetaFiltro } from "../interfaces/comsionRecetaFiltro";
 import { FiltroComision } from "../components/FiltroComision";
 import { BookPlus } from "lucide-react";
 import { ModalRegistroSinComision } from "../components/ModalRegistroSinComision";
+import toast, { Toaster } from "react-hot-toast";
 
 interface FormValues {
     idcombinacion: string;
@@ -14,6 +15,7 @@ interface FormValues {
 
 export const RegistroSinComisionReceta = () => {
     const [filtro, setFiltro] = useState<ComsionRecetaFiltro>({})
+    const [actualizar, setActualizar] = useState(false)
     const [open, setOpen] = useState(false)
     const [valor, setValor] = useState<FormValues>({ idcombinacion: '', codigo: '' })
     const [page, setPage] = useState(1);
@@ -24,8 +26,12 @@ export const RegistroSinComisionReceta = () => {
     })
     useEffect(() => {
         setTimeout(() => {
-          refetch()
-        }, 100)
+            if(actualizar){
+                toast.success("Comisiones actualizadas exitosamente")
+                refetch()
+            }
+            setActualizar(false)
+          }, 100)
       }, [filtro])
     
     const agregarComision = (combinacion:Datum) => {
@@ -37,6 +43,7 @@ export const RegistroSinComisionReceta = () => {
     const combinaciones: Datum[] = combinacionReceta?.data || [];
     return (
         <div className="mx-auto flex flex-col gap-4">
+            <Toaster />
             <h1 className="text-2xl font-bold text-center text-blue-500 uppercase">Registro Sin Comision</h1>
             <FiltroComision setFiltro={setFiltro} />
         {isLoading ? (
@@ -89,7 +96,7 @@ export const RegistroSinComisionReceta = () => {
             </tfoot>
         </table>
         )}
-            <ModalRegistroSinComision valor={valor} setOpen={setOpen} open={open} />
+            <ModalRegistroSinComision valor={valor} setOpen={setOpen} open={open} setActualizar={setActualizar} />
         </div>
     )
 }
