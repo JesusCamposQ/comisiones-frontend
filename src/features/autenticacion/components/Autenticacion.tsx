@@ -8,8 +8,10 @@ export const Autenticacion = () => {
   const { asignarToken } = useContext(TokenContext);
   const { register, handleSubmit, formState: { errors } } = useForm<AutenticacionI>();
   const onSubmit = async (data: AutenticacionI) => {
+    console.log(data.username);
     try {
       const response = await autenticacion(data);
+      localStorage.setItem('username', data.username)
       if (response.status === 200) {
         asignarToken(response.token);
         window.location.href = 'ventas';

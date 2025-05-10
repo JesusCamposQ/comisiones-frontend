@@ -15,6 +15,7 @@ import {
   NotebookTabs,
   Building,
   CircleDollarSign,
+  BadgeDollarSign,
 } from "lucide-react"
 
 import { NavMain } from "@/app/Layout/components/nav-main"
@@ -32,14 +33,12 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: localStorage.getItem('username') || '',
   },
   teams: [
     {
       name: "Sistema Comisiones",
-      logo: GalleryVerticalEnd,
+      logo: BadgeDollarSign,
       plan: "Comisiones",
     },
   ],
