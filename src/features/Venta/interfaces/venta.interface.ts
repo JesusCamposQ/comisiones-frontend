@@ -37,7 +37,8 @@ export interface Detalle {
   importe:      number;
   comisiones:   Comision[];
   combinacion?: Combinacion;
-  servicios?:ServiciosI
+  servicios?:ServiciosI,
+  otros :otrosI
 }
 
 export interface Combinacion {
@@ -67,4 +68,10 @@ interface ServiciosI {
   descripcion:       string;
 }
 
+
+interface otrosI {
+  id: string;
+  tipo: string;
+  descripcion:       string;
+}
 
