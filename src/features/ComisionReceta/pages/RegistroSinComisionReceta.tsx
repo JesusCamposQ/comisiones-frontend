@@ -32,7 +32,7 @@ export const RegistroSinComisionReceta = () => {
             }
             setActualizar(false)
           }, 100)
-      }, [filtro])
+      }, [filtro, actualizar])
     
     const agregarComision = (combinacion:Datum) => {
         const descripcion = `${combinacion.tipoLente} / ${combinacion.material} / ${combinacion.tratamiento} / ${combinacion.marcaLente} / ${combinacion.tipoColorLente} / ${combinacion.rango} / ${combinacion.colorLente}`
@@ -96,7 +96,9 @@ export const RegistroSinComisionReceta = () => {
             </tfoot>
         </table>
         )}
+        <div className="flex items-center justify-center">
             <ModalRegistroSinComision valor={valor} setOpen={setOpen} open={open} setActualizar={setActualizar} />
+        </div>
         </div>
     )
 }
