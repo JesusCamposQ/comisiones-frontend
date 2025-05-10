@@ -34,7 +34,7 @@ export const RegistroSinComisionProducto = () => {
             }
             setActualizar(false)
         }, 100)
-    }, [filtro, actualizar ? 1 : 0])
+    }, [filtro, actualizar])
 
     const agregarComision = (combinacion: Datum) => {
         const descripcion = `${combinacion.tipoProducto} / ${combinacion.serie} / ${combinacion.categoria} / ${combinacion.codigoQR} / ${combinacion.marca} / ${combinacion.color}`
