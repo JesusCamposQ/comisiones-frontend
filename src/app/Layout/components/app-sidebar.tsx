@@ -2,7 +2,6 @@ import {
   Building,
   CircleDollarSign,
   BadgeDollarSign,
-  Store,
   ShoppingBag,
 } from "lucide-react"
 
