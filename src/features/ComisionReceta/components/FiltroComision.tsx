@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
 import { Dispatch, SetStateAction } from "react"
 import { ComsionRecetaFiltro } from "../interfaces/comsionRecetaFiltro"
 

@@ -1,5 +1,4 @@
 // src/app/routes.tsx
-import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AsesorPage from '../features/Asesor/AsesorPage';
 import ColorPage from '../features/Color/ColorPage';
@@ -22,7 +21,7 @@ import TipoLentePage from '../features/TipoLente/TipoLentePage';
 import TipoMonturaPage from '../features/TipoMontura/TipoMonturaPage';
 import TratamientoPage from '../features/Tratamiento/TratamientoPage';
 import VentaPage from '../features/Venta/VentaPage';
-import {AutenticacionPage} from '../features/autenticacion/page/AutenticacionPage'
+import {AutenticacionPage} from '../features/Autenticacion/page/AutenticacionPage'
 
 const AppRoutes = () => {
   return (

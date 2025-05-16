@@ -3,6 +3,7 @@ export interface IComisionProducto {
   precio?: string;
   monto?: number;
   combinacionProducto?: string;
+  tipoComision?: string;
 }
 
 export interface IComisionProductoData {

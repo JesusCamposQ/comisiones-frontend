@@ -7,12 +7,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Combinacion, Datum } from "@/features/CombinacionReceta/interfaces/comisiones.interface";
 import { useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import obtenerSinComsion from "../services/obtenerSinComsion";
 import { FiltroComision } from "./FiltroComision";
 import { ComsionRecetaFiltro } from "../interfaces/comsionRecetaFiltro";
+import { CombinacionResponse, Datum } from "../interfaces/comisionReceta.interface";
 
 interface FormValues {
   idcombinacion: string;
@@ -27,15 +27,16 @@ export function ModalRegistro({ setValor}: ModalProps) {
   const [filtro, setFiltro] = useState<ComsionRecetaFiltro>({})
   const [close, setClose] = useState(false);
   const [page, setPage] = useState(1);
-  const { data: combinacionReceta, isLoading, refetch } = useQuery<Combinacion>({
+  const { data: combinacionReceta, isLoading, refetch } = useQuery<CombinacionResponse>({
     queryKey: ['combinacion-receta', page],
-    queryFn: () => obtenerSinComsion(10, page, filtro),
+    queryFn: () => obtenerSinComsion(10, page, filtro) as any,
     staleTime: 60 * 1000 * 10, // 10 minutos
   })
   const combinaciones: Datum[] = combinacionReceta?.data || [];
   console.log(filtro)
   const onSubmit = () => {
     setClose(false)
+    setValor({idcombinacion: '', codigo: ''}) // se debe eliminar luego esta linea
     setFiltro({})
   };
   useEffect(() => {
@@ -106,7 +107,7 @@ export function ModalRegistro({ setValor}: ModalProps) {
                           type="radio"
                           value={combinacion._id}
                           className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                          onChange={() => setValor({ idcombinacion: combinacion._id, codigo: combinacion.codigo })}
+                          //onChange={() => setValor({ idcombinacion: combinacion._id || '', codigo: combinacion.codigo || '' })}
                         />
                       </td>
                     </tr>

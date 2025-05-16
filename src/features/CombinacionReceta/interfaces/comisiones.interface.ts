@@ -25,6 +25,7 @@ export interface ComisionReceta {
     diferencia:        number;
     comision:          number;
     __v:               number;
+    flag?:             string;
 }
 
 

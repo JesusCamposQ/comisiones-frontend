@@ -4,7 +4,7 @@ export interface ComsionProductoFiltro {
   tipoProducto?: string;
   serie?: string;
   categoria?: string | null;
-  codigoQR?: string;
+  codigoQr?: string;
   comisionProducto?: ComisionProducto[];
   marca?: string;
   color?: string;
@@ -18,5 +18,6 @@ export interface ComisionProducto {
   producto?: string;
   diferencia?: number;
   comision?: number;
+  flag?: string;
 }
   

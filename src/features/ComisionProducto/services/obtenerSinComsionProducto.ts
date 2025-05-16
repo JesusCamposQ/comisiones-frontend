@@ -8,12 +8,11 @@ const obtenerSinComsionProducto = async (limite: number, pagina: number, filtro?
       params: {
         limite,
         pagina,
-        tipoProducto: filtro?.tipoProducto,
-        serie: filtro?.serie,
-        categoria: filtro?.categoria,
-        codigoQR: filtro?.codigoQR,
-        marca: filtro?.marca,
-        color: filtro?.color
+        tipoProducto: filtro?.tipoProducto?.toUpperCase(),
+        serie: filtro?.serie?.toUpperCase(),
+        codigoQr: filtro?.codigoQr?.toUpperCase(),
+        marca: filtro?.marca?.toUpperCase(),
+        color: filtro?.color?.toUpperCase()
       }
     });
     console.log(response.data)

@@ -10,25 +10,32 @@ import {
 } from "@/components/ui/table"
 
 import { useQuery } from '@tanstack/react-query';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Datum } from "../interfaces/producto.interface";
-import { obtenerComisionProductoMontura } from "../services/obtenerComisionProducto";
+import { obtenerComisionProductoMontura } from "../services/serviciosComisionProducto";
 import { DetalleComisionProducto } from "../components/DetalleComisionProducto";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ComsionProductoFiltro } from "../interfaces/comsionProductoFiltro";
+import { FiltroComisionProducto } from "../components/FiltroComisionProducto";
 
 
 const ComisionMonturaPage = () => {
+  const [filtro, setFiltro] = useState<ComsionProductoFiltro>({})
+  const [update, setUpdate] = useState(false)
   const [page, setPage] = useState(1);
   const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(null);
-  const { data: combinacionProducto, isLoading } = useQuery({
+  const { data: combinacionProducto, isLoading, refetch } = useQuery({
     queryKey: ['combinacion-montura', page],
-    queryFn: () => obtenerComisionProductoMontura(20, page),
+    queryFn: () => obtenerComisionProductoMontura(20, page,filtro),
     staleTime: 60 * 1000 * 10,
   })
   const toggleDetalle = (index: number) => {
     setExpandedRowIndex((prev) => (prev === index ? null : index));
   };
+  useEffect(() => {
+    refetch()
+  }, [update,filtro])
   const combinacion: Datum[] = combinacionProducto?.data || [];
   if (isLoading) {
     return (
@@ -41,14 +48,20 @@ const ComisionMonturaPage = () => {
   return (
     <div className="flex flex-col m-auto">
       <h1 className="text-2xl font-bold text-center m-4 text-blue-500 uppercase">Combinación de productos Montura</h1>
-      
+      <FiltroComisionProducto setFiltro={setFiltro} />
+      {isLoading ? (
+                <div className="flex items-center justify-center h-[600px] m-auto">
+                    <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-blue-500 mr-2"></div>
+                    <span className="text-blue-500 text-2xl">Cargando...</span>
+                </div>
+            ) : (
+
       <Table className="w-[95%] m-auto p-2 rounded-md bg-white shadow-md">
         <TableCaption>Combinación de productos</TableCaption>
         <TableHeader className="bg-blue-100">
           <TableRow>
             <TableHead className="w-[80px]">TIPO PRODUCTO</TableHead>
             <TableHead>SERIE</TableHead>
-            <TableHead>CATEGORIA</TableHead>
             <TableHead>CODIGO QR</TableHead>
             <TableHead>MARCA</TableHead>
             <TableHead className="text-center">COLOR</TableHead>
@@ -60,14 +73,13 @@ const ComisionMonturaPage = () => {
             <>
               <TableRow key={combinacion._id} className="border-b-indigo-100 hover:bg-indigo-50">
                 <TableCell className="font-medium">{combinacion.tipoProducto}</TableCell>
-                <TableCell>{combinacion.serie}</TableCell>
-                <TableCell>{combinacion.categoria}</TableCell>
-                <TableCell>{combinacion.codigoQR}</TableCell>
-                <TableCell>{combinacion.marca}</TableCell>
-                <TableCell>{combinacion.color}</TableCell>
-                
+                <TableCell>{combinacion.serie !="null" ? combinacion.serie : ""}</TableCell>
+                <TableCell>{combinacion.codigoQR!="null" ? combinacion.codigoQR : ""}</TableCell>
+                <TableCell>{combinacion.marca!="null" ? combinacion.marca : ""}</TableCell>
+                <TableCell>{combinacion.color!="null" ? combinacion.color : ""}</TableCell>
+
                 <TableCell>
-                <Button
+                  <Button
                     variant="outline"
                     size="sm"
                     onClick={() => toggleDetalle(index)}
@@ -96,18 +108,18 @@ const ComisionMonturaPage = () => {
                   <TableCell colSpan={7}>
                     {
                       combinacion.comisionProducto?.length > 0 ? (
-                        <DetalleComisionProducto comisiones={combinacion.comisionProducto} />
+                        <DetalleComisionProducto comisiones={combinacion.comisionProducto} setUpdate={setUpdate} />
                       ) : (
                         <div className="bg-gray-50 p-4 rounded-md text-center">
                           <p className="font-medium flex items-center justify-center gap-2 text-gray-600">
-                            <EyeOff className="w-5 h-5"/>
+                            <EyeOff className="w-5 h-5" />
                             No hay comisiones para este producto
                           </p>
                         </div>
                       )
                     }
                   </TableCell>
-              </TableRow>
+                </TableRow>
               )}
             </>
 
@@ -127,6 +139,7 @@ const ComisionMonturaPage = () => {
           </TableRow>
         </TableFooter>
       </Table>
+      )}
     </div>
   );
 };

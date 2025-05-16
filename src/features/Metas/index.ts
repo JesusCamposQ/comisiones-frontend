@@ -1,1 +1,1 @@
-export { MetasPage } from './MetasPage';
+export { RegistroMetasPage } from './pages/RegistroMetasPage';

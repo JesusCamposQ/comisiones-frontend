@@ -6,7 +6,7 @@ import { useContext } from "react";
 
 export const Autenticacion = () => {
   const { asignarToken } = useContext(TokenContext);
-  const { register, handleSubmit, formState: { errors } } = useForm<AutenticacionI>();
+  const { register, handleSubmit } = useForm<AutenticacionI>();
   const onSubmit = async (data: AutenticacionI) => {
     console.log(data.username);
     try {

@@ -10,17 +10,17 @@ import {
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table_detalle_comision";
 import { useQuery } from "@tanstack/react-query";
 
-import { Datum, Metas } from "./interfaces/metas.interface";
-import { obtenerEmpresas } from "../Empresa/services/obternerEmpresas";
-import registrarMetas from "./services/registrarMetas";
-import { obtenerSucursalByEmpresa } from "../Sucursal/services/obtenerSurcusal";
-import { Sucursal } from "../Sucursal/interfaces/sucursal.interface";
+import { Datum, Metas } from "../interfaces/metas.interface";
+import { obtenerEmpresas } from "../../Empresa/services/obternerEmpresas";
+import { obtenerSucursalByEmpresa } from "../../Sucursal/services/obtenerSurcusal";
+import { Sucursal } from "../../Sucursal/interfaces/sucursal.interface";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import {toast, Toaster } from "react-hot-toast";
+import { registrarMetas } from "../services/servicioMetas";
 
 
-export const MetasPage = () => {
+export const RegistroMetasPage = () => {
   const [datos, setDatos] = useState<Datum[]>();
   const [sucursales, setSucursales] = useState<Sucursal[]>();
   const { register, handleSubmit } = useForm<Datum>()

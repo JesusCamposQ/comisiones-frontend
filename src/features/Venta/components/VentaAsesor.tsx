@@ -1,7 +1,6 @@
-import { Venta } from "../interfaces/venta.interface";
 
 
-export const VentaAsesor = ({ venta }: { venta: Venta }) => {
+export const VentaAsesor = () => {
   return (
     <div>VentaAsesor</div>
   )

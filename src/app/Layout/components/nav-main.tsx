@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/sidebar"
 import { Link } from "react-router"
 import { useState } from "react"
-import { Separator } from "@/components/ui/separator"
 
 export function NavMain({
   items,
