@@ -78,14 +78,14 @@ const data = {
               title: "Comision Receta",
               url: "/comision/gestion/receta",
             },
-            {
+            /*{
               title: "Comision Servicio",
               url: "/comision/gestion/servicio",
             },
             {
               title: "Comision Producto",
               url: "/comision/gestion/producto",
-            },
+            },*/
           ],
         },
         {
