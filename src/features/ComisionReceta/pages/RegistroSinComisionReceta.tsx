@@ -1,4 +1,4 @@
-import { Combinacion, Datum } from "@/features/CombinacionReceta/interfaces/comisiones.interface";
+
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import obtenerSinComsion from "../services/obtenerSinComsion";
@@ -7,6 +7,7 @@ import { FiltroComision } from "../components/FiltroComision";
 import { BookPlus } from "lucide-react";
 import { ModalRegistroSinComision } from "../components/ModalRegistroSinComision";
 import toast, { Toaster } from "react-hot-toast";
+import { CombinacionResponse, Datum } from "../interfaces/comisionReceta.interface";
 
 interface FormValues {
     idcombinacion: string;
@@ -19,9 +20,9 @@ export const RegistroSinComisionReceta = () => {
     const [open, setOpen] = useState(false)
     const [valor, setValor] = useState<FormValues>({ idcombinacion: '', codigo: '' })
     const [page, setPage] = useState(1);
-    const { data: combinacionReceta, isLoading, refetch } = useQuery<Combinacion>({
+    const { data: combinacionReceta, isLoading, refetch } = useQuery<CombinacionResponse>({
         queryKey: ['combinacion-receta', page],
-        queryFn: () => obtenerSinComsion(10, page, filtro),
+        queryFn: () => obtenerSinComsion(10, page, filtro) as any,
         staleTime: 60 * 1000 * 10, // 10 minutos
     })
     useEffect(() => {
@@ -32,12 +33,15 @@ export const RegistroSinComisionReceta = () => {
             }
             setActualizar(false)
           }, 100)
-      }, [filtro, actualizar])
+      }, [actualizar])
+      useEffect(() => {
+        refetch()
+      }, [filtro])
     
     const agregarComision = (combinacion:Datum) => {
         const descripcion = `${combinacion.tipoLente} / ${combinacion.material} / ${combinacion.tratamiento} / ${combinacion.marcaLente} / ${combinacion.tipoColorLente} / ${combinacion.rango} / ${combinacion.colorLente}`
         setOpen(true)
-        setValor({ idcombinacion: combinacion._id, codigo: descripcion })
+        setValor({ idcombinacion: combinacion._id!, codigo: descripcion });
       };
 
     const combinaciones: Datum[] = combinacionReceta?.data || [];

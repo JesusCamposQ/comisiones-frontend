@@ -15,6 +15,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { IComisionProducto, IComisionProductoData } from "../interfaces/comisionProducto.interface";
 import registrarComisionProducto from "../services/registrarComisionProducto";
 import obtenerTipoPrecioProducto from "../services/obtenerTipoPrecioProducto";
+import formatoMoneda from "@/utils/formatoMoneda";
 
 interface FormValues {
   idcombinacion: string;
@@ -31,10 +32,12 @@ interface TipoPrecio {
   id: string
   nombre: string
 }
-
+const tipoComision = [
+  { id: "comision1", nombre: "Comision 1" },
+  { id: "comision2", nombre: "Comision 2" },
+]
 export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActualizar }: ModalProps) {
   const [comisiones, setComisiones] = useState<IComisionProducto[]>([])
-  const [tipoPrecio, setTipoPrecio] = useState<string>("")
 
   const { data: tipoPrecioData, isLoading } = useQuery<TipoPrecio[]>({
     queryKey: ['tipo-precio-producto', valor.idcombinacion],
@@ -47,6 +50,7 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
     defaultValues: {
       precio: "",
       monto: 0,
+      tipoComision: ""
     }
   });
   const onSubmit: SubmitHandler<IComisionProducto> = (data) => {
@@ -55,9 +59,13 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
       return;
     }
     data.monto = Number(data.monto);
-    const existe = comisiones.filter((comision) => comision.precio === data.precio).length >= 2
-    if (existe) {
-      return toast.error("Solo se pueden agregar 2 comisiones por tipo de precio")
+    const existeTipoPrecio = comisiones.filter((comision) => comision.precio === data.precio).length >=2
+    const existeTipoComision = comisiones.filter((comision) => comision.tipoComision === data.tipoComision).length >= 1
+    if (existeTipoPrecio) {
+      return toast.error("Solo se pueden listar 2 comisiones por tipo de precio")
+    }
+    if (existeTipoComision) {
+      return toast.error("El tipo de comision ya fue listado")
     }
     setComisiones((prev) => [...prev, data]);
   }
@@ -75,7 +83,7 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
     console.log("Data Combinacion: ", dataCombinacion)
     const { status } = await registrarComisionProducto(dataCombinacion)
     if (status === 201) {
-      toast.success("Comisiones registradas exitosamente");
+      //toast.success("Comisiones registradas exitosamente");
       limpiarComisiones();
       setOpen(false)
       setActualizar(true)
@@ -95,7 +103,8 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange} >
-      <DialogContent className="w-full h-full max-w-[750px] max-h-[600px] md:w-[750px] md:h-[550px] m-auto ">
+      <Toaster />
+      <DialogContent className="w-full h-full max-w-[750px] max-h-[700px] md:w-[750px] md:h-[610px] m-auto ">
         <DialogHeader>
           <DialogTitle className="uppercase text-center text-sm">Formulario Combinacion</DialogTitle>
           <DialogDescription className="border-b p-2">
@@ -103,7 +112,6 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
 
           </DialogDescription>
         </DialogHeader>
-        <Toaster />
         {isLoading ? (
           <div className="flex items-center justify-center h-[600px] m-auto">
             <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-blue-500 mr-2"></div>
@@ -113,7 +121,7 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
           <form className=" w-2/3 mx-auto space-y-2" onSubmit={handleSubmit(onSubmit)}>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 text-left text-[12px] mb-1" htmlFor="password">
+              <label className="block text-sm font-medium text-gray-700 text-left text-[12px] mb-1" htmlFor="precio">
                 Tipo de Precio
               </label>
               <select {...register("precio", { required: "Debe seleccionar un tipo de precio" })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
@@ -129,7 +137,23 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
               {errors.precio && <p className="text-red-500 text-xs mt-1">{errors.precio.message}</p>}
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 text-left text-[12px] mb-1" htmlFor="password">
+              <label className="block text-sm font-medium text-gray-700 text-left text-[12px] mb-1" htmlFor="tipoComision">
+                Tipo de Comision
+              </label>
+              <select {...register("tipoComision", { required: "Debe seleccionar un tipo de comision" })} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                                 focus:ring-blue-500 focus:border-blue-500 block w-full p-2 text-[12px] dark:bg-gray-700 dark:border-gray-600
+                                                  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option selected disabled>Seleccione un tipo de comision</option>
+                {tipoComision?.map((tipoComision: TipoPrecio) => (
+                  <option key={tipoComision.id} value={tipoComision.nombre}>
+                    {tipoComision.nombre}
+                  </option>
+                ))}
+              </select>
+              {errors.tipoComision && <p className="text-red-500 text-xs mt-1">{errors.tipoComision?.message}</p>}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 text-left text-[12px] mb-1" htmlFor="monto">
                 Monto
               </label>
               <input
@@ -175,8 +199,8 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
               {comisiones.map((comision, index) => (
                 <TableRow key={index} className="hover:bg-gray-50">
                   <TableCell className="text-center text-[12px]">{comision.precio}</TableCell>
-                  <TableCell className="text-center text-[12px]">{`comision ${index + 1}`}</TableCell>
-                  <TableCell className="text-center text-[12px]">Bs. {comision.monto?.toFixed(2)}</TableCell>
+                  <TableCell className="text-center text-[12px]">{comision.tipoComision}</TableCell>
+                  <TableCell className="text-center text-[12px]">{formatoMoneda(comision.monto || 0)}</TableCell>
                   <TableCell className="flex items-center justify-center">
                     <Button
                       type="button"

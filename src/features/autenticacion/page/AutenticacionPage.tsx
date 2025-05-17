@@ -1,4 +1,4 @@
-import { Autenticacion } from "../components/Autenticacion"
+import { Autenticacion } from "@/features/Autenticacion/components/Autenticacion"
 
 export const AutenticacionPage = () => {
   return (

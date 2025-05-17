@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select"
 import { es } from 'date-fns/locale';
 
-export function DatePickerWithPresets({ label, date, setDate, className }: { label?: string; date: Date; setDate: (date: Date) => void; className?: string }) {
+export function DatePickerWithPresets({ label, date, setDate, className }: { label?: string; date: Date; setDate: (date: Date) => void; className?: string; locale?: any }) {
 
   return (
     <Popover>

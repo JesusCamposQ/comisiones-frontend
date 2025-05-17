@@ -34,12 +34,15 @@ export const RegistroSinComisionProducto = () => {
             }
             setActualizar(false)
         }, 100)
-    }, [filtro, actualizar])
+    }, [actualizar])
+    useEffect(() => {
+        refetch()
+    }, [filtro])
 
     const agregarComision = (combinacion: Datum) => {
         const descripcion = `${combinacion.tipoProducto} / ${combinacion.serie} / ${combinacion.categoria} / ${combinacion.codigoQR} / ${combinacion.marca} / ${combinacion.color}`
         setOpen(true)
-        setValor({ idcombinacion: combinacion._id, codigo: descripcion })
+        setValor({ idcombinacion: combinacion._id!, codigo: descripcion })
     };
 
     const combinaciones: Datum[] = combinacionProducto?.data || [];
@@ -59,7 +62,6 @@ export const RegistroSinComisionProducto = () => {
                         <tr>
                             <th className="px-6 py-3 uppercase">Tipo Producto</th>
                             <th className="px-6 py-3 uppercase">Serie</th>
-                            <th className="px-6 py-3 uppercase">Categoria</th>
                             <th className="px-6 py-3 uppercase">Codigo QR</th>
                             <th className="px-6 py-3 uppercase">Marca</th>
                             <th className="px-6 py-3 uppercase">Color</th>
@@ -71,7 +73,6 @@ export const RegistroSinComisionProducto = () => {
                             <tr key={combinacion._id} className="border-b border-gray-200">
                                 <td className="px-6 py-4 text-xs">{combinacion.tipoProducto}</td>
                                 <td className="px-6 py-4 text-xs">{combinacion.serie}</td>
-                                <td className="px-6 py-4 text-xs">{combinacion.categoria}</td>
                                 <td className="px-6 py-4 text-xs">{combinacion.codigoQR}</td>
                                 <td className="px-6 py-4 text-xs">{combinacion.marca}</td>
                                 <td className="px-6 py-4 text-xs">{combinacion.color}</td>

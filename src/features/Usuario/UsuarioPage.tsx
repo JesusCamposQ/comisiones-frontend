@@ -2,10 +2,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useQuery } from "@tanstack/react-query"
 import { Link } from "react-router"
 import { obtenerUsuario } from "./services/obtenerUsuario"
-import { Button } from "@/components/ui/button"
 
 export const UsuarioPage = () => {
-  const {data:usuario, isLoading} = useQuery({
+  const {data:usuario} = useQuery({
     queryKey: ['usuario'],
     queryFn: () => obtenerUsuario(),
     staleTime: 60 * 1000 * 10,

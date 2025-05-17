@@ -1,4 +1,4 @@
-import type { Sucursal } from "../interfaces/sucursal.interface"
+/*import type { Sucursal } from "../interfaces/sucursal.interface"
 
 // Simulación de servicio para obtener sucursales por empresa
 export async function obtenerSucursalByEmpresa(empresaId: string): Promise<Sucursal[]> {
@@ -106,3 +106,4 @@ export async function obtenerSucursalByEmpresa(empresaId: string): Promise<Sucur
     },
   ]
 }
+*/

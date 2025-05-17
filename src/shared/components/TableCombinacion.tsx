@@ -1,5 +1,5 @@
 import { TableBody, TableRow, TableCell } from "@/components/ui/table"
-import { Datum } from "@/features/CombinacionReceta/interfaces/comisiones.interface"
+import { Datum } from "@/features/ComisionReceta/interfaces/comisionReceta.interface"
 
 export const TableCombinacion = ({combinacion}: {combinacion: Datum[]}) => {
   return (

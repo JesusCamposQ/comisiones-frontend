@@ -1,25 +1,11 @@
-import * as React from "react"
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-  Store,
-  ShoppingBag,
-  NotebookTabs,
   Building,
   CircleDollarSign,
   BadgeDollarSign,
+  ShoppingBag,
 } from "lucide-react"
 
 import { NavMain } from "@/app/Layout/components/nav-main"
-import { NavProjects } from "@/app/Layout/components/nav-projects"
 import { NavUser } from "@/app/Layout/components/nav-user"
 import { TeamSwitcher } from "@/app/Layout/components/team-switcher"
 import {
@@ -43,7 +29,7 @@ const data = {
     },
   ],
   navMain: [
-    {
+    /*{
       title: "Ventas",
       url: "/ventas",
       icon: Store,
@@ -55,12 +41,17 @@ const data = {
         },
       ],
     },
+    */
     {
       title: "Comisiones",
       url: "#",
       icon: CircleDollarSign,
       isActive: true,
       items: [
+        {
+          title: "Comisiones por Ventas",
+          url: "/ventas",
+        },
         {
           title: "Registro de Comisiones",
           url: "#",
@@ -87,14 +78,14 @@ const data = {
               title: "Comision Receta",
               url: "/comision/gestion/receta",
             },
-            {
+            /*{
               title: "Comision Servicio",
               url: "/comision/gestion/servicio",
             },
             {
               title: "Comision Producto",
               url: "/comision/gestion/producto",
-            },
+            },*/
           ],
         },
         {
@@ -167,8 +158,18 @@ const data = {
         //   url: "/comision/receta",
         // },
         {
-          title: "Registro de Metas",
-          url: "/metas",
+          title: "Metas",
+          url: "#",
+          items: [
+            /*{
+              title: "Gestion de Metas",
+              url: "/metas",
+            },
+            */{
+              title: "Registro de Metas",
+              url: "/metas/registro",
+            },
+          ],
         },
       ],
     },

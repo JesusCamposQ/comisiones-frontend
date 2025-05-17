@@ -34,6 +34,10 @@ export default function FiltroOC({ setFiltros, initialFilters }: FiltroProps) {
         queryKey: ["tipoventas"],
         queryFn: () => obtenerTipoVentas(),
     })
+    const definirFecha = (fecha: string/*"2025-05-11"*/): Date => {
+        const [year, month, day] = fecha.split("-").map(Number)
+        return new Date(year, month - 1, day)
+    }
 
     const [filtro, setFiltro] = useState<{
         empresaId: string
@@ -46,8 +50,8 @@ export default function FiltroOC({ setFiltros, initialFilters }: FiltroProps) {
         empresaId: initialFilters?.empresa || "",
         sucursalesIds: initialFilters?.sucursal || [],
         tipoVentasIds: initialFilters?.tipoVenta || [],
-        fechaInicio: initialFilters?.fechaInicio ? new Date(initialFilters.fechaInicio) : new Date(),
-        fechaFin: initialFilters?.fechaFin ? new Date(initialFilters.fechaFin) : new Date(),
+        fechaInicio: initialFilters?.fechaInicio ? definirFecha(initialFilters.fechaInicio) : new Date(),
+        fechaFin: initialFilters?.fechaFin ? definirFecha(initialFilters.fechaFin) : new Date(),
         sucursalesList: []
     })
 

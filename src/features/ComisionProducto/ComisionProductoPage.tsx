@@ -12,7 +12,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useState } from "react";
 import { Datum } from "./interfaces/producto.interface";
-import { obtenerComisionProductoMontura } from "./services/obtenerComisionProducto";
+import { obtenerComisionProductoMontura } from "./services/serviciosComisionProducto";
 
 
 const CombinacionProductoPage = () => {

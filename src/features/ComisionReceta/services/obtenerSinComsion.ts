@@ -1,8 +1,8 @@
 import api from "@/app/service/api";
-import { Combinacion } from "@/features/CombinacionReceta/interfaces/comisiones.interface";
+import { CombinacionResponse } from "../interfaces/comisionReceta.interface";
 import { ComsionRecetaFiltro } from "../interfaces/comsionRecetaFiltro";
 
-const obtenerSinComsion = async (limite: number, pagina: number, filtro?: ComsionRecetaFiltro): Promise<Combinacion> => {
+const obtenerSinComsion = async (limite: number, pagina: number, filtro?: ComsionRecetaFiltro): Promise<CombinacionResponse | undefined> => {
   try {
     const response = await api.get("/api/combinacion/receta/sinComision", {
       params: {

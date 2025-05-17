@@ -14,52 +14,61 @@ export const Buscador = ({
   };
 
   return (
-    <div>
-      <h2>Buscador de Lentes</h2>
-      <form>
-        <input
-          name="tipoLente"
-          placeholder="tipo Lente"
-          value={filtro.tipoLente}
-          onChange={handleChange}
-        />
-        <input
-          name="material"
-          placeholder="Material"
-          value={filtro.material}
-          onChange={handleChange}
-        />
-        <input
-          name="tratamiento"
-          placeholder="Tratamiento"
-          value={filtro.tratamiento}
-          onChange={handleChange}
-        />
-        <input
-          name="marcaLente"
-          placeholder="Marca"
-          value={filtro.marcaLente}
-          onChange={handleChange}
-        />
-        <input
-          name="tipoColorLente"
-          placeholder="Tipo Color Lente"
-          value={filtro.tipoColorLente}
-          onChange={handleChange}
-        />
-        <input
-          name="rango"
-          placeholder="Rangos"
-          value={filtro.rango}
-          onChange={handleChange}
-        />
-        <input
-          name="colorLente"
-          placeholder="Color"
-          value={filtro.colorLente}
-          onChange={handleChange}
-        />
-      </form>
-    </div>
+    <form className='flex flex-row gap-2'>
+      <input
+        name="tipoLente"
+        className='hover:bg-amber-50 hover:rounded-md hover:border hover:py-2 hover:text-black focus:outline-none hover:border-blue-200'
+        placeholder="Tipo Lente"
+        value={filtro.tipoLente}
+        onChange={handleChange}
+      />
+      <input
+        name="material"
+        className='hover:bg-amber-50 hover:rounded-md hover:border hover:py-2 hover:text-black focus:outline-none hover:border-blue-200'
+        placeholder="Material"
+        value={filtro.material}
+        onChange={handleChange}
+      />
+
+      <input
+        name="tratamiento"
+        className='hover:bg-amber-50 hover:rounded-md hover:border hover:py-2 hover:text-black focus:outline-none hover:border-blue-200'
+        placeholder="Tratamiento"
+        value={filtro.tratamiento}
+        onChange={handleChange}
+      />
+
+
+      <input
+        name="marcaLente"
+        className='hover:bg-amber-50 hover:rounded-md hover:border hover:py-2 hover:text-black focus:outline-none hover:border-blue-200'
+        placeholder="Marca"
+        value={filtro.marcaLente}
+        onChange={handleChange}
+      />
+      <input
+        name="tipoColorLente"
+        className='hover:bg-amber-50 hover:rounded-md hover:border hover:py-2 hover:text-black focus:outline-none hover:border-blue-200'
+        placeholder="Tipo Color Lente"
+        value={filtro.tipoColorLente}
+        onChange={handleChange}
+      />
+
+      <input
+        name="rango"
+        className='hover:bg-amber-50 hover:rounded-md hover:border hover:py-2 hover:text-black focus:outline-none hover:border-blue-200'
+        placeholder="Rango"
+        value={filtro.rango}
+        onChange={handleChange}
+      />
+
+      <input
+        name="colorLente"
+        className='hover:bg-amber-50 hover:rounded-md hover:border hover:py-2 hover:text-black focus:outline-none hover:border-blue-200'
+        placeholder="Color"
+        value={filtro.colorLente}
+        onChange={handleChange}
+      />
+    </form>
   );
 };

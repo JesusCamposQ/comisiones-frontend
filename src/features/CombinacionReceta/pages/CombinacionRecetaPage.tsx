@@ -9,7 +9,7 @@ import {
   TableFooter,
 } from "@/components/ui/table";
 
-import obtenerCombinacionReceta from "../services/obtenerCombinacionReceta";
+import { obtenerCombinacionReceta } from "../services/serviciosCombinacionReceta";
 import { useEffect, useState } from "react";
 import {
   CombinacionResponse,
@@ -19,9 +19,11 @@ import {
 import { DetalleComision } from "../components/DetalleComision";
 import { Button } from "@/components/ui/button";
 import descargarCombinacionReceta from "../services/descargaCombinacionReceta";
-import { Buscador } from "../components/buscador";
+import { Buscador } from "../components/Buscador";
+import Londing from "@/shared/components/Londing";
 
 const CombinacionRecetaPage = () => {
+  const [update, setUpdate] = useState(false);
   const [page, setPage] = useState(1);
   const [filter, setFilter]=useState<filtroCombinacionRecetaI>({
     colorLente:'',
@@ -40,7 +42,7 @@ const CombinacionRecetaPage = () => {
   
   useEffect(() => {
     listar();
-  }, [page, filter]);
+  }, [page, filter, update]);
 
   const listar = async () => {
     try {
@@ -53,9 +55,12 @@ const CombinacionRecetaPage = () => {
       return;
     } catch (error) {}
   };
+  if(isLoading){
+    return <Londing isLoading={isLoading} />
+  }
   
   return (
-    <div className="flex flex-col m-auto">
+    <div className="flex flex-col m-auto p-10 w-full h-full gap-4">
       <div className="flex justify-end m-2">
         <Button
           onClick={descargarCombinacionReceta}
@@ -65,7 +70,7 @@ const CombinacionRecetaPage = () => {
         </Button>
       </div>
       <Buscador filtro={filter} setFiltro={setFilter} />
-      <Table className="w-[95%] m-auto p-2 rounded-md bg-white shadow-md">
+      <Table className="m-auto p-2 rounded-xl bg-white shadow-md">
         <TableCaption>Combinación de recetas</TableCaption>
         <TableHeader className="bg-blue-100">
           <TableRow>
@@ -74,7 +79,7 @@ const CombinacionRecetaPage = () => {
             <TableHead>TRATAMIENTO</TableHead>
             <TableHead>MARCA</TableHead>
             <TableHead>TIPO COLOR LENTE</TableHead>
-            <TableHead>RANGOS</TableHead>
+            <TableHead colSpan={2}>RANGOS</TableHead>
             <TableHead>COLOR</TableHead>
          
             <TableHead className="text-center">DETALLE COMISION</TableHead>
@@ -94,8 +99,8 @@ const CombinacionRecetaPage = () => {
                 <TableCell>{combinacion.tratamiento}</TableCell>
                 <TableCell>{combinacion.marcaLente}</TableCell>
                 <TableCell>{combinacion.tipoColorLente}</TableCell>
-                <TableCell>{combinacion.rango}</TableCell>
-            
+                <TableCell className="text-left text-xs whitespace-pre-wrap break-words" colSpan={2}>{combinacion.rango}</TableCell>
+          
                 <TableCell className="text-right">
                   {combinacion.colorLente}
                 </TableCell>
@@ -118,17 +123,15 @@ const CombinacionRecetaPage = () => {
               </TableRow>
               {showDetalle === combinacion._id && (
                 <TableRow key={combinacion._id}>
-                  <TableCell colSpan={3} />
-                  <TableCell colSpan={3} className="text-center mx-auto">
+                  <TableCell colSpan={9} className="text-center mx-auto">
                     <DetalleComision
                       key={combinacion._id}
                       comisiones={
                         (combinacion.comisionReceta as ComisionReceta[]) || [] 
                       }
-                      id={combinacion._id}
+                      setUpdate={setUpdate}
                     />
                   </TableCell>
-                  <TableCell colSpan={3} />
                 </TableRow>
               )}
             </>
@@ -163,7 +166,7 @@ const CombinacionRecetaPage = () => {
           </TableRow>
         </TableFooter>
       </Table>
-    </div>
+      </div>
   );
 };
 

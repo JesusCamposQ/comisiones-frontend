@@ -1,10 +1,10 @@
-import { Sucursal } from "@/features/Sucursal/interfaces/sucursal.interface";
 
 export interface Metas {
   data: Datum[];
 }
 
 export interface Datum {
+  _id?: string;
   monturaMasGafa: number;
   lenteDeContacto: number;
   nombre_sucursal?: string;

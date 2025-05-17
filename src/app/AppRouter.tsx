@@ -3,22 +3,21 @@ import VentaPage from '../features/Venta/VentaPage';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './Layout/Layout';
-import { MetasPage } from '@/features/Metas';
+import { RegistroMetasPage } from '@/features/Metas/pages/RegistroMetasPage';
 import { CombinacionRecetaPage } from '@/features/CombinacionReceta';
-import { ComisionRecetaPage } from '@/features/ComisionReceta';
 import { Autenticacion } from '@/features/Autenticacion/components/Autenticacion';
 import { UsuarioPage } from '@/features/Usuario/UsuarioPage';
 import { UsuarioRegistroPage } from '@/features/Usuario/pages/UsuarioRegistroPage';
 import { useContext } from 'react';
 import { TokenContext } from '@/features/Autenticacion/context/TokenProvider';
 import { ComisionProductoPage } from '@/features/ComisionProducto';
-import RegistroComisionProductoPage from '@/features/ComisionProducto/pages/RegistroComisionProductoPage';
 import ComisionGafasPage from '@/features/ComisionProducto/pages/ComisionGafasPage';
 import ComisionMonturaPage from '@/features/ComisionProducto/pages/ComisionMontura';
 import ComisionLenteContactoPage from '@/features/ComisionProducto/pages/ComisionLenteContactoPage';
 import { RegistroSinComisionReceta } from '@/features/ComisionReceta/pages/RegistroSinComisionReceta';
 import { RegistroSinComisionProducto } from '@/features/ComisionProducto/pages/RegistroSinComisionProducto';
 import { ComisionServicioPage } from '@/features/ComisionServicio/pages/ComisionServicioPage';
+import { MetasPages } from '@/features/Metas/pages/MetasPages';
  function AppRouter() {
   
   const {isAunteticacion,token}=  useContext(TokenContext)
@@ -36,7 +35,8 @@ import { ComisionServicioPage } from '@/features/ComisionServicio/pages/Comision
               <Route index element={<CombinacionRecetaPage />} />
               <Route path="combinacion-receta" element={<CombinacionRecetaPage />} />
             </Route>
-            <Route path="/metas" element={<MetasPage />} />
+            <Route path="/metas/registro" element={<RegistroMetasPage />} />
+            <Route path="/metas" element={<MetasPages />} />
             <Route path="/usuarios">
               <Route index element={<UsuarioPage />} />
               <Route path="registro" element={<UsuarioRegistroPage />} />
