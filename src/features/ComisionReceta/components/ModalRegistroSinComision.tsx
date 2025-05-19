@@ -40,8 +40,6 @@ const tipoComision = [
 
 export function ModalRegistroSinComision({ valor, open, setOpen, setActualizar }: ModalProps) {
   const [comisiones, setComisiones] = useState<IComisionReceta[]>([])
-  const tipoPrecio: string = ""
-
   const { data: tipoPrecioData, isLoading } = useQuery<TipoPrecio[]>({
     queryKey: ['tipo-precio', valor.idcombinacion],
     queryFn: () => obtenerTipoPrecio(valor.idcombinacion),
@@ -80,10 +78,16 @@ export function ModalRegistroSinComision({ valor, open, setOpen, setActualizar }
     setComisiones(filteredComisiones);
   }
   const registrarComision = async () => {
-    const { precio, monto } = comisiones[0]
+    const data: IComisionReceta[] = []
+    comisiones.forEach((comision) => {
+      const { precio, monto, tipoComision } = comision
+      data.push({
+        precio, monto, nombre: tipoComision
+      })
+    })
     const dataCombinacion: IComisionRecetaData = {
       combinacionReceta: valor.idcombinacion,
-      data: [{ precio, monto, nombre: tipoPrecio }]
+      data: data
     }
     console.log("Data Combinacion: ", dataCombinacion)
     const { status } = await registrarComisionReceta(dataCombinacion)
@@ -95,6 +99,8 @@ export function ModalRegistroSinComision({ valor, open, setOpen, setActualizar }
     }
     console.log("Data Combinacion: ", dataCombinacion)
   }
+
+
   const limpiarComisiones = () => {
     setComisiones([]);
     reset();

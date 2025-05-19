@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useForm } from "react-hook-form"
 import { Usuario } from "../interfaces/usuario.interface";
-import { crearUsuario } from "../services/crearUsuario";
+import { crearUsuario } from "../services/serviciosUsuario";
 import { Toaster, toast } from 'react-hot-toast';
 import { useNavigate } from "react-router";
 
@@ -33,54 +33,58 @@ export const UsuarioRegistroPage = () => {
     }
   }
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4 md:p-8 flex items-center justify-center">
     <Toaster />
-    <Card className="w-full max-w-md mx-auto">
-    <CardHeader className="text-center space-y-1">
-      <CardTitle className="text-2xl font-bold">Registro de usuario</CardTitle>
-      <CardDescription>
-        Registra un nuevo usuario
+    <Card className="w-full max-w-md shadow-xl border-blue-100 overflow-hidden p-0">
+    <CardHeader className="bg-gradient-to-r from-blue-500 to-blue-600 text-white space-y-1 pb-6 rounded-t-lg">
+      <CardTitle className="text-2xl font-bold text-center">Registro de usuario</CardTitle>
+      <CardDescription className="text-blue-100 text-center">
+      Registra un nuevo usuario en el sistema
       </CardDescription>
     </CardHeader>
-    <CardContent>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <CardContent className="p-6 pt-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div className="space-y-2">
-          <Label htmlFor="nombre">Nombre</Label>
+          <Label htmlFor="nombre" className="text-sm font-medium text-blue-800">Nombre</Label>
           <Input
             id="nombre"
             placeholder="Ingresa tu nombre"
             {...register("nombre", { required: true })}
+            className="border-blue-200 focus-visible:ring-blue-500"
           />
           {errors.nombre && <p className="text-red-600 text-sm flex items-center gap-1"><Ban className="h-3 w-3" /> El nombre es requerido</p>}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="apellidos">Apellidos</Label>
+          <Label htmlFor="apellidos" className="text-sm font-medium text-blue-800">Apellidos</Label>
           <Input
             id="apellidos"
             placeholder="Ingresa tus apellidos"
             {...register("apellidos", { required: true })}
+            className="border-blue-200 focus-visible:ring-blue-500"
           />
           {errors.apellidos && <p className="text-red-600 text-sm flex items-center gap-1"><Ban className="h-3 w-3" /> El apellido es requerido</p>}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="username">Nombre de usuario</Label>
+          <Label htmlFor="username" className="text-sm font-medium text-blue-800">Nombre de usuario</Label>
           <Input
             id="username"
             placeholder="Ingresa tu nombre de usuario"
             {...register("username", { required: true })}
+            className="border-blue-200 focus-visible:ring-blue-500"
           />
           {errors.username && <p className="text-red-600 text-sm flex items-center gap-1"><Ban className="h-3 w-3" /> El nombre de usuario es requerido</p>}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="password">Contraseña</Label>
+          <Label htmlFor="password" className="text-sm font-medium text-blue-800">Contraseña</Label>
           <div className="relative">
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
               placeholder="Ingresa tu contraseña"
+              className="border-blue-200 focus-visible:ring-blue-500 pr-10"
               {...register("password", {
                 required: true,
                 pattern: {
@@ -93,7 +97,7 @@ export const UsuarioRegistroPage = () => {
               type="button"
               variant="ghost"
               size="icon"
-              className="absolute right-0 top-0 h-full px-3"
+              className="absolute right-0 top-0 h-full px-3 text-blue-400 hover:text-blue-600 hover:bg-transparent"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -104,11 +108,11 @@ export const UsuarioRegistroPage = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="rol">Rol</Label>
+          <Label htmlFor="rol" className="text-sm font-medium text-blue-800">Rol</Label>
           <select
             id="rol"
             {...register("rol", { required: true })}
-            className="w-1/2 rounded-md border border-gray-300 px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-300 shadow-sm shadow-gray-200"
+            className="border-blue-200 focus:ring-blue-500"
           >
             <option value="" className="text-gray-400">Selecciona un rol</option>
             <option value="user">Usuario</option>
@@ -117,13 +121,17 @@ export const UsuarioRegistroPage = () => {
           {errors.rol && <p className="text-red-600 text-sm flex items-center gap-1"><Ban className="h-3 w-3" /> El rol es requerido</p>}   
         </div>
 
-        <Button type="submit" className="w-full bg-black text-white hover:bg-gray-800 uppercase">
+        <Button 
+        type="submit" 
+        className="w-full mt-8 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2.5 flex items-center justify-center gap-2"
+        style={{ backgroundColor: "#3498DB" }}
+        >
           Agregar usuario
         </Button>
         
       </form>
     </CardContent>
   </Card>
-  </>
+  </div>
   )
 }

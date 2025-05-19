@@ -1,10 +1,11 @@
 export interface Usuario {
-    id?: number;
+    _id: string;
     nombre: string;
     apellidos: string;
     username: string;
     password?: string;
     rol: string;
+    flag?: string;
 }
 
 export enum Role {
