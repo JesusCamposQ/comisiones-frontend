@@ -75,10 +75,16 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
     setComisiones(filteredComisiones);
   }
   const registrarComision = async () => {
-    const { precio, monto } = comisiones[0]
+    const data: IComisionProducto[] = []
+    comisiones.forEach((comision) => {
+      const { precio, monto, tipoComision } = comision
+      data.push({
+        precio, monto, nombre: tipoComision
+      })
+    })
     const dataCombinacion: IComisionProductoData = {
       producto: valor.idcombinacion,
-      data: [{ precio, monto, nombre: precio }]
+      data: data
     }
     console.log("Data Combinacion: ", dataCombinacion)
     const { status } = await registrarComisionProducto(dataCombinacion)
