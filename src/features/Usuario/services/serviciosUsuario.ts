@@ -31,7 +31,6 @@ export const eliminarUsuario = async (id: string) => {
 }
 
 export const editarUsuario = async (usuario: Usuario) => {
-    console.log("usuario",usuario)
     try {
         const resultado = await api.patch("api/usuario/" + usuario._id, usuario);
         return resultado;
