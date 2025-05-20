@@ -20,7 +20,7 @@ import { DetalleComision } from "../components/DetalleComision";
 import { Button } from "@/components/ui/button";
 import descargarCombinacionReceta from "../services/descargaCombinacionReceta";
 import { Buscador } from "../components/Buscador";
-import Londing from "@/shared/components/Londing";
+//import Londing from "@/shared/components/Londing";
 
 const CombinacionRecetaPage = () => {
   const [update, setUpdate] = useState(false);
@@ -35,7 +35,7 @@ const CombinacionRecetaPage = () => {
     tratamiento:''
   })
   const [showDetalle, setShowDetalle] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+ // const [isLoading, setIsLoading] = useState(false);
   const [combinacionReceta, setCombinacionReceta] =
     useState<CombinacionResponse>();
   
@@ -46,18 +46,16 @@ const CombinacionRecetaPage = () => {
 
   const listar = async () => {
     try {
-      setIsLoading(true);
+      //setIsLoading(true);
       const response = await obtenerCombinacionReceta(20, page, filter);
       if (response.data) {
         setCombinacionReceta(response);
-        setIsLoading(false);
+      //  setIsLoading(false);
       }
       return;
     } catch (error) {}
   };
-  if(isLoading){
-    return <Londing isLoading={isLoading} />
-  }
+ 
   
   return (
     <div className="flex flex-col m-auto p-10 w-full h-full gap-4">
@@ -69,7 +67,7 @@ const CombinacionRecetaPage = () => {
           Descargar Excel
         </Button>
       </div>
-      <Buscador filtro={filter} setFiltro={setFilter} />
+      <Buscador  setFiltro={setFilter} />
       <Table className="m-auto p-2 rounded-xl bg-white shadow-md">
         <TableCaption>Combinación de recetas</TableCaption>
         <TableHeader className="bg-blue-100">
