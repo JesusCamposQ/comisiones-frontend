@@ -18,6 +18,8 @@ import { RegistroSinComisionReceta } from '@/features/ComisionReceta/pages/Regis
 import { RegistroSinComisionProducto } from '@/features/ComisionProducto/pages/RegistroSinComisionProducto';
 import { ComisionServicioPage } from '@/features/ComisionServicio/pages/ComisionServicioPage';
 import { MetasPages } from '@/features/Metas/pages/MetasPages';
+import { CargarCombinacionesPage } from '@/features/CombinacionReceta/pages/CargarCombinacionesPage';
+import { ActualizarComisionesPage } from '@/features/CombinacionReceta/pages/ActualizarComisionesPage';
  function AppRouter() {
   
   const {isAunteticacion,token}=  useContext(TokenContext)
@@ -49,6 +51,8 @@ import { MetasPages } from '@/features/Metas/pages/MetasPages';
             <Route path="/comision/gestion/producto/gafas" element={<ComisionGafasPage />} />
             <Route path="/comision/gestion/producto/montura" element={<ComisionMonturaPage />} />
             <Route path="/comision/gestion/producto/lente-contacto" element={<ComisionLenteContactoPage />} />
+              <Route path="/cargar/combinaciones" element={<CargarCombinacionesPage />} />
+                   <Route path="/actualizar/combinaciones" element={<ActualizarComisionesPage />} />
           </Route> : 
                 <Route path="/" element={<Autenticacion />} />
           }

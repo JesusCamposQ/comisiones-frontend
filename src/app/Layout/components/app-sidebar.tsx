@@ -78,6 +78,14 @@ const data = {
               title: "Comision Receta",
               url: "/comision/gestion/receta",
             },
+            {
+              title: "Cargar combinaciones",
+              url: "/cargar/combinaciones",
+            },
+             {
+              title: "Actualizar comsiones",
+              url: "/actualizar/combinaciones",
+            },
             /*{
               title: "Comision Servicio",
               url: "/comision/gestion/servicio",
