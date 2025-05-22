@@ -36,3 +36,32 @@ export const editarCombinacionReceta = async (idComision: string, monto: number)
     throw error;
   }
 };
+
+export const cargarCombinaciones = async (formData:FormData) => {
+  try {
+    const response = await api.post(`/api/provider/excel/combinaciones/comisiones`, formData, {
+      headers:{
+       'Content-Type': 'multipart/form-data',
+      }
+    });
+    return response.data;
+  } catch (error) {
+   
+    throw error;
+  }
+};
+
+
+export const actualizarComisiones = async (formData:FormData) => {
+  try {
+    const response = await api.post(`/api/provider/excel/combinaciones/comisiones/actualizar`, formData, {
+      headers:{
+       'Content-Type': 'multipart/form-data',
+      }
+    });
+    return response.data;
+  } catch (error) {
+   
+    throw error;
+  }
+};
