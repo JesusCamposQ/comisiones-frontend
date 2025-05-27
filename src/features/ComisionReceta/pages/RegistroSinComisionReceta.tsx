@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import obtenerSinComsion from "../services/obtenerSinComsion";
 import { ComsionRecetaFiltro } from "../interfaces/comsionRecetaFiltro";
 import { FiltroComision } from "../components/FiltroComision";
-import { BookPlus } from "lucide-react";
+import { BookPlus, Download } from "lucide-react";
 import { ModalRegistroSinComision } from "../components/ModalRegistroSinComision";
 import toast, { Toaster } from "react-hot-toast";
 import { CombinacionResponse, Datum } from "../interfaces/comisionReceta.interface";
+import { Button } from "@/components/ui/button";
 
 interface FormValues {
     idcombinacion: string;
@@ -49,6 +50,16 @@ export const RegistroSinComisionReceta = () => {
         <div className="mx-auto flex flex-col gap-4">
             <Toaster />
             <h1 className="text-2xl font-bold text-center text-blue-500 uppercase">Registro Sin Comision</h1>
+            <Button 
+            className="p-4 flex items-center 
+            gap-2 bg-green-500 hover:bg-green-700 
+            text-white rounded-md shadow-sm
+            w-[200px]" 
+            // TODO: implementar boton de refrescar
+            type="button" onClick={() => refetch()}> 
+                <Download />
+                Descargar
+            </Button>
             <FiltroComision setFiltro={setFiltro} />
         {isLoading ? (
             <div className="flex items-center justify-center h-[600px] m-auto">
