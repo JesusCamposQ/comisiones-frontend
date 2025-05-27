@@ -33,3 +33,21 @@ export const listarTipoPrecio = async (combinacion:string) => {
     throw error;
   }
 };
+
+export const descargarSinComision = async () => {
+  try {
+    const response = await api.get("/api/combinacion/receta/descargar/sinComision", {
+      responseType: "blob",
+    });
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "combinaciones_sin_comision.xlsx");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
