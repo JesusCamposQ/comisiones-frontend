@@ -43,7 +43,6 @@ export const DetalleVenta = ({
             <TableHead className="text-center">Descuento</TableHead>
             <TableHead className="text-center">% Descuento</TableHead>
             <TableHead className="text-center">Gran total</TableHead>
-            <TableHead className="text-center">Sucursal</TableHead>
             <TableHead className="text-center" >Detalles</TableHead>
           </TableRow>
         </TableHeader>
@@ -56,7 +55,6 @@ export const DetalleVenta = ({
               <TableCell className="text-right">{venta.descuento}</TableCell>
               <TableCell className="text-right">{porcentaje(venta.detalle.reduce((acc, item) => acc + item.importe, 0), venta.descuento)} %</TableCell>
               <TableCell className="text-right font-semibold">{venta.montoTotal}</TableCell>
-              <TableCell>{sucursal}</TableCell>
               <TableCell>
                 {venta.detalle && venta.detalle.length > 0 ? (
                   <Table className="table-fixed m-auto text-sm border rounded-md bg-gray-50">
