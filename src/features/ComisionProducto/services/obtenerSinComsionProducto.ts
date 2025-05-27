@@ -23,3 +23,35 @@ const obtenerSinComsionProducto = async (limite: number, pagina: number, filtro?
   }
 };
 export default obtenerSinComsionProducto;
+
+export const descargarSinComisionProducto = async () => {
+  try {
+    const response = await api.get("/api/producto/descargar/producto/sinComsion", {
+      responseType: "blob",
+    });
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "productos_sin_comision.xlsx");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const cargarSinComisionProducto = async (formData:FormData) => {
+  try {
+    const response = await api.post(`/api/provider/excel/producto/comisiones`, formData, {
+      headers:{
+       'Content-Type': 'multipart/form-data',
+      }
+    });
+    return response.data;
+  } catch (error) {
+   
+    throw error;
+  }
+};

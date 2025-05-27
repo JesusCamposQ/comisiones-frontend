@@ -86,6 +86,10 @@ const data = {
               title: "Actualizar comsiones",
               url: "/actualizar/combinaciones",
             },
+            {
+              title: "Cargar comision producto",
+              url: "/cargar/comision/producto",
+            },
             /*{
               title: "Comision Servicio",
               url: "/comision/gestion/servicio",

@@ -1,10 +1,10 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import obtenerSinComsion from "../services/obtenerSinComsion";
+import obtenerSinComsion, { descargarSinComision } from "../services/obtenerSinComsion";
 import { ComsionRecetaFiltro } from "../interfaces/comsionRecetaFiltro";
 import { FiltroComision } from "../components/FiltroComision";
-import { BookPlus, Download } from "lucide-react";
+import { BookPlus, FileDown, Sparkles } from "lucide-react";
 import { ModalRegistroSinComision } from "../components/ModalRegistroSinComision";
 import toast, { Toaster } from "react-hot-toast";
 import { CombinacionResponse, Datum } from "../interfaces/comisionReceta.interface";
@@ -49,17 +49,32 @@ export const RegistroSinComisionReceta = () => {
     return (
         <div className="mx-auto flex flex-col gap-4">
             <Toaster />
-            <h1 className="text-2xl font-bold text-center text-blue-500 uppercase">Registro Sin Comision</h1>
-            <Button 
-            className="p-4 flex items-center 
-            gap-2 bg-green-500 hover:bg-green-700 
-            text-white rounded-md shadow-sm
-            w-[200px]" 
-            // TODO: implementar boton de refrescar
-            type="button" onClick={() => refetch()}> 
-                <Download />
-                Descargar
-            </Button>
+            <div className="flex justify-center items-center gap-4 p-4">
+        <div className="text-center sm:text-left">
+          <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
+            <Sparkles className="w-5 h-5 text-blue-500" />
+            <span className="text-sm font-medium text-blue-600 uppercase tracking-wide">
+              Recetas
+            </span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+            Registro Sin Comision
+          </h1>
+        </div>
+        <Button
+          className="cursor-pointer group relative overflow-hidden bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-out transform hover:scale-105 px-8 py-4 min-w-[200px]"
+          type="button"
+          onClick={() => descargarSinComision()}
+        >
+          {/* Efecto de brillo en hover */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+
+          <div className="relative flex items-center justify-center gap-3">
+            <FileDown className="w-5 h-5 group-hover:animate-bounce" />
+            <span className="font-semibold text-base">Descargar</span>
+          </div>
+        </Button>
+      </div>
             <FiltroComision setFiltro={setFiltro} />
         {isLoading ? (
             <div className="flex items-center justify-center h-[600px] m-auto">

@@ -61,7 +61,6 @@ export const actualizarComisiones = async (formData:FormData) => {
     });
     return response.data;
   } catch (error) {
-   
-    throw error;
+    console.log(error);
   }
 };
