@@ -36,6 +36,7 @@ export const descargarSinComisionProducto = async () => {
     document.body.appendChild(link);
     link.click();
     link.remove();
+    return response;
   } catch (error) {
     console.log(error);
     throw error;

@@ -67,7 +67,7 @@ const CombinacionRecetaPage = () => {
           Descargar Excel
         </Button>
       </div>
-      <Buscador  setFiltro={setFilter} />
+      <Buscador  setFiltro={setFilter} className="grid grid-cols-7 grid-rows-1 gap-2" />
       <Table className="m-auto p-2 rounded-xl bg-white shadow-md">
         <TableCaption>Combinación de recetas</TableCaption>
         <TableHeader className="bg-blue-100">

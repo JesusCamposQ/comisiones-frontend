@@ -3,10 +3,14 @@ import { filtroCombinacionRecetaI } from '../interfaces/comisiones.interface';
 
 export const Buscador = ({
   setFiltro,
+  className
 }: {
   setFiltro: (data: filtroCombinacionRecetaI | ((prev: filtroCombinacionRecetaI) => filtroCombinacionRecetaI)) => void;
+  className?: string;
 }) => {
-  
+  if(!className){
+    className = "flex flex-row gap-2";
+  }
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFiltro((prev: filtroCombinacionRecetaI) => ({
@@ -16,7 +20,7 @@ export const Buscador = ({
   };
 
   return (
-    <form className='flex flex-row gap-2'>
+    <form className={className}>
       <input
         name="tipoLente"
         className='rounded-md border py-2 px-2 text-black focus:outline-none border-blue-200'

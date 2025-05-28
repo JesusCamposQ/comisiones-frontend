@@ -1,7 +1,9 @@
 import { Comision, MetaProductosVip, VentaElement } from "../interfaces/venta.interface";
 
 export function porcentaje(total:number, monto:number, sucursal?:string ) {
-
+  if(total <= 0){
+    return 0
+  }
     if(sucursal && sucursal.includes("PARAGUAY")){
       return 3.00
     }
