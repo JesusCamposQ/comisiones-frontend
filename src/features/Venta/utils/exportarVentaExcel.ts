@@ -2,7 +2,7 @@ import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import { Venta } from "../interfaces/venta.interface";
 import { calcularComision, calcularComisionTotal, porcentaje, totalImporte } from "./ventaUtils";
-
+import {v6} from 'uuid'
 
 export const exportarVentaExcel = async (ventas: Venta[]) => {
 
@@ -118,5 +118,5 @@ export const exportarVentaExcel = async (ventas: Venta[]) => {
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
 
-  saveAs(blob, "venta");
+  saveAs(blob, v6());
 };

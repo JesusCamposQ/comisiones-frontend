@@ -12,8 +12,8 @@ export function porcentaje(total:number, monto:number, sucursal?:string ) {
 export function descontarPorcentajeAcomision(comision:number, porcentaje:number):number {
     if (typeof comision !== "number" || isNaN(comision)) return 0;
     if (typeof porcentaje !== "number" || isNaN(porcentaje)) return Number(comision.toFixed(2));
-    if (porcentaje >= 100) return 0; // o manejar como prefieras
-    if (porcentaje < 0) return comision; // protección extra
+    if (porcentaje >= 100) return 0; 
+    if (porcentaje < 0) return comision; 
     return Number((comision / (1 - porcentaje / 100)).toFixed(2));
 }
 
