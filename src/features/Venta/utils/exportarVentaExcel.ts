@@ -33,6 +33,7 @@ export const exportarVentaExcel = async (ventas: Venta[]) => {
     { header: "Importe", key: "importe" },
     { header: "comision", key: "comision" },
     { header: "Porcentaje", key: "porcentaje"},
+        { header: "fecha de  finalizacion", key: "fecha"},
   ];
 
   console.log(ventas);
@@ -102,7 +103,8 @@ export const exportarVentaExcel = async (ventas: Venta[]) => {
             : "Información no disponible",
           importe:item.importe,
           comision: comision,
-          porcentaje:porcentaje(item.importe, calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento)),sucursal).toFixed(2)
+          porcentaje:porcentaje(item.importe, calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento)),sucursal).toFixed(2),
+          fecha: detalle.fechaFinalizacion,
         })
         
         
