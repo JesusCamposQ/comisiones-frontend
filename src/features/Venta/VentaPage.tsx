@@ -21,6 +21,8 @@ import FiltroOC from "@/shared/components/Filtro/FiltroOC";
 import { calcularComisionTotal,  totalImporte } from "./utils/ventaUtils";
 import { Totales } from "./interfaces/totales.interface";
 import formatoMoneda from "@/utils/formatoMoneda";
+import { Button } from "@/components/ui/button";
+import { exportarVentaExcel } from "./utils/exportarVentaExcel";
 
 
 const VentaPage = () => {
@@ -90,7 +92,17 @@ const VentaPage = () => {
 
   return (
     <div className="flex flex-col w-full h-full gap-4">
+      
       <FiltroOC setFiltros={setFiltro} initialFilters={filtro} />
+
+      <div className="flex justify-end m-2">
+        <Button
+          onClick={()=>exportarVentaExcel(ventas)}
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Descargar Excel
+        </Button>
+      </div>
       <div className=" flex flex-col w-full h-full gap-4">
       <Table className="w-[95%] m-auto p-2 rounded-md bg-white shadow-md">
         <TableCaption>Lista de ventas</TableCaption>
