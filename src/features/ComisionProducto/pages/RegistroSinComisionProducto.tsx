@@ -20,6 +20,7 @@ interface FormValues {
 export const RegistroSinComisionProducto = () => {
   const [filtro, setFiltro] = useState<ComsionProductoFiltro>({});
   const [actualizar, setActualizar] = useState(false);
+  const [isDownload, setIsDownload] = useState(false);
   const [open, setOpen] = useState(false);
   const [valor, setValor] = useState<FormValues>({
     idcombinacion: "",
@@ -53,6 +54,13 @@ export const RegistroSinComisionProducto = () => {
     setOpen(true);
     setValor({ idcombinacion: combinacion._id!, codigo: descripcion });
   };
+  const descargar = async () => {
+    setIsDownload(true);
+    const response = await descargarSinComisionProducto();
+    if (response.status === 200) {
+      setIsDownload(false);
+    }
+  };
 
   const combinaciones: Datum[] = combinacionProducto?.data || [];
   return (
@@ -73,14 +81,24 @@ export const RegistroSinComisionProducto = () => {
         <Button
           className="cursor-pointer group relative overflow-hidden bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-out transform hover:scale-105 px-8 py-4 min-w-[200px]"
           type="button"
-          onClick={() => descargarSinComisionProducto()}
+          onClick={() => descargar()}
+          disabled={isDownload}
         >
           {/* Efecto de brillo en hover */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
 
           <div className="relative flex items-center justify-center gap-3">
-            <FileDown className="w-5 h-5 group-hover:animate-bounce" />
-            <span className="font-semibold text-base">Descargar</span>
+            {isDownload ? (
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Descargando...
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <FileDown className="w-5 h-5 group-hover:animate-bounce" />
+                <span className="font-semibold text-base">Descargar</span>
+              </div>
+            )}
           </div>
         </Button>
       </div>
