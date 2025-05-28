@@ -18,7 +18,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import { Link } from "react-router"
-import { useState } from "react"
+import { Fragment, useState } from "react"
 
 export function NavMain({
   items,
@@ -77,7 +77,7 @@ export function NavMain({
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <>
+                        <Fragment>
                           <div className="flex items-center justify-between gap-2">
                             <Link to={subItem.url}>
                               <span className="text-sm">
@@ -100,7 +100,7 @@ export function NavMain({
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           ))}
-                        </>
+                        </Fragment>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

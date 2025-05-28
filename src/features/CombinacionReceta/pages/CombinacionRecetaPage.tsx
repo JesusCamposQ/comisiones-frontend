@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 
 import { obtenerCombinacionReceta } from "../services/serviciosCombinacionReceta";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   CombinacionResponse,
   ComisionReceta,
@@ -84,56 +84,56 @@ const CombinacionRecetaPage = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {combinacionReceta?.data.map((combinacion) => (
-            <>
-              <TableRow
-                key={combinacion._id}
-                className="border-b-indigo-100 hover:bg-indigo-50"
-              >
-                <TableCell className="font-medium">
-                  {combinacion.tipoLente}
-                </TableCell>
-                <TableCell>{combinacion.material}</TableCell>
-                <TableCell>{combinacion.tratamiento}</TableCell>
-                <TableCell>{combinacion.marcaLente}</TableCell>
-                <TableCell>{combinacion.tipoColorLente}</TableCell>
-                <TableCell className="text-left text-xs whitespace-pre-wrap break-words" colSpan={2}>{combinacion.rango}</TableCell>
+            {combinacionReceta?.data.map((combinacion) => (
+              <Fragment key={combinacion._id}>
+                <TableRow
+                  key={`${combinacion._id}-fila`}
+                  className="border-b-indigo-100 hover:bg-indigo-50"
+                >
+                  <TableCell className="font-medium">
+                    {combinacion.tipoLente}
+                  </TableCell>
+                  <TableCell>{combinacion.material}</TableCell>
+                  <TableCell>{combinacion.tratamiento}</TableCell>
+                  <TableCell>{combinacion.marcaLente}</TableCell>
+                  <TableCell>{combinacion.tipoColorLente}</TableCell>
+                  <TableCell className="text-left text-xs whitespace-pre-wrap break-words" colSpan={2}>{combinacion.rango}</TableCell>
           
-                <TableCell className="text-right">
-                  {combinacion.colorLente}
-                </TableCell>
-                <TableCell className="text-center">
-                  <button
-                    type="button"
-                    className="text-blue-500 hover:text-blue-700 m-1"
-                    onClick={() =>
-                      setShowDetalle((c) =>
-                        c !== combinacion._id ? combinacion._id : null
-                      )
-                    }
-                  >
-                    {showDetalle === combinacion._id
-                      ? "Ocultar Detalle"
-                      : "Mostrar Detalle"}
-       
-                  </button>
-                </TableCell>
-              </TableRow>
-              {showDetalle === combinacion._id && (
-                <TableRow key={combinacion._id}>
-                  <TableCell colSpan={9} className="text-center mx-auto">
-                    <DetalleComision
-                      key={combinacion._id}
-                      comisiones={
-                        (combinacion.comisionReceta as ComisionReceta[]) || [] 
+                  <TableCell className="text-right">
+                    {combinacion.colorLente}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <button
+                      type="button"
+                      className="text-blue-500 hover:text-blue-700 m-1"
+                      onClick={() =>
+                        setShowDetalle((c) =>
+                          c !== combinacion._id ? combinacion._id : null
+                        )
                       }
-                      setUpdate={setUpdate}
-                    />
+                    >
+                      {showDetalle === combinacion._id
+                        ? "Ocultar Detalle"
+                        : "Mostrar Detalle"}
+       
+                    </button>
                   </TableCell>
                 </TableRow>
-              )}
-            </>
-          ))}
+                {showDetalle === combinacion._id && (
+                  <TableRow key={`${combinacion._id}-detalle`}>
+                    <TableCell colSpan={9} className="text-center mx-auto">
+                      <DetalleComision
+                        key={`${combinacion._id}-detalle`}
+                        comisiones={
+                          (combinacion.comisionReceta as ComisionReceta[]) || [] 
+                        }
+                        setUpdate={setUpdate}
+                      />
+                    </TableCell>
+                  </TableRow>
+                )}
+              </Fragment>
+            ))}
         </TableBody>
         <TableFooter className="border-t-blue-400">
           <TableRow className="bg-blue-50 hover:bg-indigo-50">

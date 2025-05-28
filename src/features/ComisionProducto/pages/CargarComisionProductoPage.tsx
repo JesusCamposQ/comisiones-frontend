@@ -47,7 +47,7 @@ export default function CargarComisionProductoPage() {
 
   const handleUpload = async () => {
     if (!selectedFile) return
-
+    setIsUploading(true)
     const formData = new FormData();
     formData.append("file", selectedFile);
     try {
