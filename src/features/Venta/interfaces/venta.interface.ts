@@ -30,6 +30,7 @@ export interface VentaElement {
   tipo2:         string;
   tipoDescuento: string | null;
   detalle:       Detalle[];
+  fechaFinalizacion: string
 }
 
 export interface Detalle {

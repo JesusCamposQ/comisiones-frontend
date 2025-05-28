@@ -2,7 +2,7 @@ import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import { Venta } from "../interfaces/venta.interface";
 import { calcularComision, calcularComisionTotal, porcentaje, totalImporte } from "./ventaUtils";
-
+import {v6} from 'uuid'
 
 export const exportarVentaExcel = async (ventas: Venta[]) => {
 
@@ -33,6 +33,7 @@ export const exportarVentaExcel = async (ventas: Venta[]) => {
     { header: "Importe", key: "importe" },
     { header: "comision", key: "comision" },
     { header: "Porcentaje", key: "porcentaje"},
+        { header: "fecha de  finalizacion", key: "fecha"},
   ];
 
   console.log(ventas);
@@ -102,7 +103,8 @@ export const exportarVentaExcel = async (ventas: Venta[]) => {
             : "Información no disponible",
           importe:item.importe,
           comision: comision,
-          porcentaje:porcentaje(item.importe, calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento)),sucursal).toFixed(2)
+          porcentaje:porcentaje(item.importe, calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento)),sucursal).toFixed(2),
+          fecha: detalle.fechaFinalizacion,
         })
         
         
@@ -118,5 +120,5 @@ export const exportarVentaExcel = async (ventas: Venta[]) => {
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
 
-  saveAs(blob, "venta");
+  saveAs(blob, v6());
 };
