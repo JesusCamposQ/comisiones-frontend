@@ -17,29 +17,29 @@ import {
   filtroCombinacionRecetaI,
 } from "../interfaces/comisiones.interface";
 import { DetalleComision } from "../components/DetalleComision";
-import { Button } from "@/components/ui/button";
 import descargarCombinacionReceta from "../services/descargaCombinacionReceta";
 import { Buscador } from "../components/Buscador";
+import { Banner } from "@/shared/components/Banner/Banner";
 //import Londing from "@/shared/components/Londing";
 
 const CombinacionRecetaPage = () => {
   const [update, setUpdate] = useState(false);
   const [page, setPage] = useState(1);
-  const [filter, setFilter]=useState<filtroCombinacionRecetaI>({
-    colorLente:'',
-    marcaLente:'',
-    material:'',
-    rango:'',
-    tipoColorLente:'',
-    tipoLente:'',
-    tratamiento:''
-  })
+  const [filter, setFilter] = useState<filtroCombinacionRecetaI>({
+    colorLente: "",
+    marcaLente: "",
+    material: "",
+    rango: "",
+    tipoColorLente: "",
+    tipoLente: "",
+    tratamiento: "",
+  });
   const [showDetalle, setShowDetalle] = useState<string | null>(null);
- // const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [combinacionReceta, setCombinacionReceta] =
     useState<CombinacionResponse>();
-  
-  
+  const [isDownload, setIsDownload] = useState(false);
+
   useEffect(() => {
     listar();
   }, [page, filter, update]);
@@ -50,24 +50,35 @@ const CombinacionRecetaPage = () => {
       const response = await obtenerCombinacionReceta(20, page, filter);
       if (response.data) {
         setCombinacionReceta(response);
-      //  setIsLoading(false);
+        //  setIsLoading(false);
       }
       return;
     } catch (error) {}
   };
- 
-  
+
+  const handleDownload = () => {
+    setIsDownload(true);
+    descargarCombinacionReceta()
+      .then(() => {
+        setIsDownload(false);
+      })
+      .catch(() => {
+        setIsDownload(false);
+      });
+  };
+
   return (
     <div className="flex flex-col m-auto p-10 w-full h-full gap-4">
-      <div className="flex justify-end m-2">
-        <Button
-          onClick={descargarCombinacionReceta}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Descargar Excel
-        </Button>
-      </div>
-      <Buscador  setFiltro={setFilter} className="grid grid-cols-7 grid-rows-1 gap-2" />
+      <Banner
+        title="Comisiones"
+        subtitle="Combinación de recetas"
+        handleDownload={handleDownload}
+        isDownload={isDownload}
+      />
+      <Buscador
+        setFiltro={setFilter}
+        className="grid grid-cols-7 grid-rows-1 gap-2"
+      />
       <Table className="m-auto p-2 rounded-xl bg-white shadow-md">
         <TableCaption>Combinación de recetas</TableCaption>
         <TableHeader className="bg-blue-100">
@@ -79,61 +90,65 @@ const CombinacionRecetaPage = () => {
             <TableHead>TIPO COLOR LENTE</TableHead>
             <TableHead colSpan={2}>RANGOS</TableHead>
             <TableHead>COLOR</TableHead>
-         
+
             <TableHead className="text-center">DETALLE COMISION</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-            {combinacionReceta?.data.map((combinacion) => (
-              <Fragment key={combinacion._id}>
-                <TableRow
-                  key={`${combinacion._id}-fila`}
-                  className="border-b-indigo-100 hover:bg-indigo-50"
+          {combinacionReceta?.data.map((combinacion) => (
+            <Fragment key={combinacion._id}>
+              <TableRow
+                key={`${combinacion._id}-fila`}
+                className="border-b-indigo-100 hover:bg-indigo-50"
+              >
+                <TableCell className="font-medium">
+                  {combinacion.tipoLente}
+                </TableCell>
+                <TableCell>{combinacion.material}</TableCell>
+                <TableCell>{combinacion.tratamiento}</TableCell>
+                <TableCell>{combinacion.marcaLente}</TableCell>
+                <TableCell>{combinacion.tipoColorLente}</TableCell>
+                <TableCell
+                  className="text-left text-xs whitespace-pre-wrap break-words"
+                  colSpan={2}
                 >
-                  <TableCell className="font-medium">
-                    {combinacion.tipoLente}
-                  </TableCell>
-                  <TableCell>{combinacion.material}</TableCell>
-                  <TableCell>{combinacion.tratamiento}</TableCell>
-                  <TableCell>{combinacion.marcaLente}</TableCell>
-                  <TableCell>{combinacion.tipoColorLente}</TableCell>
-                  <TableCell className="text-left text-xs whitespace-pre-wrap break-words" colSpan={2}>{combinacion.rango}</TableCell>
-          
-                  <TableCell className="text-right">
-                    {combinacion.colorLente}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <button
-                      type="button"
-                      className="text-blue-500 hover:text-blue-700 m-1"
-                      onClick={() =>
-                        setShowDetalle((c) =>
-                          c !== combinacion._id ? combinacion._id : null
-                        )
+                  {combinacion.rango}
+                </TableCell>
+
+                <TableCell className="text-right">
+                  {combinacion.colorLente}
+                </TableCell>
+                <TableCell className="text-center">
+                  <button
+                    type="button"
+                    className="text-blue-500 hover:text-blue-700 m-1"
+                    onClick={() =>
+                      setShowDetalle((c) =>
+                        c !== combinacion._id ? combinacion._id : null
+                      )
+                    }
+                  >
+                    {showDetalle === combinacion._id
+                      ? "Ocultar Detalle"
+                      : "Mostrar Detalle"}
+                  </button>
+                </TableCell>
+              </TableRow>
+              {showDetalle === combinacion._id && (
+                <TableRow key={`${combinacion._id}-detalle`}>
+                  <TableCell colSpan={9} className="text-center mx-auto">
+                    <DetalleComision
+                      key={`${combinacion._id}-detalle`}
+                      comisiones={
+                        (combinacion.comisionReceta as ComisionReceta[]) || []
                       }
-                    >
-                      {showDetalle === combinacion._id
-                        ? "Ocultar Detalle"
-                        : "Mostrar Detalle"}
-       
-                    </button>
+                      setUpdate={setUpdate}
+                    />
                   </TableCell>
                 </TableRow>
-                {showDetalle === combinacion._id && (
-                  <TableRow key={`${combinacion._id}-detalle`}>
-                    <TableCell colSpan={9} className="text-center mx-auto">
-                      <DetalleComision
-                        key={`${combinacion._id}-detalle`}
-                        comisiones={
-                          (combinacion.comisionReceta as ComisionReceta[]) || [] 
-                        }
-                        setUpdate={setUpdate}
-                      />
-                    </TableCell>
-                  </TableRow>
-                )}
-              </Fragment>
-            ))}
+              )}
+            </Fragment>
+          ))}
         </TableBody>
         <TableFooter className="border-t-blue-400">
           <TableRow className="bg-blue-50 hover:bg-indigo-50">
@@ -164,7 +179,7 @@ const CombinacionRecetaPage = () => {
           </TableRow>
         </TableFooter>
       </Table>
-      </div>
+    </div>
   );
 };
 

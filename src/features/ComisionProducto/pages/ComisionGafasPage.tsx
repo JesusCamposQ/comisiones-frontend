@@ -19,10 +19,12 @@ import { Button } from "@/components/ui/button";
 import { ComsionProductoFiltro } from "../interfaces/comsionProductoFiltro";
 import { FiltroComisionProducto } from "../components/FiltroComisionProducto";
 import { exportarProducto } from "../utils/descargarExcel";
+import { Banner } from "@/shared/components/Banner/Banner";
 
 
 const ComisionGafasPage = () => {
   const [filtro, setFiltro] = useState<ComsionProductoFiltro>({})
+  const [isDownload, setIsDownload] = useState(false);
   const [actualizar, setActualizar] = useState(false)
   const [page, setPage] = useState(1);
   const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(null);
@@ -47,17 +49,24 @@ const ComisionGafasPage = () => {
       </div>
     );
   }
+  const handleDownload = () => {
+    setIsDownload(true);
+    exportarProducto('gafa')
+      .then(() => {
+        setIsDownload(false);
+      })
+      .catch(() => {
+        setIsDownload(false);
+      });
+  };
   return (
     <div className="flex flex-col m-auto">
-      <h1 className="text-2xl font-bold text-center m-4 text-blue-500 uppercase">Combinación de productos Montura</h1>
-       <div className="flex justify-end m-2">
-        <Button
-        onClick={()=> exportarProducto('gafa')}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Descargar Excel
-        </Button>
-      </div>
+      <Banner
+      title="Comisiones de productos"
+      subtitle="Gafas"
+      handleDownload={handleDownload}
+      isDownload={isDownload}
+      />
       <FiltroComisionProducto setFiltro={setFiltro} />
       {isLoading ? (
         <div className="flex items-center justify-center h-[600px] m-auto">
