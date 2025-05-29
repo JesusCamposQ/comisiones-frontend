@@ -97,7 +97,7 @@ const VentaPage = () => {
 
       <div className="flex justify-end m-2">
         <Button
-          onClick={()=>exportarVentaExcel(ventas)}
+          onClick={()=>exportarVentaExcel(ventas, filtro.fechaInicio, filtro.fechaFin)}
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
         >
           Descargar Excel
