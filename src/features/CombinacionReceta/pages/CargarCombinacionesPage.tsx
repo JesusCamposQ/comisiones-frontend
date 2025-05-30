@@ -51,9 +51,7 @@ export const CargarCombinacionesPage: React.FC = () => {
         const formData = new FormData();
         formData.append("file", selectedFile);
         try {
-            const response = await cargarCombinaciones(formData)
-            console.log(response.status);
-    
+            const response = await cargarCombinaciones(formData)  
             if (response.status === 201) {
                 toast.success(
                   <div className="flex items-center gap-2">

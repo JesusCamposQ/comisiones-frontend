@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { error } from "console";
+
 
 const api = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/`,

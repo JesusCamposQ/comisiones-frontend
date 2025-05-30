@@ -78,6 +78,7 @@ export default function FiltroOC({ setFiltros, initialFilters }: FiltroProps) {
     }, [filtro.empresaId])
 
     const handleEmpresaChange = (value: string) => {
+        removeFilterSucursales()
         setFiltro(prev => ({ ...prev, empresaId: value }))
     }
 
@@ -110,6 +111,12 @@ export default function FiltroOC({ setFiltros, initialFilters }: FiltroProps) {
         setFiltro(prev => ({
             ...prev,
             sucursalesIds: prev.sucursalesIds.filter(id => id !== sucursalId)
+        }))
+    }
+    const removeFilterSucursales = () => {
+        setFiltro(prev => ({
+            ...prev,
+            sucursalesIds: []
         }))
     }
 
