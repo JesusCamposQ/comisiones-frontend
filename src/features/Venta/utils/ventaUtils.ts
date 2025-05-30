@@ -11,14 +11,20 @@ export function porcentaje(total:number, monto:number, sucursal?:string ) {
     return Number(porcentaje.toFixed(2)) || 0
 }
 
-export function descontarPorcentajeAcomision(comision:number, porcentaje:number):number {
-    if (typeof comision !== "number" || isNaN(comision)) return 0;
-    if (typeof porcentaje !== "number" || isNaN(porcentaje)) return Number(comision.toFixed(2));
-    if (porcentaje >= 100) return 0; 
-    if (porcentaje < 0) return comision; 
-    return Number((comision / (1 - porcentaje / 100)).toFixed(2));
-}
+export function descontarPorcentajeAcomision(comision: number, porcentaje: number): number {
+    if (
+        !Number.isFinite(comision) || 
+        !Number.isFinite(porcentaje) || 
+        comision < 0 || 
+        porcentaje < 0 || 
+        porcentaje > 100
+    ) {
+        return 0;
+    }
 
+    const resultado = comision * (1 - porcentaje / 100);
+    return Number(resultado.toFixed(2));
+}
 export const calcularComision = (
   comisiones: Comision[],
   gafaVip: number,
@@ -46,19 +52,23 @@ export const calcularComision = (
       ],
       [{monto: 0}, {monto: Infinity}]
     );
-
-    if (metaProductosVip && empresa === "OPTICENTRO") {
-      if (productovip >= metaProductosVip.monturaMasGafa && lenteDeContacto >= metaProductosVip.lenteDeContacto) {
+    console.log(empresa);
+    
+    if (empresa === "OPTICENTRO") {
+      if (metaProductosVip && productovip >= metaProductosVip.monturaMasGafa && lenteDeContacto >= metaProductosVip.lenteDeContacto) {
         comisionProducto += mayorMonto.monto;
       } else {
+        console.log('monto menor');
+        
         comisionProducto += menorMonto.monto;
       }
     } else {
+      console.log('monto mayor');
       comisionProducto += mayorMonto.monto;
     }
   }
 
-  return descontarPorcentajeAcomision(comisionProducto, porcentaje);
+  return  descontarPorcentajeAcomision(comisionProducto, porcentaje);
 };
 
 export function calcularComisionTotal (
