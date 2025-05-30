@@ -58,14 +58,14 @@ export const exportarVentaExcel = async (ventas: Venta[], fechaI:string,fechaF:s
         venta.monturaVip,
         venta.lenteDeContacto,
         venta.empresa,
-        venta.sucursal
+       // venta.sucursal
       ),
     });
     for (const detalle of venta.ventas) {
 
         
       for (const item of detalle.detalle) {
-        const comision = calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento),sucursal,item.importe)
+        const comision = calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento))
         worksheetTwo.addRow({
           sucursal: venta.sucursal,
           asesor: venta.asesor,
@@ -118,5 +118,5 @@ export const exportarVentaExcel = async (ventas: Venta[], fechaI:string,fechaF:s
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
 
-  saveAs(blob, `CalculoComisiones(${fechaI}_${fechaF})`);
+  saveAs(blob, `OPTICENTRO PARAGUAY-${fechaI}_${fechaF})`);
 };

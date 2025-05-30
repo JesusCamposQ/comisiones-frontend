@@ -4,9 +4,9 @@ export function porcentaje(total:number, monto:number, sucursal?:string ) {
   if(total <= 0){
     return 0
   }
-    if(sucursal && sucursal.includes("PARAGUAY")){
+    /*if(sucursal && sucursal.includes("PARAGUAY")){
       return 3.00
-    }
+    }*/
     const porcentaje =(monto /total) * 100
     return Number(porcentaje.toFixed(2)) || 0
 }
@@ -33,16 +33,16 @@ export const calcularComision = (
   metaProductosVip: MetaProductosVip | null,
   empresa: string,
   porcentaje:number,
-  sucursal?: string,
-  importe?:number
+ // sucursal?: string,
+  //importe?:number
 ) => {
   const productovip = gafaVip + monturaVip;
   let comisionProducto = 0;
 
-  if(sucursal?.includes("PARAGUAY")) {
-    comisionProducto = importe ? importe * 0.03 : 0;
+  /*if(sucursal?.includes("PARAGUAY")) {
+    comisionProducto = importe ? importe * 1 : 0;
     return descontarPorcentajeAcomision(comisionProducto, porcentaje);
-  }
+  }*/
 
   if (Array.isArray(comisiones) && comisiones.length > 0) {
     const [mayorMonto, menorMonto] = comisiones.reduce(
@@ -54,11 +54,12 @@ export const calcularComision = (
     );
     console.log(empresa);
     
+    
     if (empresa === "OPTICENTRO") {
       if (metaProductosVip && productovip >= metaProductosVip.monturaMasGafa && lenteDeContacto >= metaProductosVip.lenteDeContacto) {
         comisionProducto += mayorMonto.monto;
       } else {
-        console.log('monto menor');
+        console.log('monto menor', menorMonto.monto);
         
         comisionProducto += menorMonto.monto;
       }
@@ -78,7 +79,7 @@ export function calcularComisionTotal (
   monturaVip: number,
   lenteDeContacto: number,
   empresa: string,
-  sucursal?: string
+  //sucursal?: string
  ) {
   return ventas.reduce((acc, venta) => {
     const importeTotal = venta.detalle.reduce((acc, detalle) => acc + detalle.importe, 0);
@@ -92,8 +93,8 @@ export function calcularComisionTotal (
         metaProductosVip, 
         empresa, 
         porcentajeDescuento,
-        sucursal,
-        detalle.importe  // Pasamos el importe del detalle actual
+       // sucursal,
+       // detalle.importe  // Pasamos el importe del detalle actual
       );  
       return acc + comision;
     }, 0);
