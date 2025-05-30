@@ -39,7 +39,6 @@ const ComisionGafasPage = () => {
   useEffect(() => {
     refetch()
   }, [actualizar, filtro])
-  console.log(combinacionProducto);
   const combinacion: Datum[] = combinacionProducto?.data || [];
   if (isLoading) {
     return (

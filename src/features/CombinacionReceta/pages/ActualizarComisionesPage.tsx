@@ -28,7 +28,6 @@ export const ActualizarComisionesPage: React.FC = () => {
     formData.append("file", archivo);
     try {
       const response = await actualizarComisiones(formData);
-      console.log(response.status);
 
       if (response.status === 200) {
         toast.success("Actualizado");

@@ -86,7 +86,6 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
       producto: valor.idcombinacion,
       data: data
     }
-    console.log("Data Combinacion: ", dataCombinacion)
     const { status } = await registrarComisionProducto(dataCombinacion)
     if (status === 201) {
       //toast.success("Comisiones registradas exitosamente");
@@ -94,7 +93,6 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
       setOpen(false)
       setActualizar(true)
     }
-    console.log("Data Combinacion: ", dataCombinacion)
   }
   const limpiarComisiones = () => {
     setComisiones([]);

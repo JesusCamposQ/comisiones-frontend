@@ -10,6 +10,8 @@ export interface Venta {
   montoTotal:        number;
   totalDescuento:     number;
   ventas:           VentaElement[];
+  importeTotal?:     number;
+  totalComision?:    number;
 }
 
 export interface MetaProductosVip {

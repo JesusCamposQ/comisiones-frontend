@@ -39,8 +39,6 @@ export default function SignupForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Usuario registrado:", usuario)
-    // Aquí iría la lógica para enviar los datos al servidor
   }
 
   return (

@@ -23,7 +23,15 @@ import { Totales } from "./interfaces/totales.interface";
 import formatoMoneda from "@/utils/formatoMoneda";
 import { Button } from "@/components/ui/button";
 import { exportarVentaExcel } from "./utils/exportarVentaExcel";
+import { Ordenar } from "@/shared/components/Ordenar/Ordenar";
 
+const crearDatosConCamposCalculados = (datosBase: Venta[]) => {
+  return datosBase.map((item) => ({
+    ...item,
+    importeTotal: totalImporte(item.ventas),
+    totalComision: calcularComisionTotal(item.ventas, item.metaProductosVip, item.gafaVip,item.monturaVip, item.lenteDeContacto, item.empresa),
+  }))
+}
 
 const VentaPage = () => {
   const [ventas, setVentas]=useState<Venta[]>([])
@@ -48,7 +56,6 @@ const VentaPage = () => {
 
   useEffect(()=>{
      fetch() 
-     console.log("Filtro: ", filtro)
   },[filtro])
 
   useEffect(()=>{
@@ -68,6 +75,7 @@ const VentaPage = () => {
       const { empresa, sucursales, ...rest } = filtro;
       const response = await obtenerVentas(rest)
       setVentas(response)      
+      setVentas(() => crearDatosConCamposCalculados(response))
       setIsloading(false)
     } catch (error) {
       setIsloading(false)
@@ -75,7 +83,8 @@ const VentaPage = () => {
     
     }
    }
-  
+
+
 
   if(isLoading){
     return (
@@ -108,15 +117,29 @@ const VentaPage = () => {
         <TableCaption>Lista de ventas</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">SUCURSAL</TableHead>
-            <TableHead className="text-center">ASESOR</TableHead>
-            <TableHead className="text-center">Tickets</TableHead>
-            <TableHead className="text-center">Importe Total</TableHead>
+            <TableHead className="w-[100px]">
+              <Ordenar setDatos={setVentas} datos={ventas} title="sucursal"/>
+            </TableHead>
+            <TableHead className="text-center">
+              <Ordenar setDatos={setVentas} datos={ventas} title="asesor"/>
+            </TableHead>
+            <TableHead className="text-center">
+              <Ordenar setDatos={setVentas} datos={ventas} title="ventas" rename="tickets"/>
+            </TableHead>
+            <TableHead className="text-center">
+            <Ordenar setDatos={setVentas} datos={ventas} title="importeTotal" rename="Importe Total" />
+            </TableHead>
 
-            <TableHead className="text-center">Descuento</TableHead>
+            <TableHead className="text-center">
+            <Ordenar setDatos={setVentas} datos={ventas} title="totalDescuento" rename="Descuento" />
+            </TableHead>
            
-            <TableHead className="text-center">Gran Total</TableHead>
-            <TableHead className="text-center">Total comisión</TableHead>
+            <TableHead className="text-center">
+            <Ordenar setDatos={setVentas} datos={ventas} title="montoTotal" rename="Gran Total" />
+            </TableHead>
+            <TableHead className="text-center">
+            <Ordenar setDatos={setVentas} datos={ventas} title="totalComision" rename="Total comisión" />
+            </TableHead>
             <TableHead className="text-center">VENTAS</TableHead>
           </TableRow>
         </TableHeader>

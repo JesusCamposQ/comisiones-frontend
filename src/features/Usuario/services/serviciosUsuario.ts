@@ -21,7 +21,6 @@ export const crearUsuario = async (usuario: Usuario) => {
 }
 
 export const eliminarUsuario = async (id: string) => {
-    console.log("id",id)
     try {
         const resultado = await api.delete("api/usuario/" + id);
         return resultado;
