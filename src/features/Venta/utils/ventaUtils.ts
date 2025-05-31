@@ -1,6 +1,6 @@
 import { Comision, MetaProductosVip, VentaElement } from "../interfaces/venta.interface";
 
-export function porcentaje(total:number, monto:number, sucursal?:string ) {
+export function porcentaje(total:number, monto:number) {
   if(total <= 0){
     return 0
   }

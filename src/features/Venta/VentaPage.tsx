@@ -106,7 +106,7 @@ const VentaPage = () => {
 
 
       <div className="flex justify-end mb-2 mx-10">
-        <ButtonDescarga handleDownload={() => exportarVentaExcel(ventas)} isDownload={isLoading} />
+        <ButtonDescarga handleDownload={() => exportarVentaExcel(ventas,filtro.fechaInicio,filtro.fechaFin)} isDownload={isLoading} />
       </div>
       <div className=" flex flex-col w-full h-full gap-4">
       <Table className="w-[95%] m-auto p-2 rounded-md bg-white shadow-md">
@@ -151,7 +151,7 @@ const VentaPage = () => {
                 <TableCell className="text-right">{formatoMoneda(venta.montoTotal, venta.sucursal)}</TableCell>
         
                 <TableCell className="text-right">
-                 {formatoMoneda(calcularComisionTotal(venta.ventas, venta.metaProductosVip, venta.gafaVip,venta.monturaVip, venta.lenteDeContacto, venta.empresa,venta.sucursal), venta.sucursal)}
+                 {formatoMoneda(calcularComisionTotal(venta.ventas, venta.metaProductosVip, venta.gafaVip,venta.monturaVip, venta.lenteDeContacto, venta.empresa), venta.sucursal)}
                 </TableCell>
                 <TableCell className="text-right">
                   <button

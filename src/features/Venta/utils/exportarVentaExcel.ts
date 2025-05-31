@@ -31,7 +31,7 @@ export const exportarVentaExcel = async (ventas: Venta[], fechaI:string,fechaF:s
     { header: "Importe", key: "importe" },
     { header: "comision", key: "comision" },
     { header: "Porcentaje", key: "porcentaje"},
-      { header: "llave desbloquedad", key: "llave"},
+      { header: "llave desbloqueda", key: "llave"},
         { header: "fecha de  finalizacion", key: "fecha"},
   ];
 
@@ -43,7 +43,6 @@ export const exportarVentaExcel = async (ventas: Venta[], fechaI:string,fechaF:s
     const lenteDeContacto = venta.lenteDeContacto
     const metaProductosVip= venta.metaProductosVip
     const empresa = venta.empresa
-    const sucursal = venta.sucursal
     worksheetOne.addRow({
       sucursal: venta.sucursal,
       asesor: venta.asesor,
@@ -103,7 +102,7 @@ export const exportarVentaExcel = async (ventas: Venta[], fechaI:string,fechaF:s
             : "Información no disponible",
           importe:item.importe,
           comision: comision.comison,
-          porcentaje: porcentaje(item.importe,comision1.comison,sucursal).toFixed(2),
+          porcentaje: porcentaje(item.importe,comision1.comison).toFixed(2),
           llave:comision1.llave ? 'si':'no',
           fecha: detalle.fechaFinalizacion,
         })
