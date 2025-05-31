@@ -4,21 +4,27 @@ export function porcentaje(total:number, monto:number, sucursal?:string ) {
   if(total <= 0){
     return 0
   }
-    if(sucursal && sucursal.includes("PARAGUAY")){
+    /*if(sucursal && sucursal.includes("PARAGUAY")){
       return 3.00
-    }
+    }*/
     const porcentaje =(monto /total) * 100
     return Number(porcentaje.toFixed(2)) || 0
 }
 
-export function descontarPorcentajeAcomision(comision:number, porcentaje:number):number {
-    if (typeof comision !== "number" || isNaN(comision)) return 0;
-    if (typeof porcentaje !== "number" || isNaN(porcentaje)) return Number(comision.toFixed(2));
-    if (porcentaje >= 100) return 0; 
-    if (porcentaje < 0) return comision; 
-    return Number((comision / (1 - porcentaje / 100)).toFixed(2));
-}
+export function descontarPorcentajeAcomision(comision: number, porcentaje: number): number {
+    if (
+        !Number.isFinite(comision) || 
+        !Number.isFinite(porcentaje) || 
+        comision < 0 || 
+        porcentaje < 0 || 
+        porcentaje > 100
+    ) {
+        return 0;
+    }
 
+    const resultado = comision * (1 - porcentaje / 100);
+    return Number(resultado.toFixed(2));
+}
 export const calcularComision = (
   comisiones: Comision[],
   gafaVip: number,
@@ -27,16 +33,23 @@ export const calcularComision = (
   metaProductosVip: MetaProductosVip | null,
   empresa: string,
   porcentaje:number,
-  sucursal?: string,
-  importe?:number
+ // sucursal?: string,
+  //importe?:number
 ) => {
+  let llave:boolean = false
   const productovip = gafaVip + monturaVip;
+  
+  
+  console.log('metaProductosVip',metaProductosVip);
+  
+  console.log('vip', productovip);
+  
   let comisionProducto = 0;
 
-  if(sucursal?.includes("PARAGUAY")) {
-    comisionProducto = importe ? importe * 0.03 : 0;
+  /*if(sucursal?.includes("PARAGUAY")) {
+    comisionProducto = importe ? importe * 1 : 0;
     return descontarPorcentajeAcomision(comisionProducto, porcentaje);
-  }
+  }*/
 
   if (Array.isArray(comisiones) && comisiones.length > 0) {
     const [mayorMonto, menorMonto] = comisiones.reduce(
@@ -46,19 +59,25 @@ export const calcularComision = (
       ],
       [{monto: 0}, {monto: Infinity}]
     );
-
-    if (metaProductosVip && empresa === "OPTICENTRO") {
-      if (productovip >= metaProductosVip.monturaMasGafa && lenteDeContacto >= metaProductosVip.lenteDeContacto) {
+    
+    
+    
+    if (empresa === "OPTICENTRO") {
+      if (metaProductosVip && productovip >= metaProductosVip.monturaMasGafa && lenteDeContacto >= metaProductosVip.lenteDeContacto) {
+        console.log('se desbloqeo la llave');
+        llave=true
         comisionProducto += mayorMonto.monto;
       } else {
+        
         comisionProducto += menorMonto.monto;
       }
     } else {
+    
       comisionProducto += mayorMonto.monto;
     }
   }
 
-  return descontarPorcentajeAcomision(comisionProducto, porcentaje);
+  return  {comison: descontarPorcentajeAcomision(comisionProducto, porcentaje), llave}
 };
 
 export function calcularComisionTotal (
@@ -68,7 +87,7 @@ export function calcularComisionTotal (
   monturaVip: number,
   lenteDeContacto: number,
   empresa: string,
-  sucursal?: string
+  //sucursal?: string
  ) {
   return ventas.reduce((acc, venta) => {
     const importeTotal = venta.detalle.reduce((acc, detalle) => acc + detalle.importe, 0);
@@ -82,10 +101,10 @@ export function calcularComisionTotal (
         metaProductosVip, 
         empresa, 
         porcentajeDescuento,
-        sucursal,
-        detalle.importe  // Pasamos el importe del detalle actual
+       // sucursal,
+       // detalle.importe  // Pasamos el importe del detalle actual
       );  
-      return acc + comision;
+      return acc + comision.comison;
     }, 0);
   }, 0);
 }

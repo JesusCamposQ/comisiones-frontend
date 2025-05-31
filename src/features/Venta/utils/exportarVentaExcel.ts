@@ -31,6 +31,7 @@ export const exportarVentaExcel = async (ventas: Venta[], fechaI:string,fechaF:s
     { header: "Importe", key: "importe" },
     { header: "comision", key: "comision" },
     { header: "Porcentaje", key: "porcentaje"},
+      { header: "llave desbloquedad", key: "llave"},
         { header: "fecha de  finalizacion", key: "fecha"},
   ];
 
@@ -58,14 +59,15 @@ export const exportarVentaExcel = async (ventas: Venta[], fechaI:string,fechaF:s
         venta.monturaVip,
         venta.lenteDeContacto,
         venta.empresa,
-        venta.sucursal
+       // venta.sucursal
       ),
     });
     for (const detalle of venta.ventas) {
 
         
       for (const item of detalle.detalle) {
-        const comision = calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento),sucursal,item.importe)
+        const comision = calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento))
+       const comision1=   calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento))
         worksheetTwo.addRow({
           sucursal: venta.sucursal,
           asesor: venta.asesor,
@@ -100,8 +102,9 @@ export const exportarVentaExcel = async (ventas: Venta[], fechaI:string,fechaF:s
             ? `${item.otros.descripcion}`
             : "Información no disponible",
           importe:item.importe,
-          comision: comision,
-          porcentaje:porcentaje(item.importe, calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento)),sucursal).toFixed(2),
+          comision: comision.comison,
+          porcentaje: porcentaje(item.importe,comision1.comison,sucursal).toFixed(2),
+          llave:comision1.llave ? 'si':'no',
           fecha: detalle.fechaFinalizacion,
         })
         
@@ -118,5 +121,5 @@ export const exportarVentaExcel = async (ventas: Venta[], fechaI:string,fechaF:s
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
 
-  saveAs(blob, `CalculoComisiones(${fechaI}_${fechaF})`);
+  saveAs(blob, `OPTICENTRO-${fechaI}_${fechaF})`);
 };
