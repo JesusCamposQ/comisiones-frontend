@@ -104,6 +104,7 @@ const VentaPage = () => {
       
       <FiltroOC setFiltros={setFiltro} initialFilters={filtro} />
 
+
       <div className="flex justify-end mb-2 mx-10">
         <ButtonDescarga handleDownload={() => exportarVentaExcel(ventas)} isDownload={isLoading} />
       </div>
