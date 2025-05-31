@@ -21,9 +21,9 @@ import FiltroOC from "@/shared/components/Filtro/FiltroOC";
 import { calcularComisionTotal,  totalImporte } from "./utils/ventaUtils";
 import { Totales } from "./interfaces/totales.interface";
 import formatoMoneda from "@/utils/formatoMoneda";
-import { Button } from "@/components/ui/button";
 import { exportarVentaExcel } from "./utils/exportarVentaExcel";
 import { Ordenar } from "@/shared/components/Ordenar/Ordenar";
+import { ButtonDescarga } from "@/components/buttonDescarga";
 
 const crearDatosConCamposCalculados = (datosBase: Venta[]) => {
   return datosBase.map((item) => ({
@@ -104,13 +104,9 @@ const VentaPage = () => {
       
       <FiltroOC setFiltros={setFiltro} initialFilters={filtro} />
 
-      <div className="flex justify-end m-2">
-        <Button
-          onClick={()=>exportarVentaExcel(ventas, filtro.fechaInicio, filtro.fechaFin)}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Descargar Excel
-        </Button>
+
+      <div className="flex justify-end mb-2 mx-10">
+        <ButtonDescarga handleDownload={() => exportarVentaExcel(ventas)} isDownload={isLoading} />
       </div>
       <div className=" flex flex-col w-full h-full gap-4">
       <Table className="w-[95%] m-auto p-2 rounded-md bg-white shadow-md">
