@@ -29,7 +29,7 @@ const crearDatosConCamposCalculados = (datosBase: Venta[]) => {
   return datosBase.map((item) => ({
     ...item,
     importeTotal: totalImporte(item.ventas),
-    totalComision: calcularComisionTotal(item.ventas, item.metaProductosVip, item.gafaVip,item.monturaVip, item.lenteDeContacto, item.empresa),
+    totalComision: calcularComisionTotal(item.ventas, item.metaProductosVip, item.gafaVip,item.monturaVip, item.lenteDeContacto, item.empresa, item.sucursal),
   }))
 }
 
@@ -64,7 +64,7 @@ const VentaPage = () => {
       totalImporte: Number(ventas.reduce((acc, venta) => acc + totalImporte(venta.ventas), 0).toFixed(2)),
       totalDescuento: Number(ventas.reduce((acc, venta) => acc + venta.totalDescuento, 0).toFixed(2)),
       totalGranTotal: Number(ventas.reduce((acc, venta) => acc + venta.montoTotal, 0).toFixed(2)),
-      totalComision: Number(ventas.reduce((acc, venta) => acc + calcularComisionTotal(venta.ventas, venta.metaProductosVip, venta.gafaVip,venta.monturaVip, venta.lenteDeContacto, venta.empresa), 0).toFixed(2)),
+      totalComision: Number(ventas.reduce((acc, venta) => acc + calcularComisionTotal(venta.ventas, venta.metaProductosVip, venta.gafaVip,venta.monturaVip, venta.lenteDeContacto, venta.empresa, venta.sucursal), 0).toFixed(2)),
       totalVentas: ventas.length,
     })
   },[ventas])
@@ -151,7 +151,7 @@ const VentaPage = () => {
                 <TableCell className="text-right">{formatoMoneda(venta.montoTotal, venta.sucursal)}</TableCell>
         
                 <TableCell className="text-right">
-                 {formatoMoneda(calcularComisionTotal(venta.ventas, venta.metaProductosVip, venta.gafaVip,venta.monturaVip, venta.lenteDeContacto, venta.empresa), venta.sucursal)}
+                 {formatoMoneda(calcularComisionTotal(venta.ventas, venta.metaProductosVip, venta.gafaVip,venta.monturaVip, venta.lenteDeContacto, venta.empresa, venta.sucursal), venta.sucursal)}
                 </TableCell>
                 <TableCell className="text-right">
                   <button
