@@ -120,5 +120,5 @@ export const exportarVentaExcel = async (ventas: Venta[], fechaI:string,fechaF:s
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
 
-  saveAs(blob, `OPTICENTRO-${fechaI}_${fechaF})`);
+  saveAs(blob, `OFEROPTICA-${fechaI}_${fechaF})`);
 };

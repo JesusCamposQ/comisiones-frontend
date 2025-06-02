@@ -88,7 +88,7 @@ export const DetalleVenta = ({
                             </TableCell>
                             <TableCell className="px-2 py-1 text-right">{item.importe}</TableCell>
                             <TableCell className="px-4 py-1 text-right">{comision.comison}</TableCell>
-                            <TableCell className="px-4 py-1 text-right">{porcentaje(item.importe, calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(venta.detalle.reduce((acc, item) => acc + item.importe, 0), venta.descuento)).comison,sucursal).toFixed(2)} %</TableCell>
+                            <TableCell className="px-4 py-1 text-right">{porcentaje(item.importe, calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(venta.detalle.reduce((acc, item) => acc + item.importe, 0), venta.descuento)).comison).toFixed(2)} %</TableCell>
                           </TableRow>
                         })
 

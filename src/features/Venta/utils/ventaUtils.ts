@@ -38,12 +38,9 @@ export const calcularComision = (
 ) => {
   let llave:boolean = false
   const productovip = gafaVip + monturaVip;
-  
-  
-  console.log('metaProductosVip',metaProductosVip);
-  
-  console.log('vip', productovip);
-  
+
+
+
   let comisionProducto = 0;
 
   /*if(sucursal?.includes("PARAGUAY")) {
@@ -64,7 +61,14 @@ export const calcularComision = (
     
     if (empresa === "OPTICENTRO") {
       if (metaProductosVip && productovip >= metaProductosVip.monturaMasGafa && lenteDeContacto >= metaProductosVip.lenteDeContacto) {
-        console.log('se desbloqeo la llave');
+          console.log('gafa', gafaVip);
+          console.log('lc', lenteDeContacto);
+          console.log('montura', monturaVip);
+          
+          console.log(metaProductosVip);
+          
+            
+        
         llave=true
         comisionProducto += mayorMonto.monto;
       } else {

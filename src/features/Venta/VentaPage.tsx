@@ -106,7 +106,7 @@ const VentaPage = () => {
 
 
       <div className="flex justify-end mb-2 mx-10">
-        <ButtonDescarga handleDownload={() => exportarVentaExcel(ventas,filtro.fechaInicio,filtro.fechaFin)} isDownload={isLoading} />
+        <ButtonDescarga handleDownload={() => exportarVentaExcel(ventas,filtro.fechaInicio, filtro.fechaFin )} isDownload={isLoading} />
       </div>
       <div className=" flex flex-col w-full h-full gap-4">
       <Table className="w-[95%] m-auto p-2 rounded-md bg-white shadow-md">
