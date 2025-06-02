@@ -33,17 +33,14 @@ export const calcularComision = (
   metaProductosVip: MetaProductosVip | null,
   empresa: string,
   porcentaje:number,
- // sucursal?: string,
+  sucursal: string,
   //importe?:number
 ) => {
   let llave:boolean = false
   const productovip = gafaVip + monturaVip;
-  
-  
-  console.log('metaProductosVip',metaProductosVip);
-  
-  console.log('vip', productovip);
-  
+
+
+
   let comisionProducto = 0;
 
   /*if(sucursal?.includes("PARAGUAY")) {
@@ -59,17 +56,16 @@ export const calcularComision = (
       ],
       [{monto: 0}, {monto: Infinity}]
     );
-    
-    
-    
-    if (empresa === "OPTICENTRO") {
-      if (metaProductosVip && productovip >= metaProductosVip.monturaMasGafa && lenteDeContacto >= metaProductosVip.lenteDeContacto) {
-        console.log('se desbloqeo la llave');
-        llave=true
-        comisionProducto += mayorMonto.monto;
-      } else {
         
-        comisionProducto += menorMonto.monto;
+    if (empresa === "OPTICENTRO") {      
+      if (metaProductosVip && productovip >= metaProductosVip.monturaMasGafa && lenteDeContacto >= metaProductosVip.lenteDeContacto) {
+ 
+        comisionProducto += mayorMonto.monto;
+        llave=true
+      } else if (sucursal === 'OPTICENTRO PARAGUAY'){
+        comisionProducto += mayorMonto.monto;
+      }else{
+          comisionProducto += menorMonto.monto;
       }
     } else {
     
@@ -87,7 +83,7 @@ export function calcularComisionTotal (
   monturaVip: number,
   lenteDeContacto: number,
   empresa: string,
-  //sucursal?: string
+  sucursal: string
  ) {
   return ventas.reduce((acc, venta) => {
     const importeTotal = venta.detalle.reduce((acc, detalle) => acc + detalle.importe, 0);
@@ -101,7 +97,7 @@ export function calcularComisionTotal (
         metaProductosVip, 
         empresa, 
         porcentajeDescuento,
-       // sucursal,
+        sucursal,
        // detalle.importe  // Pasamos el importe del detalle actual
       );  
       return acc + comision.comison;

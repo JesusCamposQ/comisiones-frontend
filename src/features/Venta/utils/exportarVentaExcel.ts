@@ -58,15 +58,15 @@ export const exportarVentaExcel = async (ventas: Venta[], fechaI:string,fechaF:s
         venta.monturaVip,
         venta.lenteDeContacto,
         venta.empresa,
-       // venta.sucursal
+       venta.sucursal
       ),
     });
     for (const detalle of venta.ventas) {
 
         
       for (const item of detalle.detalle) {
-        const comision = calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento))
-       const comision1=   calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento))
+        const comision = calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento), venta.sucursal)
+       const comision1=   calcularComision(item.comisiones, gafaVip, monturaVip, lenteDeContacto, metaProductosVip, empresa, porcentaje(detalle.detalle.reduce((acc, item) => acc + item.importe, 0), detalle.descuento), venta.sucursal)
         worksheetTwo.addRow({
           sucursal: venta.sucursal,
           asesor: venta.asesor,
@@ -120,5 +120,5 @@ export const exportarVentaExcel = async (ventas: Venta[], fechaI:string,fechaF:s
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
 
-  saveAs(blob, `OPTICENTRO-${fechaI}_${fechaF})`);
+  saveAs(blob, `OFEROPTICA-${fechaI}_${fechaF})`);
 };
