@@ -102,19 +102,31 @@ const data = {
         },
         {
           title: "Comision Producto",
-          url: "/comision/gestion/producto",
+          url: "#",
           items: [
             {
               title: "Comision Montura",
               url: "/comision/gestion/producto/montura",
             },
             {
+              title: "Montura sin comision",
+              url: "/comision/gestion/producto/sin-comision/montura",
+            },
+            {
               title: "Comision Gafas",
               url: "/comision/gestion/producto/gafas",
             },
             {
+              title: "Gafas sin comision",
+              url: "/comision/gestion/producto/sin-comision/gafas",
+            },
+            {
               title: "Comision Lente Contacto",
               url: "/comision/gestion/producto/lente-contacto",
+            },
+            {
+              title: "Lente Contacto sin comision",
+              url: "/comision/gestion/producto/sin-comision/lente-contacto",
             },
           ],
         },
@@ -171,13 +183,13 @@ const data = {
         // },
         {
           title: "Metas",
-          url: "#",
+          url: "/metas",
           items: [
-            /*{
+            {
               title: "Gestion de Metas",
               url: "/metas",
             },
-            */{
+            {
               title: "Registro de Metas",
               url: "/metas/registro",
             },

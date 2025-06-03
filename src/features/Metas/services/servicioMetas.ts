@@ -1,5 +1,5 @@
 import api from "@/app/service/api";
-import { Metas } from "../interfaces/metas.interface";
+import { Datum, Metas } from "../interfaces/metas.interface";
 
 export const registrarMetas = async (data: Metas) => {
   console.log("Esta es la Data: "+data)
@@ -23,13 +23,20 @@ export const obtenerMetas = async () => {
   }
 };
 
-export const editarMetas = async (data: any) => {
-  console.log("Esta es la Data: "+data)
+export const editarMetas = async (data: Datum) => {
+  console.log(data)
+  console.log("Esta es la MonturaMasGafa: "+data.monturaMasGafa)
+  console.log("Esta es la LenteDeContacto: "+data.lenteDeContacto)
+
   try{
     const response = await api.patch(`/api/metas/producto/vip/${data._id}`, 
-      data
+      {
+        monturaMasGafa: Number(data.monturaMasGafa),
+        lenteDeContacto: Number(data.lenteDeContacto)
+      }
     );
-    return response.data;
+    console.log(response);
+    return response;
   }catch(error){
     console.log(error)
   }

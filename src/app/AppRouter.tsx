@@ -17,10 +17,13 @@ import ComisionLenteContactoPage from '@/features/ComisionProducto/pages/Comisio
 import { RegistroSinComisionReceta } from '@/features/ComisionReceta/pages/RegistroSinComisionReceta';
 import { RegistroSinComisionProducto } from '@/features/ComisionProducto/pages/RegistroSinComisionProducto';
 import { ComisionServicioPage } from '@/features/ComisionServicio/pages/ComisionServicioPage';
-import { MetasPages } from '@/features/Metas/pages/MetasPages';
 import { CargarCombinacionesPage } from '@/features/CombinacionReceta/pages/CargarCombinacionesPage';
 import { ActualizarComisionesPage } from '@/features/CombinacionReceta/pages/ActualizarComisionesPage';
 import CargarComisionProductoPage from '@/features/ComisionProducto/pages/CargarComisionProductoPage';
+import MetasUIPages from '@/features/Metas/pages/MetasUIPages';
+import { SinComisionGafasPage } from '@/features/ComisionProducto/pages/SinComisionGafasPage';
+import { SinComisionMonturaPage } from '@/features/ComisionProducto/pages/SinComisionMonturaPage';
+import { SinComisionLenteContactoPage } from '@/features/ComisionProducto/pages/SinComisionLenteContactoPage';
 function AppRouter() {
 
   const { isAunteticacion, token } = useContext(TokenContext)
@@ -39,7 +42,7 @@ function AppRouter() {
             <Route path="combinacion-receta" element={<CombinacionRecetaPage />} />
           </Route>
           <Route path="/metas/registro" element={<RegistroMetasPage />} />
-          <Route path="/metas" element={<MetasPages />} />
+          <Route path="/metas" element={<MetasUIPages />} />
           <Route path="/usuarios">
             <Route index element={<UsuarioPage />} />
             <Route path="registro" element={<UsuarioRegistroPage />} />
@@ -52,6 +55,9 @@ function AppRouter() {
           <Route path="/comision/gestion/producto/gafas" element={<ComisionGafasPage />} />
           <Route path="/comision/gestion/producto/montura" element={<ComisionMonturaPage />} />
           <Route path="/comision/gestion/producto/lente-contacto" element={<ComisionLenteContactoPage />} />
+          <Route path="/comision/gestion/producto/sin-comision/gafas" element={<SinComisionGafasPage />} />
+          <Route path="/comision/gestion/producto/sin-comision/montura" element={<SinComisionMonturaPage />} />
+          <Route path="/comision/gestion/producto/sin-comision/lente-contacto" element={<SinComisionLenteContactoPage />} />
           <Route path="/cargar/combinaciones" element={<CargarCombinacionesPage />} />
           <Route path="/cargar/comision/producto" element={<CargarComisionProductoPage/>} />
           <Route path="/actualizar/combinaciones" element={<ActualizarComisionesPage />} />

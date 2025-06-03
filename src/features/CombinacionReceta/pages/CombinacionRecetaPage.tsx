@@ -83,14 +83,14 @@ const CombinacionRecetaPage = () => {
         <TableCaption>Combinación de recetas</TableCaption>
         <TableHeader className="bg-blue-100">
           <TableRow>
-            <TableHead className="w-[100px]">TIPO LENTE</TableHead>
+            <TableHead>TIPO LENTE</TableHead>
             <TableHead>MATERIAL</TableHead>
             <TableHead>TRATAMIENTO</TableHead>
             <TableHead>MARCA</TableHead>
             <TableHead>TIPO COLOR LENTE</TableHead>
-            <TableHead colSpan={2}>RANGOS</TableHead>
+            <TableHead>RANGOS</TableHead>
             <TableHead>COLOR</TableHead>
-
+            <TableHead>ID</TableHead>
             <TableHead className="text-center">DETALLE COMISION</TableHead>
           </TableRow>
         </TableHeader>
@@ -110,13 +110,15 @@ const CombinacionRecetaPage = () => {
                 <TableCell>{combinacion.tipoColorLente}</TableCell>
                 <TableCell
                   className="text-left text-xs whitespace-pre-wrap break-words"
-                  colSpan={2}
                 >
                   {combinacion.rango}
                 </TableCell>
 
                 <TableCell className="text-right">
                   {combinacion.colorLente}
+                </TableCell>
+                <TableCell className="font-medium">
+                  {combinacion._id.slice(-6).toUpperCase()}
                 </TableCell>
                 <TableCell className="text-center">
                   <button
