@@ -41,6 +41,7 @@ export const SinComisionMonturaPage = () => {
     setTimeout(() => {
       if (actualizar) {
         toast.success("Comisiones actualizadas exitosamente");
+        console.log("refetch");
         refetch();
       }
       setActualizar(false);
