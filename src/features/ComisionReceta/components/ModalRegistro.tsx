@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog"
 import { useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import obtenerSinComsion from "../services/obtenerSinComsion";
+import obtenerSinComsion from "../services/obtenerSinComision";
 import { FiltroComision } from "./FiltroComision";
 import { ComsionRecetaFiltro } from "../interfaces/comsionRecetaFiltro";
 import { CombinacionResponse, Datum } from "../interfaces/comisionReceta.interface";
