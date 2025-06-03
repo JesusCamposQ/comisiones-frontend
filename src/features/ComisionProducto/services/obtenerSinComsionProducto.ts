@@ -26,13 +26,69 @@ export default obtenerSinComsionProducto;
 
 export const descargarSinComisionProducto = async () => {
   try {
-    const response = await api.get("/api/producto/descargar/producto/sinComsion", {
+    const response = await api.get("/api/producto/descargar/montura/sinComsion", {
       responseType: "blob",
     });
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;
     link.setAttribute("download", "productos_sin_comision.xlsx");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+export const descargarSinComisionProductoMontura = async () => {
+  try {
+    const response = await api.get("/api/producto/descargar/montura/sinComsion", {
+      responseType: "blob",
+    });
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "productos_sin_comision_montura.xlsx");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const descargarSinComisionProductoGafa = async () => {
+  try {
+    const response = await api.get("/api/producto/descargar/gafa/sinComsion", {
+      responseType: "blob",
+    });
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "productos_sin_comision_gafa.xlsx");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const descargarSinComisionProductoLenteContacto = async () => {
+  try {
+    const response = await api.get("/api/producto/descargar/lc/sinComsion", {
+      responseType: "blob",
+    });
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "productos_sin_comision_lente_contacto.xlsx");
     document.body.appendChild(link);
     link.click();
     link.remove();

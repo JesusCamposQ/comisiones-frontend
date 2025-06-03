@@ -12,6 +12,8 @@ export interface Datum {
     codigoQR:     string;
     marca:        string;
     color:        string;
+    tipoPrecio?:   string;
+    importe?: number;
     comisionProducto: ComisionProducto[];
 }
 export interface ComisionProducto {
