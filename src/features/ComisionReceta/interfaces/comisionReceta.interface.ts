@@ -12,18 +12,17 @@ export interface IComisionRecetaData {
 }
 
 
-export interface Datum {
-  _id?: string;
-  material?: string;
-  tipoLente?: string;
-  rango?: string;
-  colorLente?: string;
-  marcaLente?: string;
-  tratamiento?: string;
-  tipoColorLente?: string;
+export interface CombinacionResponse {
+  _id: string;
+  material: string;
+  tipoLente: string;
+  rango: string;
+  colorLente: string;
+  marcaLente: string;
+  tratamiento: string;
+  tipoColorLente: string;
+    tipoPrecio: string;
+        importe: number;
 }
 
-export interface CombinacionResponse {
-  data?: Datum[];
-  paginas?: number;
-}
+

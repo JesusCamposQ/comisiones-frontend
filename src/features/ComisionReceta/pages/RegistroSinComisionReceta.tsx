@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import obtenerSinComsion, {
   descargarSinComision,
-} from "../services/obtenerSinComsion";
+} from "../services/obtenerSinComision";
 import { ComsionRecetaFiltro } from "../interfaces/comsionRecetaFiltro";
 import { FiltroComision } from "../components/FiltroComision";
 import { ModalRegistroSinComision } from "../components/ModalRegistroSinComision";
@@ -33,10 +33,10 @@ export const RegistroSinComisionReceta = () => {
     data: combinacionReceta,
     isLoading,
     refetch,
-  } = useQuery<CombinacionResponse>({
+  } = useQuery<CombinacionResponse[]>({
     queryKey: ["combinacion-receta", page],
-    queryFn: () => obtenerSinComsion(10, page, filtro) as any,
-    staleTime: 60 * 1000 * 10, // 10 minutos
+    queryFn: () => obtenerSinComsion() as any,
+    staleTime: 60 * 1000 * 10, 
   });
   useEffect(() => {
     setTimeout(() => {
@@ -64,7 +64,7 @@ export const RegistroSinComisionReceta = () => {
     }
   };
 
-  const combinaciones: Datum[] = combinacionReceta?.data || [];
+  
   return (
     <div className="mx-auto flex flex-col gap-4">
       <Toaster />
@@ -91,11 +91,13 @@ export const RegistroSinComisionReceta = () => {
               <th className="px-6 py-3">Tipo Color Lente</th>
               <th className="px-6 py-3">Rango</th>
               <th className="px-6 py-3">Color</th>
+              <th className="px-6 py-3">Tipo precio</th>
+              <th className="px-6 py-3">Importe</th>
               <th className="px-6 py-3">Action</th>
             </tr>
           </thead>
           <tbody>
-            {combinaciones.map((combinacion: Datum) => (
+            {combinacionReceta?.map((combinacion: CombinacionResponse) => (
               <tr key={combinacion._id} className="border-b border-gray-200">
                 <td className="px-6 py-4 text-xs">{combinacion.tipoLente}</td>
                 <td className="px-6 py-4 text-xs">{combinacion.material}</td>
@@ -106,6 +108,8 @@ export const RegistroSinComisionReceta = () => {
                 </td>
                 <td className="px-6 py-4 text-xs">{combinacion.rango}</td>
                 <td className="px-6 py-4 text-xs">{combinacion.colorLente}</td>
+                   <td className="px-6 py-4 text-xs">{combinacion.tipoPrecio}</td>
+                       <td className="px-6 py-4 text-xs">{combinacion.importe}</td>
                 <td className="px-6 py-4 text-xs">
                   <button
                     className="px-4 py-2 flex items-center gap-2 bg-green-500 hover:bg-green-700 text-white rounded-md shadow-md"
@@ -120,34 +124,7 @@ export const RegistroSinComisionReceta = () => {
               </tr>
             ))}
           </tbody>
-          <tfoot>
-            <div className="flex justify-center items-center gap-4">
-              <div className="flex items-center justify-center my-4">
-                <nav className="flex items-center justify-center gap-1">
-                  <button
-                    className="px-2 py-1 bg-blue-500 hover:bg-blue-700 text-white rounded-md shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={() => setPage(page - 1)}
-                    disabled={page <= 1 || !combinacionReceta?.paginas}
-                  >
-                    Anterior
-                  </button>
-                  <span className="px-2 text-sm">
-                    Página {page} de {combinacionReceta?.paginas || 0}
-                  </span>
-                  <button
-                    className="px-2 py-1 bg-blue-500 hover:bg-blue-700 text-white rounded-md shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={() => setPage(page + 1)}
-                    disabled={
-                      page >= (combinacionReceta?.paginas || 1) ||
-                      !combinacionReceta?.paginas
-                    }
-                  >
-                    Siguiente
-                  </button>
-                </nav>
-              </div>
-            </div>
-          </tfoot>
+          
         </table>
       )}
       <div className="flex items-center justify-center">
