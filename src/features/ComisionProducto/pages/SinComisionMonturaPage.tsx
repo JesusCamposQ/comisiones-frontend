@@ -3,19 +3,18 @@ import { useEffect, useState } from "react";
 
 import { BookPlus} from "lucide-react";
 import { ComsionProductoFiltro } from "../interfaces/comsionProductoFiltro";
-import {
-  descargarSinComisionProductoMontura,
-} from "../services/obtenerSinComsionProducto";
 import { Datum } from "../interfaces/producto.interface";
 import { FiltroComisionProducto } from "../components/FiltroComisionProducto";
 import { ModalRegistroSinComisionProducto } from "../components/ModalRegistroSinComisionProducto";
 import toast, { Toaster } from "react-hot-toast";
 import { Banner } from "@/shared/components/Banner/Banner";
 import { obtenerSinComisionProductoMontura } from "../services/serviciosComisionProducto";
+import { exportarExcelProducto } from "../utils/exportarExcelProducto";
 
 interface FormValues {
   idcombinacion: string;
   codigo: string;
+  tipoPrecio?: string;
 }
 
 export const SinComisionMonturaPage = () => {
@@ -26,6 +25,7 @@ export const SinComisionMonturaPage = () => {
   const [valor, setValor] = useState<FormValues>({
     idcombinacion: "",
     codigo: "",
+    tipoPrecio: "",
   });
   const [page, setPage] = useState(1);
   const {
@@ -54,14 +54,14 @@ export const SinComisionMonturaPage = () => {
   const agregarComision = (combinacion: Datum) => {
     const descripcion = `${combinacion.tipoProducto} / ${combinacion.serie} / ${combinacion.categoria} / ${combinacion.codigoQR} / ${combinacion.marca} / ${combinacion.color}`;
     setOpen(true);
-    setValor({ idcombinacion: combinacion._id!, codigo: descripcion });
+    setValor({ idcombinacion: combinacion._id!, codigo: descripcion, tipoPrecio: combinacion.tipoPrecio});
   };
   const descargar = async () => {
     setIsDownload(true);
-    const response = await descargarSinComisionProductoMontura();
-    if (response.status === 200) {
-      setIsDownload(false);
-    }
+      if (combinacionProducto) {
+        exportarExcelProducto(combinacionProducto);
+      }
+    setIsDownload(false);
   };
 
   const combinaciones: Datum[] = combinacionProducto || [];
@@ -109,7 +109,7 @@ export const SinComisionMonturaPage = () => {
                 <td className="px-6 py-4 text-xs">{combinacion.marca}</td>
                 <td className="px-6 py-4 text-xs">{combinacion.color}</td>
                 <td className="px-6 py-4 text-xs">{combinacion.tipoPrecio}</td>
-                <td className="px-6 py-4 text-xs">{combinacion.importe}</td>
+                <td className="px-6 py-4 text-xs">{combinacion.importe || 0}</td>
                 <td className="px-6 py-4 text-xs">
                   <button
                     className="px-4 py-2 flex items-center gap-2 bg-green-500 hover:bg-green-700 text-white rounded-md shadow-md cursor-pointer"

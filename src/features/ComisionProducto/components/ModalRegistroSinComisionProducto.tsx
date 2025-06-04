@@ -6,7 +6,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Glasses, Plus, Trash2 } from "lucide-react";
@@ -14,12 +13,12 @@ import toast, { Toaster } from "react-hot-toast";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table_detalle_comision";
 import { IComisionProducto, IComisionProductoData } from "../interfaces/comisionProducto.interface";
 import registrarComisionProducto from "../services/registrarComisionProducto";
-import obtenerTipoPrecioProducto from "../services/obtenerTipoPrecioProducto";
 import formatoMoneda from "@/utils/formatoMoneda";
 
 interface FormValues {
   idcombinacion: string;
   codigo: string;
+  tipoPrecio?: string;
 }
 
 interface ModalProps {
@@ -38,13 +37,7 @@ const tipoComision = [
 ]
 export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActualizar }: ModalProps) {
   const [comisiones, setComisiones] = useState<IComisionProducto[]>([])
-
-  const { data: tipoPrecioData, isLoading } = useQuery<TipoPrecio[]>({
-    queryKey: ['tipo-precio-producto', valor.idcombinacion],
-    queryFn: () => obtenerTipoPrecioProducto(valor.idcombinacion),
-    staleTime: 60 * 1000 * 10, // 10 minutos
-  })
-
+  
   const { register, handleSubmit, reset, formState: { errors } } = useForm<IComisionProducto>({
     mode: "onChange",
     defaultValues: {
@@ -116,12 +109,6 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
 
           </DialogDescription>
         </DialogHeader>
-        {isLoading ? (
-          <div className="flex items-center justify-center h-[600px] m-auto">
-            <div className="animate-spin rounded-full h-7 w-7 border-b-2 border-blue-500 mr-2"></div>
-            <span className="text-blue-500 text-2xl">Cargando...</span>
-          </div>
-        ) : (
           <form className=" w-2/3 mx-auto space-y-2" onSubmit={handleSubmit(onSubmit)}>
 
             <div>
@@ -132,11 +119,7 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
                                                  focus:ring-blue-500 focus:border-blue-500 block w-full p-2 text-[12px] dark:bg-gray-700 dark:border-gray-600
                                                   dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option selected disabled>Seleccione un tipo de precio</option>
-                {tipoPrecioData?.map((tipoPrecio: TipoPrecio) => (
-                  <option key={tipoPrecio.id} value={tipoPrecio.nombre}>
-                    {tipoPrecio.nombre}
-                  </option>
-                ))}
+                <option >{valor.tipoPrecio}</option>
               </select>
               {errors.precio && <p className="text-red-500 text-xs mt-1">{errors.precio.message}</p>}
             </div>
@@ -186,7 +169,6 @@ export function ModalRegistroSinComisionProducto({ valor, open, setOpen, setActu
               </button>
             </div>
           </form>
-        )}
         <div className="m-auto w-2/3 flex flex-col">
           <p className="text-md font-bold mb-2 text-center uppercase">Comisiones listadas</p>
           <div className="overflow-y-auto max-h-[150px]">

@@ -1,21 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import { BookPlus} from "lucide-react";
+import { BookPlus } from "lucide-react";
 import { ComsionProductoFiltro } from "../interfaces/comsionProductoFiltro";
-import {
-  descargarSinComisionProducto,
-} from "../services/obtenerSinComsionProducto";
 import { Datum } from "../interfaces/producto.interface";
 import { FiltroComisionProducto } from "../components/FiltroComisionProducto";
 import { ModalRegistroSinComisionProducto } from "../components/ModalRegistroSinComisionProducto";
 import toast, { Toaster } from "react-hot-toast";
 import { Banner } from "@/shared/components/Banner/Banner";
 import { obtenerSinComisionProductoLenteContacto } from "../services/serviciosComisionProducto";
+import { exportarExcelProducto } from "../utils/exportarExcelProducto";
 
 interface FormValues {
   idcombinacion: string;
   codigo: string;
+  tipoPrecio: string;
 }
 
 export const SinComisionLenteContactoPage = () => {
@@ -26,6 +25,7 @@ export const SinComisionLenteContactoPage = () => {
   const [valor, setValor] = useState<FormValues>({
     idcombinacion: "",
     codigo: "",
+    tipoPrecio: "",
   });
   const [page, setPage] = useState(1);
   const {
@@ -53,14 +53,13 @@ export const SinComisionLenteContactoPage = () => {
   const agregarComision = (combinacion: Datum) => {
     const descripcion = `${combinacion.tipoProducto} / ${combinacion.serie} / ${combinacion.categoria} / ${combinacion.codigoQR} / ${combinacion.marca} / ${combinacion.color}`;
     setOpen(true);
-    setValor({ idcombinacion: combinacion._id!, codigo: descripcion });
+    setValor({ idcombinacion: combinacion._id!, codigo: descripcion, tipoPrecio: combinacion.tipoPrecio || "" });
   };
   const descargar = async () => {
     setIsDownload(true);
-    const response = await descargarSinComisionProducto();
-    if (response.status === 200) {
-      setIsDownload(false);
-    }
+    if (!combinacionProducto) return;
+    await exportarExcelProducto(combinacionProducto);
+    setIsDownload(false);
   };
 
   const combinaciones: Datum[] = combinacionProducto || [];
@@ -68,10 +67,10 @@ export const SinComisionLenteContactoPage = () => {
     <div className="mx-auto flex flex-col gap-4">
       <Toaster />
       <Banner
-      title="Registro Sin Comision"
-      subtitle="Lente Contacto"
-      handleDownload={descargar}
-      isDownload={isDownload}
+        title="Registro Sin Comision"
+        subtitle="Lente Contacto"
+        handleDownload={descargar}
+        isDownload={isDownload}
       />
       <FiltroComisionProducto setFiltro={setFiltro} />
       {isLoading ? (
@@ -97,9 +96,7 @@ export const SinComisionLenteContactoPage = () => {
           <tbody>
             {combinaciones.map((combinacion: Datum) => (
               <tr key={combinacion._id} className="border-b border-gray-200">
-                <td className="px-6 py-4 text-xs">
-                  {combinacion.codigoMia.toUpperCase().replace(/(.{4})(?=.)/g, "$1-")}
-                </td>
+                <td className="px-6 py-4 text-xs">{combinacion.codigoMia}</td>
                 <td className="px-6 py-4 text-xs">
                   {combinacion.tipoProducto}
                 </td>
@@ -108,6 +105,7 @@ export const SinComisionLenteContactoPage = () => {
                 <td className="px-6 py-4 text-xs">{combinacion.marca}</td>
                 <td className="px-6 py-4 text-xs">{combinacion.color}</td>
                 <td className="px-6 py-4 text-xs">{combinacion.tipoPrecio}</td>
+                <td className="px-6 py-4 text-xs">{combinacion.importe}</td>
                 <td className="px-6 py-4 text-xs">
                   <button
                     className="px-4 py-2 flex items-center gap-2 bg-green-500 hover:bg-green-700 text-white rounded-md shadow-md cursor-pointer"
