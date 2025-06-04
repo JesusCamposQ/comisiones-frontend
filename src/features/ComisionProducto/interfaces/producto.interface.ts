@@ -14,6 +14,7 @@ export interface Datum {
     color:        string;
     tipoPrecio?:   string;
     importe?: number;
+    tipoMontura?: string;
     comisionProducto: ComisionProducto[];
 }
 export interface ComisionProducto {
