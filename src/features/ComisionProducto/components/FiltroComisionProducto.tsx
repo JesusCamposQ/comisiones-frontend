@@ -7,30 +7,39 @@ interface Props {
 }
 
 export const FiltroComisionProducto = ({ setFiltro }: Props) => {
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onChange = (field: keyof ComsionProductoFiltro, value: string) => {
         setFiltro((prev) => ({
-            ...prev,
-            [e.target.name]: e.target.value
+          ...prev,
+          [field]: value.toUpperCase() || undefined,
         }))
-    }
+      }
     return (
         <Table className="w-full text-left text-sm">
             <TableBody>
                 <TableRow>
                     <TableCell className="text-left m-0 p-2">
-                        <input type="text" name="tipoProducto" placeholder="Tipo Producto" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={onChange} />
+                        <input type="text" name="codigoMia" placeholder="Codigo MIA" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={(e) => onChange("codigoMia", e.target.value)} />
                     </TableCell>
                     <TableCell className="text-left m-0 p-2">
-                        <input type="text" name="serie" placeholder="Serie" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={onChange} />
+                        <input type="text" name="tipoProducto" placeholder="Tipo Producto" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={(e) => onChange("tipoProducto", e.target.value)} />
                     </TableCell>
                     <TableCell className="text-left m-0 p-2">
-                        <input type="text" name="codigoQr" placeholder="Codigo QR" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={onChange} />
+                        <input type="text" name="serie" placeholder="Serie" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={(e) => onChange("serie", e.target.value)} />
                     </TableCell>
                     <TableCell className="text-left m-0 p-2">
-                        <input type="text" name="marca" placeholder="Marca" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={onChange} />
+                        <input type="text" name="codigoQR" placeholder="Codigo QR" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={(e) => onChange("codigoQR", e.target.value)} />
                     </TableCell>
                     <TableCell className="text-left m-0 p-2">
-                        <input type="text" name="color" placeholder="Color" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={onChange} />
+                        <input type="text" name="marca" placeholder="Marca" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={(e) => onChange("marca", e.target.value)} />
+                    </TableCell>
+                    <TableCell className="text-left m-0 p-2">
+                        <input type="text" name="color" placeholder="Color" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={(e) => onChange("color", e.target.value)} />
+                    </TableCell>
+                    <TableCell className="text-left m-0 p-2">
+                        <input type="text" name="tipoPrecio" placeholder="Tipo Precio" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={(e) => onChange("tipoPrecio", e.target.value)} />
+                    </TableCell>
+                    <TableCell className="text-left m-0 p-2">
+                        <input type="text" name="importe" placeholder="Importe" className="border rounded-md p-2 w-full hover:bg-amber-50 hover:text-black focus:outline-none hover:border-blue-200" onChange={(e) => onChange("importe", e.target.value)} />
                     </TableCell>
                 </TableRow>
             </TableBody>

@@ -3,11 +3,13 @@ export interface ComsionProductoFiltro {
   codigoMia?: string;
   tipoProducto?: string;
   serie?: string;
-  categoria?: string | null;
-  codigoQr?: string;
-  comisionProducto?: ComisionProducto[];
+  codigoQR?: string;
+  importe?: number;
+  tipoPrecio?: string;
   marca?: string;
   color?: string;
+  tipoMontura?: string;
+  comisionProducto?: ComisionProducto[];  
 }
 
 export interface ComisionProducto {
