@@ -11,6 +11,8 @@ import { obtenerSinComisionProductoLenteContacto } from "../services/serviciosCo
 import { exportarExcelProducto } from "../utils/exportarExcelProducto";
 import { FiltrarCombinacion } from "../hooks/FiltrarCombinacion";
 import { useQuery } from "@tanstack/react-query";
+import Paginador from "@/shared/components/Paginador/Paginador";
+import { Mensaje } from "@/shared/components/Mensaje/Mensaje";
 
 interface FormValues {
   idcombinacion: string;
@@ -48,7 +50,7 @@ export const SinComisionLenteContactoPage = () => {
         toast.success("Comisiones actualizadas exitosamente");
       }
       setActualizar(false);
-    }, 100);
+    }, 50);
   }, [actualizar]);
   useEffect(() => {
     refetch();
@@ -57,7 +59,11 @@ export const SinComisionLenteContactoPage = () => {
   const agregarComision = (combinacion: Datum) => {
     const descripcion = `${combinacion.tipoProducto} / ${combinacion.serie} / ${combinacion.codigoQR} / ${combinacion.marca} / ${combinacion.color}`;
     setOpen(true);
-    setValor({ idcombinacion: combinacion._id!, codigo: descripcion, tipoPrecio: combinacion.tipoPrecio || "" });
+    setValor({
+      idcombinacion: combinacion._id!,
+      codigo: descripcion,
+      tipoPrecio: combinacion.tipoPrecio || "",
+    });
   };
 
   const descargar = async () => {
@@ -67,24 +73,11 @@ export const SinComisionLenteContactoPage = () => {
     setIsDownload(false);
   };
   const combinaciones: Datum[] = combinacionProducto || [];
-  FiltrarCombinacion({ combinaciones, filtro, setFiltrarCombinacion, setPage }); 
+  FiltrarCombinacion({ combinaciones, filtro, setFiltrarCombinacion, setPage, page });
   // Calcular datos paginados
-  const totalPages = Math.ceil(filtrarCombinacion.length / itemsPerPage);
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const datosPaginados = filtrarCombinacion.slice(startIndex, endIndex);
-
-  const handlePreviousPage = () => {
-    if (page > 1) {
-      setPage(page - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (page < totalPages) {
-      setPage(page + 1);
-    }
-  };
 
   return (
     <div className="mx-auto flex flex-col gap-4">
@@ -97,7 +90,9 @@ export const SinComisionLenteContactoPage = () => {
       />
       <FiltroComisionProducto setFiltro={setFiltro} />
       <p className="mx-2 text-xs text-gray-500 dark:text-gray-400">
-        Mostrando <span className="font-medium">{datosPaginados.length}</span> de <span className="font-medium">{filtrarCombinacion.length}</span> registros
+        Mostrando <span className="font-medium">{datosPaginados.length}</span>{" "}
+        de <span className="font-medium">{filtrarCombinacion.length}</span>{" "}
+        registros
       </p>
 
       {isLoading ? (
@@ -122,75 +117,67 @@ export const SinComisionLenteContactoPage = () => {
               </tr>
             </thead>
             <tbody>
-              {filtrarCombinacion && ( filtrarCombinacion.map((combinacion: Datum,index: number) => (
-                <tr key={combinacion._id+index} className="border-b border-gray-200">
-                  <td className="px-6 py-4 text-xs">{combinacion.codigoMia}</td>
-                  <td className="px-6 py-4 text-xs">
-                    {combinacion.tipoProducto}
-                  </td>
-                  <td className="px-6 py-4 text-xs">{combinacion.serie}</td>
-                  <td className="px-6 py-4 text-xs">{combinacion.codigoQR}</td>
-                  <td className="px-6 py-4 text-xs">{combinacion.marca}</td>
-                  <td className="px-6 py-4 text-xs">{combinacion.color}</td>
-                  <td className="px-6 py-4 text-xs">{combinacion.tipoPrecio}</td>
-                  <td className="px-6 py-4 text-xs">{combinacion.importe}</td>
-                  <td className="px-6 py-4 text-xs">
-                    <button
-                      className="px-4 py-2 flex items-center gap-2 bg-green-500 hover:bg-green-700 text-white rounded-md shadow-md cursor-pointer"
-                      type="button"
-                      onClick={() => agregarComision(combinacion)}
-                    >
-                      <BookPlus />
-                      Agregar Comision
-                    </button>
-                  </td>
-                </tr>
-              )))} 
+              {filtrarCombinacion &&
+                filtrarCombinacion.map((combinacion: Datum, index: number) => (
+                  <tr
+                    key={combinacion._id + index}
+                    className="border-b border-gray-200"
+                  >
+                    <td className="px-6 py-4 text-xs">
+                      {combinacion.codigoMia}
+                    </td>
+                    <td className="px-6 py-4 text-xs">
+                      {combinacion.tipoProducto}
+                    </td>
+                    <td className="px-6 py-4 text-xs">{combinacion.serie}</td>
+                    <td className="px-6 py-4 text-xs">
+                      {combinacion.codigoQR}
+                    </td>
+                    <td className="px-6 py-4 text-xs">{combinacion.marca}</td>
+                    <td className="px-6 py-4 text-xs">{combinacion.color}</td>
+                    <td className="px-6 py-4 text-xs">
+                      {combinacion.tipoPrecio}
+                    </td>
+                    <td className="px-6 py-4 text-xs">{combinacion.importe}</td>
+                    <td className="px-6 py-4 text-xs">
+                      <button
+                        className="px-4 py-2 flex items-center gap-2 bg-green-500 hover:bg-green-700 text-white rounded-md shadow-md cursor-pointer"
+                        type="button"
+                        onClick={() => agregarComision(combinacion)}
+                      >
+                        <BookPlus />
+                        Agregar Comision
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
 
           {/* Paginación mejorada */}
-          {filtrarCombinacion.length > 0 && (
-            <div className="flex justify-center items-center gap-4 my-4">
-              <nav className="flex items-center justify-center gap-2">
-                <button
-                  className="px-3 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                  onClick={handlePreviousPage}
-                  disabled={page <= 1}
-                >
-                  Anterior
-                </button>
-                <span className="px-3 py-2 text-sm">
-                  Página {page} de {totalPages}
-                </span>
-                <button
-                  className="px-3 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                  onClick={handleNextPage}
-                  disabled={page >= totalPages}
-                >
-                  Siguiente
-                </button>
-              </nav>
-            </div>
-          )}
-
+          {Object.keys(filtro).length == 0 && (
+          <Paginador
+            filtrar={filtrarCombinacion}
+            page={page}
+            setPage={setPage}
+          />)}
           {/* Mensaje cuando no hay datos */}
-          {filtrarCombinacion.length === 0 && !isLoading && (
-            <div className="flex flex-col items-center justify-center py-8 gap-4">
-              <Frown className="w-12 h-12 text-gray-500" />
-              <p className="text-center text-gray-500 font-semibold">
-                No se encontraron registros con los filtros aplicados
-              </p>
-            </div>
-          )}
+          <Mensaje
+            numeroElementos={filtrarCombinacion.length}
+            isLoading={isLoading}
+            mensaje="No se encontraron registros con los filtros aplicados"
+            icono={<Frown className="w-12 h-12 text-gray-500" />}
+            className="bg-gray-50 rounded-md mx-auto px-10 py-8 shadow-md border border-gray-100"
+          />
         </>
       )}
-      
+
       <ModalRegistroSinComisionProducto
         valor={valor}
         setOpen={setOpen}
         open={open}
         setActualizar={setActualizar}
+        
       />
     </div>
   );

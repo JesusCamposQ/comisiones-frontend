@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -6,8 +7,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { redirect } from "react-router"
 
 export function TeamSwitcher({
   teams,
@@ -34,10 +35,10 @@ export function TeamSwitcher({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="bg-[#3498DB] text-gray-100 flex aspect-square size-8 items-center justify-center rounded-full"
-                onClick={() => redirect('/ventas')}
-              >
-                <activeTeam.logo className="size-5" />
+              <div className="bg-[#3498DB] text-gray-100 flex aspect-square size-8 items-center justify-center rounded-full">
+                <Button variant="ghost" size="icon" className="cursor-pointer">
+                  <SidebarTrigger className="cursor-pointer" icon={<activeTeam.logo className="size-5" />} />
+                </Button>
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{activeTeam.name}</span>

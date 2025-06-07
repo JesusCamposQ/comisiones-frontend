@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import { BookPlus} from "lucide-react";
+import { BookPlus, Frown} from "lucide-react";
 import { ComsionProductoFiltro } from "../interfaces/comsionProductoFiltro";
 import { Datum } from "../interfaces/producto.interface";
 import { FiltroComisionProducto } from "../components/FiltroComisionProducto";
@@ -12,6 +12,8 @@ import { obtenerSinComisionProductoMontura } from "../services/serviciosComision
 import { exportarExcelProducto } from "../utils/exportarExcelProducto";
 import { FiltrarCombinacion } from "../hooks/FiltrarCombinacion";
 import Paginador from "@/shared/components/Paginador/Paginador";
+import { Mensaje } from "@/shared/components/Mensaje/Mensaje";
+import { paginador } from "@/shared/utils/paginador";
 
 interface FormValues {
   idcombinacion: string;
@@ -41,6 +43,12 @@ export const SinComisionMonturaPage = () => {
     staleTime: 60 * 1000 * 10, // 10 minutos
   });
   useEffect(() => {
+    if (combinacionProducto) {
+      const datosPaginados = paginador(combinacionProducto, 10, page);
+      setFiltrarCombinacion(datosPaginados);
+    }
+  }, [combinacionProducto, page]);
+  useEffect(() => {
     setTimeout(() => {
       if (actualizar) {
         toast.success("Comisiones actualizadas exitosamente");
@@ -48,7 +56,7 @@ export const SinComisionMonturaPage = () => {
         refetch();
       }
       setActualizar(false);
-    }, 100);
+    }, 50);
   }, [actualizar]);
   useEffect(() => {
     refetch();
@@ -66,9 +74,8 @@ export const SinComisionMonturaPage = () => {
       }
     setIsDownload(false);
   };
-
   const combinaciones: Datum[] = combinacionProducto || [];
-  FiltrarCombinacion({ combinaciones, filtro, setFiltrarCombinacion, setPage });  
+  FiltrarCombinacion({combinaciones, filtro, setFiltrarCombinacion, page, setPage});  
   return (
     <div className="mx-auto flex flex-col gap-4">
       <Toaster />
@@ -85,6 +92,7 @@ export const SinComisionMonturaPage = () => {
           <span className="text-blue-500 text-2xl">Cargando...</span>
         </div>
       ) : (
+        <>
         <table className="w-full text-left text-sm">
           <thead className="bg-gray-50">
             <tr>
@@ -127,10 +135,20 @@ export const SinComisionMonturaPage = () => {
               </tr>
             ))}
           </tbody>
-          <tfoot>
-            <Paginador filtrar={filtrarCombinacion} page={page} setPage={setPage} />
-          </tfoot>
+          {Object.keys(filtro).length == 0 && (
+            <tfoot>
+              <Paginador filtrar={combinaciones} page={page} setPage={setPage} />
+            </tfoot>
+          )}
         </table>
+        <Mensaje
+          numeroElementos={filtrarCombinacion.length}
+          isLoading={isLoading}
+          mensaje="No se encontraron registros con los filtros aplicados"
+          icono={<Frown className="w-12 h-12 text-gray-500" />}
+          className="bg-gray-50 rounded-md mx-auto px-10 py-8 shadow-md border border-gray-100"
+        />
+        </>
       )}
       <ModalRegistroSinComisionProducto
         valor={valor}
