@@ -2,7 +2,7 @@ import {
   Building,
   CircleDollarSign,
   BadgeDollarSign,
-  ShoppingBag,
+  Target,
 } from "lucide-react"
 
 import { NavMain } from "@/app/Layout/components/nav-main"
@@ -29,229 +29,123 @@ const data = {
     },
   ],
   navMain: [
-    /*{
-      title: "Ventas",
-      url: "/ventas",
-      icon: Store,
-      isActive: true,
-      items: [
-        {
-          title: "Listado de Ventas",
-          url: "/ventas",
-        },
-      ],
-    },
-    */
     {
       title: "Comisiones",
-      url: "#",
+      url: "/ventas",
       icon: CircleDollarSign,
       isActive: true,
       items: [
         {
-          title: "Comisiones por Ventas",
-          url: "/ventas",
-        },
-        {
-          title: "Registro de Comisiones",
+          title: "Por Ventas",
           url: "#",
           items: [
             {
-              title: "Comision Receta",
+              title: "Comisiones Sucursal",
+              url: "/ventas",
+            },
+          ],
+        },
+        {
+          title: "Registro",
+          url: "#",
+          items: [
+            {
+              title: "Recetas sin Comisión",
               url: "/comision/registro/receta",
             },
             {
-              title: "Comision Producto",
+              title: "Productos sin Comisión",
               url: "/comision/registro/producto",
             },
           ],
         },
-        // {
-        //   title: "Gestion de Comision",
-        //   url: "/comision/gestion",
-        // },
         {
-          title: "Gestion de Comision",
+          title: "Gestión Comisión",
           url: "#",
           items: [
             {
-              title: "Comision Receta",
+              title: "Ver Combinaciones",
               url: "/comision/gestion/receta",
             },
             {
-              title: "Cargar combinaciones",
+              title: "Cargar Combinaciones",
               url: "/cargar/combinaciones",
             },
-             {
-              title: "Actualizar comsiones",
+            {
+              title: "Actualizar Combinaciones",
               url: "/actualizar/combinaciones",
             },
             {
-              title: "Cargar comision producto",
+              title: "Cargar Comision Producto",
               url: "/cargar/comision/producto",
             },
-            /*{
-              title: "Comision Servicio",
-              url: "/comision/gestion/servicio",
-            },
-            {
-              title: "Comision Producto",
-              url: "/comision/gestion/producto",
-            },*/
           ],
         },
         {
-          title: "Comision Producto",
+          title: "Por Producto",
           url: "#",
           items: [
             {
-              title: "Comision Montura",
+              title: "Monturas",
               url: "/comision/gestion/producto/montura",
             },
             {
-              title: "Montura sin comision",
+              title: "Monturas sin Comisión",
               url: "/comision/gestion/producto/sin-comision/montura",
             },
             {
-              title: "Comision Gafas",
+              title: "Gafas",
               url: "/comision/gestion/producto/gafas",
             },
             {
-              title: "Gafas sin comision",
+              title: "Gafas sin Comisión",
               url: "/comision/gestion/producto/sin-comision/gafas",
             },
             {
-              title: "Comision Lente Contacto",
+              title: "Lentes Contacto",
               url: "/comision/gestion/producto/lente-contacto",
             },
             {
-              title: "Lente Contacto sin comision",
+              title: "Lentes sin Comisión",
               url: "/comision/gestion/producto/sin-comision/lente-contacto",
             },
           ],
         },
       ],
     },
+    // {
+    //   title: "Productos",
+    //   url: "#",
+    //   icon: ShoppingBag,
+    //   items: [],
+    // },
     {
-      title: "Productos",
-      url: "#",
-      icon: ShoppingBag,
+      title: "Metas",
+      url: "/metas",
+      icon: Target,
       items: [
-        // {
-        //   title: "Listado de Productos",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Precios",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Detalle de Precio",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Marcas",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Marca de Lente",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Materiales",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Tratamientos",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Rangos",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Combinaciones",
-        //   url: "/productos/combinacion-receta",
-        // },
-        // {
-        //   title: "Comision Producto",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Comision Receta",
-        //   url: "/comision/receta",
-        // },
         {
-          title: "Metas",
+          title: "Ver Metas",
           url: "/metas",
-          items: [
-            {
-              title: "Gestion de Metas",
-              url: "/metas",
-            },
-            {
-              title: "Registro de Metas",
-              url: "/metas/registro",
-            },
-          ],
+        },
+        {
+          title: "Registrar Metas",
+          url: "/metas/registro",
         },
       ],
     },
-    // {
-    //   title: "Catalogos",
-    //   url: "#",
-    //   icon: NotebookTabs,
-    //   items: [
-    //     {
-    //       title: "Color",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Color de Lente",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Tipo de Color de Lente",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Tipo de Lente",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Tipo de Montura",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Comision Receta",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
     {
-      title: "Organizacion",
-      url: "#",
+      title: "Organización",
+      url: "/usuarios",
       icon: Building,
       items: [
         {
           title: "Usuarios",
           url: "/usuarios",
         },
-        // {
-        //   title: "Asesores",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Sucursales",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Empresas",
-        //   url: "#",
-        // },
       ],
     },
-  ],
+  ]  
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

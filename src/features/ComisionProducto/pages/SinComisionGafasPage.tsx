@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import { BookPlus} from "lucide-react";
+import { BookPlus, Frown} from "lucide-react";
 import { ComsionProductoFiltro } from "../interfaces/comsionProductoFiltro";
 
 import { Datum } from "../interfaces/producto.interface";
@@ -11,6 +11,9 @@ import toast, { Toaster } from "react-hot-toast";
 import { Banner } from "@/shared/components/Banner/Banner";
 import { obtenerSinComisionProductoGafa } from "../services/serviciosComisionProducto";
 import { exportarExcelProducto } from "../utils/exportarExcelProducto";
+import { FiltrarCombinacion } from "../hooks/FiltrarCombinacion";
+import Paginador from "@/shared/components/Paginador/Paginador";
+import { Mensaje } from "@/shared/components/Mensaje/Mensaje";
 
 interface FormValues {
   idcombinacion: string;
@@ -23,6 +26,7 @@ export const SinComisionGafasPage = () => {
   const [actualizar, setActualizar] = useState(false);
   const [isDownload, setIsDownload] = useState(false);
   const [open, setOpen] = useState(false);
+  const [filtrarCombinacion, setFiltrarCombinacion] = useState<Datum[]>([]);
   const [valor, setValor] = useState<FormValues>({
     idcombinacion: "",
     codigo: "",
@@ -45,14 +49,14 @@ export const SinComisionGafasPage = () => {
         refetch();
       }
       setActualizar(false);
-    }, 100);
+    }, 50);
   }, [actualizar]);
   useEffect(() => {
     refetch();
   }, [filtro]);
 
   const agregarComision = (combinacion: Datum) => {
-    const descripcion = `${combinacion.tipoProducto} / ${combinacion.serie} / ${combinacion.categoria} / ${combinacion.codigoQR} / ${combinacion.marca} / ${combinacion.color}`;
+    const descripcion = `${combinacion.tipoProducto} / ${combinacion.serie} / ${combinacion.codigoQR} / ${combinacion.marca} / ${combinacion.color}`;
     setOpen(true);
     setValor({ idcombinacion: combinacion._id!, codigo: descripcion, tipoPrecio: combinacion.tipoPrecio || "" });
   };
@@ -63,8 +67,8 @@ export const SinComisionGafasPage = () => {
       }
       setIsDownload(false);
   };
-
   const combinaciones: Datum[] = combinacionProducto || [];
+  FiltrarCombinacion({ combinaciones, filtro, setFiltrarCombinacion, setPage, page });  
   return (
     <div className="mx-auto flex flex-col gap-4">
       <Toaster />
@@ -81,6 +85,7 @@ export const SinComisionGafasPage = () => {
           <span className="text-blue-500 text-2xl">Cargando...</span>
         </div>
       ) : (
+        <>
         <table className="w-full text-left text-sm">
           <thead className="bg-gray-50">
             <tr>
@@ -96,8 +101,8 @@ export const SinComisionGafasPage = () => {
             </tr>
           </thead>
           <tbody>
-            {combinaciones.map((combinacion: Datum) => (
-              <tr key={combinacion._id} className="border-b border-gray-200">
+            {filtrarCombinacion.length > 0 && (filtrarCombinacion.map((combinacion: Datum,index: number) => (
+              <tr key={combinacion._id+index} className="border-b border-gray-200">
                 <td className="px-6 py-4 text-xs">
                   {combinacion.codigoMia}
                 </td>
@@ -119,37 +124,22 @@ export const SinComisionGafasPage = () => {
                   </button>
                 </td>
               </tr>
-            ))}
+            )))}
           </tbody>
+          {Object.keys(filtro).length == 0 && (
           <tfoot>
-            <div className="flex justify-center items-center gap-4">
-              <div className="flex items-center justify-center my-4">
-                <nav className="flex items-center justify-center gap-1">
-                  <button
-                    className="px-2 py-1 bg-blue-500 hover:bg-blue-700 text-white rounded-md shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={() => setPage(page - 1)}
-                    disabled={page <= 1 || !combinacionProducto?.length}
-                  >
-                    Anterior
-                  </button>
-                  <span className="px-2 text-sm">
-                    Página {page} de {combinacionProducto?.length || 0}
-                  </span>
-                  <button
-                    className="px-2 py-1 bg-blue-500 hover:bg-blue-700 text-white rounded-md shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={() => setPage(page + 1)}
-                    disabled={
-                      page >= (combinacionProducto?.length || 1) ||
-                      !combinacionProducto?.length
-                    }
-                  >
-                    Siguiente
-                  </button>
-                </nav>
-              </div>
-            </div>
+            <Paginador filtrar={filtrarCombinacion} page={page} setPage={setPage} />
           </tfoot>
+          )}
         </table>
+        <Mensaje
+          numeroElementos={filtrarCombinacion.length}
+          isLoading={isLoading}
+          mensaje="No se encontraron registros con los filtros aplicados"
+          icono={<Frown className="w-12 h-12 text-gray-500" />}
+          className="bg-gray-50 rounded-md mx-auto px-10 py-8 shadow-md border border-gray-100"
+        />
+        </>
       )}
       <ModalRegistroSinComisionProducto
         valor={valor}

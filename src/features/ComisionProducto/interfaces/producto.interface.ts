@@ -4,17 +4,16 @@ export interface Producto {
 }
 
 export interface Datum {
-    _id:          string;
-    codigoMia:    string;
+    _id: string;
+    codigoMia: string;
     tipoProducto: string;
-    serie:        string;
-    categoria:    null;
-    codigoQR:     string;
-    marca:        string;
-    color:        string;
-    tipoPrecio?:   string;
-    importe?: number;
-    tipoMontura?: string;
+    serie: string;
+    codigoQR: string;
+    importe: number;
+    tipoPrecio: string;
+    marca: string;
+    color: string;
+    tipoMontura: string;
     comisionProducto: ComisionProducto[];
 }
 export interface ComisionProducto {

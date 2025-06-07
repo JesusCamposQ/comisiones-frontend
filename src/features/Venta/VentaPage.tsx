@@ -100,7 +100,7 @@ const VentaPage = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full gap-4">
+    <div className="flex flex-col w-full h-full gap-4 min-h-screen bg-gradient-to-br from-gray-50 to-neutral-50 p-4">
       
       <FiltroOC setFiltros={setFiltro} initialFilters={filtro} />
 
