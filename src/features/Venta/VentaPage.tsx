@@ -136,6 +136,7 @@ const VentaPage = () => {
             <TableHead className="text-center">
             <Ordenar setDatos={setVentas} datos={ventas} title="totalComision" rename="Total comisión" />
             </TableHead>
+             
             <TableHead className="text-center">VENTAS</TableHead>
           </TableRow>
         </TableHeader>
