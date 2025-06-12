@@ -15,11 +15,27 @@ export interface Venta {
 }
 
 export interface MetaProductosVip {
-  _id:             string;
-  monturaMasGafa:         number;
-  lenteDeContacto: number;
-  sucursal:        string;
-  __v:             number;
+  _id:string
+   montura: number;
+ 
+
+   precioMontura: number;
+ 
+
+   gafa: number;
+
+   precioGafa: number;
+
+   marcaMonturas: string[];
+ 
+   
+   marcaGafas: string[];
+ 
+  
+   lenteDeContacto: number;
+ 
+ 
+   sucursal:string;
 }
 
 export interface VentaElement {
