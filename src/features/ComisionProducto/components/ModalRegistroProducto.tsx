@@ -84,7 +84,6 @@ export function ModalRegistro({ setValor, refrescar }: ModalProps) {
                   <tr>
                     <th className="px-6 py-3 uppercase">Tipo Producto</th>
                     <th className="px-6 py-3 uppercase">Serie</th>
-                    <th className="px-6 py-3 uppercase">Categoria</th>
                     <th className="px-6 py-3 uppercase">Codigo QR</th>
                     <th className="px-6 py-3 uppercase">Marca</th>
                     <th className="px-6 py-3 uppercase">Color</th>
@@ -96,7 +95,6 @@ export function ModalRegistro({ setValor, refrescar }: ModalProps) {
                     <tr key={combinacion._id} className="border-b border-gray-200">
                       <td className="px-6 py-4 text-xs">{combinacion.tipoProducto}</td>
                       <td className="px-6 py-4 text-xs">{combinacion.serie}</td>
-                      <td className="px-6 py-4 text-xs">{combinacion.categoria}</td>
                       <td className="px-6 py-4 text-xs">{combinacion.codigoQR}</td>
                       <td className="px-6 py-4 text-xs">{combinacion.marca}</td>
                       <td className="px-6 py-4 text-xs">{combinacion.color}</td>

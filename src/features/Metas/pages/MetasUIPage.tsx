@@ -18,7 +18,7 @@ export default function MetasUIPage() {
   const [selectedFrameBrands, setSelectedFrameBrands] = useState<string[]>(["Gucci"])
   const [selectedGlassesBrands, setSelectedGlassesBrands] = useState<string[]>(["Gucci"])
   const [sucursales, setSucursales] = useState<Sucursal[]>([]);
-    const { register, handleSubmit} = useForm<any>();
+    const { register} = useForm<any>();
 
   const brands = ["Gucci", "Ray-Ban", "Oakley", "Prada", "Versace", "Tom Ford"]
 
@@ -70,6 +70,7 @@ export default function MetasUIPage() {
     queryFn: () => obtenerEmpresas(),
     staleTime: 60 * 1000 * 10,
   })
+
   const buscarSucursal = async (empresaId: string) => {
     const sucursales = await obtenerSucursalByEmpresa(empresaId);
     setSucursales(sucursales);

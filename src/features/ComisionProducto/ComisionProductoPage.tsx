@@ -42,7 +42,6 @@ const CombinacionProductoPage = () => {
           <TableRow>
             <TableHead className="w-[80px]">TIPO PRODUCTO</TableHead>
             <TableHead>SERIE</TableHead>
-            <TableHead>CATEGORIA</TableHead>
             <TableHead>CODIGO QR</TableHead>
             <TableHead>MARCA</TableHead>
             <TableHead className="text-center">COLOR</TableHead>
@@ -54,7 +53,6 @@ const CombinacionProductoPage = () => {
               <TableRow key={combinacion._id} className="border-b-indigo-100 hover:bg-indigo-50">
                 <TableCell className="font-medium">{combinacion.tipoProducto}</TableCell>
                 <TableCell>{combinacion.serie}</TableCell>
-                <TableCell>{combinacion.categoria}</TableCell>
                 <TableCell>{combinacion.codigoQR}</TableCell>
                 <TableCell>{combinacion.marca}</TableCell>
                 <TableCell>{combinacion.color}</TableCell>

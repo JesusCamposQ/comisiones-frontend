@@ -1,10 +1,10 @@
 import { TableBody, TableRow, TableCell } from "@/components/ui/table"
-import { Datum } from "@/features/ComisionReceta/interfaces/comisionReceta.interface"
+import { CombinacionResponse } from "@/features/ComisionReceta/interfaces/comisionReceta.interface"
 
-export const TableCombinacion = ({combinacion}: {combinacion: Datum[]}) => {
+export const TableCombinacion = ({combinacion}: {combinacion: CombinacionResponse[]}) => {
   return (
     <TableBody>
-    {combinacion.map((combinacion:Datum) => (
+    {combinacion.map((combinacion:CombinacionResponse) => (
       <TableRow key={combinacion._id}>
         <TableCell className="font-medium">{combinacion.tipoLente}</TableCell>
         <TableCell>{combinacion.material}</TableCell>

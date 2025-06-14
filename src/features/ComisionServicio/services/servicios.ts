@@ -1,8 +1,6 @@
 import api from "@/app/service/api";
 import { DataResponse } from "../interfaces/comisionServicio.interface";
 import { ComisionSinServicio, ServicioSinComision } from "../interfaces/comisionSinServicio";
-import { Datum } from "../interfaces/comisionSinServicio";
-
 
 
 const obtenerServicios = async (limite: number, pagina: number): Promise<DataResponse> => {

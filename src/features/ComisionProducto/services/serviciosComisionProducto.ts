@@ -11,7 +11,7 @@ const obtenerComisionProductoMontura = async (limite: number, pagina: number, fi
         pagina,
         tipoProducto: filtro?.tipoProducto?.toUpperCase(),
         serie: filtro?.serie?.toUpperCase(),
-        codigoQr: filtro?.codigoQr?.toUpperCase(),
+        codigoQR: filtro?.codigoQR?.toUpperCase(),
         marca: filtro?.marca?.toUpperCase(),
         color: filtro?.color?.toUpperCase()
       }
@@ -31,7 +31,7 @@ const obtenerComisionProductoGafa = async (limite: number, pagina: number, filtr
         pagina,
         tipoProducto: filtro?.tipoProducto?.toUpperCase(),
         serie: filtro?.serie?.toUpperCase(),
-        codigoQr: filtro?.codigoQr?.toUpperCase(),
+        codigoQR: filtro?.codigoQR?.toUpperCase(),
         marca: filtro?.marca?.toUpperCase(),
         color: filtro?.color?.toUpperCase()
       }
@@ -51,7 +51,7 @@ const obtenerComisionProductoLenteContacto = async (limite: number, pagina: numb
         pagina,
         tipoProducto: filtro?.tipoProducto?.toUpperCase(),
         serie: filtro?.serie?.toUpperCase(),
-        codigoQr: filtro?.codigoQr?.toUpperCase(),
+        codigoQR: filtro?.codigoQR?.toUpperCase(),
         marca: filtro?.marca?.toUpperCase(),
         color: filtro?.color?.toUpperCase()
       }

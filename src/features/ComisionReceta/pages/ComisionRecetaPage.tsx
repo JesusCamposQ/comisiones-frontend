@@ -2,7 +2,7 @@ import { ModalRegistro } from "../components/ModalRegistro";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { IComisionReceta, IComisionRecetaData } from "../interfaces/comisionReceta.interface";
 import { useQueryClient } from "@tanstack/react-query";
-import registrarComisionReceta from "../services/registrarComisionReceta";
+import {registrarComisionReceta} from "../services/registrarComisionReceta";
 import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table_detalle_comision";
 import { Button } from "@/components/ui/button";

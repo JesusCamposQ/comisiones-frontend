@@ -80,7 +80,6 @@ const ComisionGafasPage = () => {
             <TableRow>
               <TableHead className="w-[80px]">TIPO PRODUCTO</TableHead>
               <TableHead>SERIE</TableHead>
-              <TableHead>CATEGORIA</TableHead>
               <TableHead>CODIGO QR</TableHead>
               <TableHead>MARCA</TableHead>
               <TableHead className="text-center">COLOR</TableHead>
@@ -94,7 +93,6 @@ const ComisionGafasPage = () => {
                 <TableRow key={combinacion._id} className="border-b-indigo-100 hover:bg-indigo-50">
                   <TableCell className="font-medium">{combinacion.tipoProducto}</TableCell>
                   <TableCell>{combinacion.serie!="null" ? combinacion.serie : ""}</TableCell>
-                  <TableCell>{combinacion.categoria!="null" ? combinacion.categoria : ""}</TableCell>
                   <TableCell>{combinacion.codigoQR!="null" ? combinacion.codigoQR : ""}</TableCell>
                   <TableCell>{combinacion.marca!="null" ? combinacion.marca : ""}</TableCell>
                   <TableCell>{combinacion.color!="null" ? combinacion.color : ""}</TableCell>

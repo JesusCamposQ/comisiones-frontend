@@ -10,7 +10,7 @@ const obtenerSinComsionProducto = async (limite: number, pagina: number, filtro?
         pagina,
         tipoProducto: filtro?.tipoProducto?.toUpperCase(),
         serie: filtro?.serie?.toUpperCase(),
-        codigoQr: filtro?.codigoQr?.toUpperCase(),
+        codigoQR: filtro?.codigoQR?.toUpperCase(),
         marca: filtro?.marca?.toUpperCase(),
         color: filtro?.color?.toUpperCase()
       }

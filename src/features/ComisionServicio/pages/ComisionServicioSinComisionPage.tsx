@@ -9,8 +9,7 @@ import {
 } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { BookPlus, EyeOff } from "lucide-react";
-import { DetalleComisionServicio } from "../components/DetalleComisionServicio";
+import { BookPlus } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { Banner } from "@/shared/components/Banner/Banner";
 import { exportarServiciosExcel } from "../utils/exportarServiciciosExcel";
@@ -31,7 +30,6 @@ export const ComisionServicioSinComisionPage = () => {
   const [filtro, setFiltro] = useState<Datum>({});
   const [FiltrarServicio, setFiltrarServicio] = useState<Datum[]>([]);
   const [isDownload, setIsDownload] = useState(false);
-  const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
   const [actualizar, setActualizar] = useState(false);
   const [valor, setValor] = useState<FormValues>({
@@ -39,9 +37,7 @@ export const ComisionServicioSinComisionPage = () => {
     codigo: "",
     tipoPrecio: "",
   });
-  const toggleDetalle = (index: number) => {
-    setExpandedRowIndex((prev) => (prev === index ? null : index));
-  };
+
   const { data: dataServicios, refetch } = useQuery({
     queryKey: ["comisiones-servicio", page],
     queryFn: () => obtenerServiciosSinComision(20, page),
@@ -99,7 +95,7 @@ export const ComisionServicioSinComisionPage = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {FiltrarServicio.map((servicio: Datum, index) => (
+          {FiltrarServicio.map((servicio: Datum) => (
             <>
               <TableRow key={servicio._id} className="hover:bg-slate-50 dark:hover:bg-slate-800/60">
                 <TableCell className="font-medium text-[#2b4464]">
@@ -122,24 +118,6 @@ export const ComisionServicioSinComisionPage = () => {
                   </button>
                 </TableCell>
               </TableRow>
-              {expandedRowIndex === index ? (
-                <TableRow>
-                  <TableCell colSpan={2}>
-                    {servicio.comisionServicio ? (
-                      <DetalleComisionServicio
-                        comisionesServicio={servicio.comisionServicio || []}
-                      />
-                    ) : (
-                      <div className="bg-gray-50 p-4 rounded-md text-center">
-                        <p className="font-medium flex items-center justify-center gap-2 text-gray-600">
-                          <EyeOff className="w-5 h-5" />
-                          No hay comisiones para este servicio
-                        </p>
-                      </div>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ) : null}
             </>
           ))}
         </TableBody>

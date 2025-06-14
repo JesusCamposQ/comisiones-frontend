@@ -12,7 +12,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import obtenerSinComsion from "../services/obtenerSinComision";
 import { FiltroComision } from "./FiltroComision";
 import { ComsionRecetaFiltro } from "../interfaces/comsionRecetaFiltro";
-import { CombinacionResponse, Datum } from "../interfaces/comisionReceta.interface";
+import { CombinacionResponse} from "../interfaces/comisionReceta.interface";
 
 interface FormValues {
   idcombinacion: string;
@@ -27,12 +27,12 @@ export function ModalRegistro({ setValor}: ModalProps) {
   const [filtro, setFiltro] = useState<ComsionRecetaFiltro>({})
   const [close, setClose] = useState(false);
   const [page, setPage] = useState(1);
-  const { data: combinacionReceta, isLoading, refetch } = useQuery<CombinacionResponse>({
+  const { data: combinacionReceta, isLoading, refetch } = useQuery<CombinacionResponse[]>({
     queryKey: ['combinacion-receta', page],
-    queryFn: () => obtenerSinComsion(10, page, filtro) as any,
+    queryFn: () => obtenerSinComsion() as any,
     staleTime: 60 * 1000 * 10, // 10 minutos
   })
-  const combinaciones: Datum[] = combinacionReceta?.data || [];
+  const combinaciones: CombinacionResponse[] = combinacionReceta || [];
   console.log(filtro)
   const onSubmit = () => {
     setClose(false)
@@ -57,11 +57,11 @@ export function ModalRegistro({ setValor}: ModalProps) {
           <div className="flex justify-between items-center gap-4">
                 <div className="flex items-center justify-center my-4">
                   <nav className="flex items-center justify-center gap-1">
-                    <button className="px-2 py-1 bg-blue-500 hover:bg-blue-700 text-white rounded-md shadow-md disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => setPage(page - 1)} disabled={page <= 1 || !combinacionReceta?.paginas}>Anterior</button>
+                    <button className="px-2 py-1 bg-blue-500 hover:bg-blue-700 text-white rounded-md shadow-md disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => setPage(page - 1)} disabled={page <= 1 || !combinacionReceta?.length}>Anterior</button>
                     <span className="px-2 text-sm">
-                      Página {page} de {combinacionReceta?.paginas || 0}
+                      Página {page} de {combinacionReceta?.length || 0}
                     </span>
-                    <button className="px-2 py-1 bg-blue-500 hover:bg-blue-700 text-white rounded-md shadow-md disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => setPage(page + 1)} disabled={page >= (combinacionReceta?.paginas || 1) || !combinacionReceta?.paginas}>Siguiente</button>
+                    <button className="px-2 py-1 bg-blue-500 hover:bg-blue-700 text-white rounded-md shadow-md disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => setPage(page + 1)} disabled={page >= (combinacionReceta?.length || 1) || !combinacionReceta?.length}>Siguiente</button>
                   </nav>
                 </div>
                 <div className="mt-4 flex justify-end">
@@ -93,7 +93,7 @@ export function ModalRegistro({ setValor}: ModalProps) {
                   </tr>
                 </thead>
                 <tbody>
-                  {combinaciones.map((combinacion: Datum) => (
+                  {combinaciones.map((combinacion: CombinacionResponse) => (
                     <tr key={combinacion._id} className="border-b border-gray-200">
                       <td className="px-6 py-4 text-xs">{combinacion.tipoLente}</td>
                       <td className="px-6 py-4 text-xs">{combinacion.material}</td>

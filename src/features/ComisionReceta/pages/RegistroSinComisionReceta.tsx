@@ -9,7 +9,6 @@ import { ModalRegistroSinComision } from "../components/ModalRegistroSinComision
 import toast, { Toaster } from "react-hot-toast";
 import {
   CombinacionResponse,
-  Datum,
 } from "../interfaces/comisionReceta.interface";
 import { Banner } from "@/shared/components/Banner/Banner";
 import { BookPlus } from "lucide-react";
@@ -28,13 +27,12 @@ export const RegistroSinComisionReceta = () => {
     idcombinacion: "",
     codigo: "",
   });
-  const [page, setPage] = useState(1);
   const {
     data: combinacionReceta,
     isLoading,
     refetch,
   } = useQuery<CombinacionResponse[]>({
-    queryKey: ["combinacion-receta", page],
+    queryKey: ["combinacion-receta"],
     queryFn: () => obtenerSinComsion() as any,
     staleTime: 60 * 1000 * 10, 
   });
@@ -51,7 +49,7 @@ export const RegistroSinComisionReceta = () => {
     refetch();
   }, [filtro]);
 
-  const agregarComision = (combinacion: Datum) => {
+  const agregarComision = (combinacion: CombinacionResponse) => {
     const descripcion = `${combinacion.tipoLente} / ${combinacion.material} / ${combinacion.tratamiento} / ${combinacion.marcaLente} / ${combinacion.tipoColorLente} / ${combinacion.rango} / ${combinacion.colorLente}`;
     setOpen(true);
     setValor({ idcombinacion: combinacion._id!, codigo: descripcion });
