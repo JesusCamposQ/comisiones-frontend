@@ -52,3 +52,12 @@ export const eliminarMetas = async (id: string) => {
   }
 };
 
+export const obtenerMarcas = async ()=> {
+    try {
+        const response = await api.get("/api/marca");
+        console.log(response.data)
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};

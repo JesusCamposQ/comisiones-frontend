@@ -20,10 +20,12 @@ import { ComisionServicioPage } from '@/features/ComisionServicio/pages/Comision
 import { CargarCombinacionesPage } from '@/features/CombinacionReceta/pages/CargarCombinacionesPage';
 import { ActualizarComisionesPage } from '@/features/CombinacionReceta/pages/ActualizarComisionesPage';
 import CargarComisionProductoPage from '@/features/ComisionProducto/pages/CargarComisionProductoPage';
-import MetasUIPages from '@/features/Metas/pages/MetasUIPages';
 import { SinComisionGafasPage } from '@/features/ComisionProducto/pages/SinComisionGafasPage';
 import { SinComisionMonturaPage } from '@/features/ComisionProducto/pages/SinComisionMonturaPage';
 import { SinComisionLenteContactoPage } from '@/features/ComisionProducto/pages/SinComisionLenteContactoPage';
+import { ComisionServicioSinComisionPage } from '@/features/ComisionServicio/pages/ComisionServicioSinComisionPage';
+import { RegistarComisionServicioPage } from '@/features/ComisionServicio/pages/RegistarComisionServicioPage';
+import MetasUIPage from '@/features/Metas/pages/MetasUIPage';
 function AppRouter() {
 
   const { isAunteticacion, token } = useContext(TokenContext)
@@ -42,7 +44,7 @@ function AppRouter() {
             <Route path="combinacion-receta" element={<CombinacionRecetaPage />} />
           </Route>
           <Route path="/metas/registro" element={<RegistroMetasPage />} />
-          <Route path="/metas" element={<MetasUIPages />} />
+          <Route path="/metas" element={<MetasUIPage />} />
           <Route path="/usuarios">
             <Route index element={<UsuarioPage />} />
             <Route path="registro" element={<UsuarioRegistroPage />} />
@@ -51,6 +53,8 @@ function AppRouter() {
           <Route path="/comision/registro/producto" element={<RegistroSinComisionProducto />} />
           <Route path="/comision/gestion/receta" element={<CombinacionRecetaPage />} />
           <Route path="/comision/gestion/servicio" element={<ComisionServicioPage />} />
+          <Route path="/comision/gestion/servicio/sin-comision" element={<ComisionServicioSinComisionPage />} />
+          <Route path="/comision/gestion/servicio/sin-comision/registro" element={<RegistarComisionServicioPage />} />
           <Route path="/comision/gestion/producto" element={<ComisionProductoPage />} />
           <Route path="/comision/gestion/producto/gafas" element={<ComisionGafasPage />} />
           <Route path="/comision/gestion/producto/montura" element={<ComisionMonturaPage />} />

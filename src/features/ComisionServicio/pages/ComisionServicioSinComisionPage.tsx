@@ -8,30 +8,43 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { useEffect, useState } from "react";
+import { BookPlus, EyeOff } from "lucide-react";
 import { DetalleComisionServicio } from "../components/DetalleComisionServicio";
-import { Servicio } from "../interfaces/comisionServicio.interface";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { Banner } from "@/shared/components/Banner/Banner";
 import { exportarServiciosExcel } from "../utils/exportarServiciciosExcel";
 import { FiltroComisionServicio } from "../components/FiltroComisionServicio";
-import { FiltrarServicios } from "../hooks/FiltrarServicios";
-import { Button } from "@/components/ui/button";
-import obtenerServicios from "../services/servicios";
+import { useFiltrarSinServicios } from "../hooks/FiltrarSinServicios";
+import { Datum } from "../interfaces/comisionSinServicio";
+import { ModalRegistroSinComisionServicio } from "../components/ModalRegistroSinComisionServicio";
+import { obtenerServiciosSinComision } from "../services/servicios";
 
-export const ComisionServicioPage = () => {
+interface FormValues {
+  idcombinacion: string;
+  codigo: string;
+  tipoPrecio?: string;
+}
+
+export const ComisionServicioSinComisionPage = () => {
   const [page, setPage] = useState(1);
-  const [filtro, setFiltro] = useState<Servicio>({});
-  const [FiltrarServicio, setFiltrarServicio] = useState<Servicio[]>([]);
+  const [filtro, setFiltro] = useState<Datum>({});
+  const [FiltrarServicio, setFiltrarServicio] = useState<Datum[]>([]);
   const [isDownload, setIsDownload] = useState(false);
   const [expandedRowIndex, setExpandedRowIndex] = useState<number | null>(null);
+  const [open, setOpen] = useState(false);
+  const [actualizar, setActualizar] = useState(false);
+  const [valor, setValor] = useState<FormValues>({
+    idcombinacion: "",
+    codigo: "",
+    tipoPrecio: "",
+  });
   const toggleDetalle = (index: number) => {
     setExpandedRowIndex((prev) => (prev === index ? null : index));
   };
-  const { data: dataServicios } = useQuery({
+  const { data: dataServicios, refetch } = useQuery({
     queryKey: ["comisiones-servicio", page],
-    queryFn: () => obtenerServicios(20, page),
+    queryFn: () => obtenerServiciosSinComision(20, page),
     staleTime: 60 * 60 * 1000,
   });
   const descargar = async () => {
@@ -41,67 +54,80 @@ export const ComisionServicioPage = () => {
     }
     setIsDownload(false);
   };
-   const servicios: Servicio[] = dataServicios?.data || [];
-   FiltrarServicios({servicios, filtro, setFiltrarServicio, page, setPage});  
+  const agregarComision = (servicio: Datum) => {
+    const descripcion = `${servicio.nombre}`;
+    setOpen(true);
+    setValor({ idcombinacion: servicio._id!, codigo: descripcion, tipoPrecio: servicio.tipoPrecio});
+  };
+  useEffect(() => {
+    setTimeout(() => {
+      if (actualizar) {
+        toast.success("Comisiones actualizadas exitosamente");
+        refetch();
+      }
+      setActualizar(false);
+    }, 50);
+  }, [actualizar]);
+
+   const servicios: Datum[] = dataServicios?.data || [];
+   useFiltrarSinServicios({servicios, filtro, setFiltrarServicio, page, setPage});  
   return (
     <div className="flex flex-col m-auto">
       <Toaster />
       <Banner
-        title="Comision por Servicio"
+        title="Comision Sin Comision"
         subtitle="Servicios"
         handleDownload={descargar}
         isDownload={isDownload}
       />
       <FiltroComisionServicio setFiltro={setFiltro} />
-      <Table className="w-[95%] m-auto p-4 rounded-lg bg-[#F5F6F8] shadow-md">
+      <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead className="text-[#2b4464] text-left uppercase font-bold text-md">
+          <TableRow className="bg-slate-100 dark:bg-slate-800">
+            <TableHead className="font-bold">
               Nombre
             </TableHead>
-            <TableHead className="text-[#2b4464] text-left uppercase font-bold text-md">
+            <TableHead className="font-bold">
+              Tipo Precio
+            </TableHead>
+            <TableHead className="font-bold">
+              Importe
+            </TableHead>
+            <TableHead className="font-bold text-right">
               Acciones
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {FiltrarServicio.map((servicio: Servicio, index) => (
+          {FiltrarServicio.map((servicio: Datum, index) => (
             <>
-              <TableRow key={servicio._id}>
+              <TableRow key={servicio._id} className="hover:bg-slate-50 dark:hover:bg-slate-800/60">
                 <TableCell className="font-medium text-[#2b4464]">
                   {servicio.nombre}
                 </TableCell>
+                <TableCell className="font-medium text-[#2b4464]">
+                  {servicio.tipoPrecio}
+                </TableCell>
+                <TableCell className="font-medium text-[#2b4464]">
+                  {servicio.importe}
+                </TableCell>
                 <TableCell>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => toggleDetalle(index)}
-                    className={
-                      expandedRowIndex === index
-                        ? "bg-[#385780] text-white hover:bg-[#f3f3f4] hover:text-[#385780e1]"
-                        : "bg-white text-[#385780] hover:bg-[#f3f3f4] hover:text-[#385780e1]"
-                    }
+                <button
+                    className="px-4 py-2 flex items-center gap-2 bg-green-500 hover:bg-green-700 text-white rounded-md shadow-md cursor-pointer"
+                    type="button"
+                    onClick={() => agregarComision(servicio)}
                   >
-                    {expandedRowIndex === index ? (
-                      <span className="flex items-center gap-1 ">
-                        <EyeOff className="w-4 h-4" />
-                        Ocultar
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-1">
-                        <Eye className="w-4 h-4" />
-                        Ver
-                      </span>
-                    )}
-                  </Button>
+                    <BookPlus />
+                    Agregar Comision
+                  </button>
                 </TableCell>
               </TableRow>
               {expandedRowIndex === index ? (
                 <TableRow>
                   <TableCell colSpan={2}>
-                    {servicio.comisonServicio ? (
+                    {servicio.comisionServicio ? (
                       <DetalleComisionServicio
-                        comisionesServicio={servicio.comisonServicio || []}
+                        comisionesServicio={servicio.comisionServicio || []}
                       />
                     ) : (
                       <div className="bg-gray-50 p-4 rounded-md text-center">
@@ -146,6 +172,12 @@ export const ComisionServicioPage = () => {
           </TableCell>
         </TableRow>
       </TableFooter>
+      <ModalRegistroSinComisionServicio
+        valor={valor}
+        setOpen={setOpen}
+        open={open}
+        setActualizar={setActualizar}
+      />
     </div>
   );
 };
