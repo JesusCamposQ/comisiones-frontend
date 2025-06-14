@@ -111,6 +111,20 @@ const data = {
             },
           ],
         },
+        {
+          title: "Servicios",
+          url: "#",
+          items: [
+            {
+              title: "Servicios",
+              url: "/comision/gestion/servicio",
+            },
+            {
+              title: "Servicios sin Comisión",
+              url: "/comision/gestion/servicio/sin-comision",
+            },
+          ],
+        },
       ],
     },
     // {
