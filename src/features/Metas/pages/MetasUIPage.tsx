@@ -7,12 +7,18 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Building2, Package, Eye, Contact, DollarSign, X, Save, List } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
+import { obtenerEmpresas } from "@/features/Empresa/services/obternerEmpresas"
+import { obtenerSucursalByEmpresa } from "@/features/Sucursal/services/obtenerSurcusal"
+import { Sucursal } from "@/features/Sucursal/interfaces/sucursal.interface"
+import { useForm } from "react-hook-form";
 
 export default function MetasUIPage() {
   const [selectedFrameBrands, setSelectedFrameBrands] = useState<string[]>(["Gucci"])
   const [selectedGlassesBrands, setSelectedGlassesBrands] = useState<string[]>(["Gucci"])
+  const [sucursales, setSucursales] = useState<Sucursal[]>([]);
+    const { register, handleSubmit} = useForm<any>();
 
   const brands = ["Gucci", "Ray-Ban", "Oakley", "Prada", "Versace", "Tom Ford"]
 
@@ -59,7 +65,15 @@ export default function MetasUIPage() {
       setSelectedGlassesBrands((prev) => prev.filter((b) => b !== brand))
     }
   }
-
+  const empresas = useQuery({
+    queryKey: ["empresas"],
+    queryFn: () => obtenerEmpresas(),
+    staleTime: 60 * 1000 * 10,
+  })
+  const buscarSucursal = async (empresaId: string) => {
+    const sucursales = await obtenerSucursalByEmpresa(empresaId);
+    setSucursales(sucursales);
+  };
   const addBrand = (brand: string, type: "frame" | "glasses") => {
     if (type === "frame" && !selectedFrameBrands.includes(brand)) {
       setSelectedFrameBrands((prev) => [...prev, brand])
@@ -73,8 +87,8 @@ export default function MetasUIPage() {
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold text-slate-800">Sistema de Gestión de Inventario</h1>
-          <p className="text-slate-600">Administra tu inventario de productos ópticos de manera eficiente</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent uppercase">Gestión de Metas</h1>
+          <p className="text-slate-600">Administra tus metas de manera eficiente</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -94,23 +108,34 @@ export default function MetasUIPage() {
                     <Label htmlFor="empresa" className="text-sm font-medium text-slate-700">
                       Empresa
                     </Label>
-                    <Input
-                      id="empresa"
-                      placeholder="Nombre de la empresa"
-                      defaultValue="Empresa 1"
-                      className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
-                    />
+                    <select
+                    onChange={(e) => buscarSucursal(e.target.value)}
+                    className="mt-1 block w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+                  >
+                    <option value="" disabled selected>
+                      Seleccione una empresa
+                    </option>
+                    {empresas?.data?.map((empresa) => (
+                      <option key={empresa._id} value={empresa._id}>
+                        {empresa.nombre}
+                      </option>
+                    ))}
+                  </select>
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="sucursal" className="text-sm font-medium text-slate-700">
                       Sucursal
                     </Label>
-                    <Input
-                      id="sucursal"
-                      placeholder="Nombre de la sucursal"
-                      defaultValue="Sucursal 1"
-                      className="border-slate-200 focus:border-blue-500 focus:ring-blue-500"
-                    />
+                    <select
+                    {...register("sucursal", { required: true })}
+                    className="mt-1 block w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500"
+                  >
+                    {sucursales?.map((sucursal: Sucursal) => (
+                      <option key={sucursal._id} value={sucursal._id}>
+                        {sucursal.nombre}
+                      </option>
+                    ))}
+                  </select>
                   </div>
                 </div>
               </CardContent>
