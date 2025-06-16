@@ -34,7 +34,6 @@ function AppRouter() {
 
   return (
     <BrowserRouter>
-
       <Routes>
         <Route path="/" element={<Autenticacion />} />
         {token && isAunteticacion ? <Route path="/" element={<Layout />}>
